@@ -28,41 +28,52 @@
         /// </summary>
         private void InitializeComponent()
         {
-			this.buttonLogin = new System.Windows.Forms.Button();
-			this.buttonLogout = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// buttonLogin
-			// 
-			this.buttonLogin.Location = new System.Drawing.Point(12, 12);
-			this.buttonLogin.Name = "buttonLogin";
-			this.buttonLogin.Size = new System.Drawing.Size(179, 23);
-			this.buttonLogin.TabIndex = 36;
-			this.buttonLogin.Text = "Login";
-			this.buttonLogin.UseVisualStyleBackColor = true;
-			this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
-			// 
-			// buttonLogout
-			// 
-			this.buttonLogout.Location = new System.Drawing.Point(12, 41);
-			this.buttonLogout.Name = "buttonLogout";
-			this.buttonLogout.Size = new System.Drawing.Size(179, 23);
-			this.buttonLogout.TabIndex = 52;
-			this.buttonLogout.Text = "Logout";
-			this.buttonLogout.UseVisualStyleBackColor = true;
-			this.buttonLogout.Click += new System.EventHandler(this.buttonLogout_Click);
-			// 
-			// FormMain
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(842, 657);
-			this.Controls.Add(this.buttonLogout);
-			this.Controls.Add(this.buttonLogin);
-			this.Name = "FormMain";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Form1";
-			this.ResumeLayout(false);
+            this.buttonLogin = new System.Windows.Forms.Button();
+            this.buttonLogout = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.SuspendLayout();
+            // 
+            // buttonLogin
+            // 
+            this.buttonLogin.Location = new System.Drawing.Point(12, 12);
+            this.buttonLogin.Name = "buttonLogin";
+            this.buttonLogin.Size = new System.Drawing.Size(179, 23);
+            this.buttonLogin.TabIndex = 36;
+            this.buttonLogin.Text = "Login";
+            this.buttonLogin.UseVisualStyleBackColor = true;
+            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
+            // 
+            // buttonLogout
+            // 
+            this.buttonLogout.Location = new System.Drawing.Point(12, 41);
+            this.buttonLogout.Name = "buttonLogout";
+            this.buttonLogout.Size = new System.Drawing.Size(179, 23);
+            this.buttonLogout.TabIndex = 52;
+            this.buttonLogout.Text = "Logout";
+            this.buttonLogout.UseVisualStyleBackColor = true;
+            this.buttonLogout.Click += new System.EventHandler(this.buttonLogout_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.panel1.Location = new System.Drawing.Point(110, 146);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(306, 204);
+            this.panel1.TabIndex = 53;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // FormMain
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(842, 657);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.buttonLogout);
+            this.Controls.Add(this.buttonLogin);
+            this.Name = "FormMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Form1";
+            this.ResumeLayout(false);
 
         }
 
@@ -70,6 +81,7 @@
 
 		private System.Windows.Forms.Button buttonLogin;
 		private System.Windows.Forms.Button buttonLogout;
-	}
+        private System.Windows.Forms.Panel panel1;
+    }
 }
 
