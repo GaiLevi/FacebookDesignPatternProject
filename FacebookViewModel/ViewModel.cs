@@ -1,19 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using FacebookModel;
+using FacebookWrapper.ObjectModel;
 
 namespace FacebookViewModel
 {
-    public class ViewModel
+    public class ViewModel : INotifyPropertyChanged
     {
-        public LoginService m_LoginService;
+        public static LoginService m_LoginService;
 
+        public User m_User;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public LoginService LoginService
+        {
+            get => m_LoginService; set => SetField(ref m_LoginService, value);
+        }
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public ObservableCollection<Post> GetPosts()
+        {
+            ObservableCollection<Post> urn = null;
+            if (!string.IsNullOrEmpty(m_LoginService.m_LoginResult.AccessToken))
+            {
+                urn = LoginService.m_LoggedInUser.Posts;
+            }
+            return urn;
+        }
+
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
         public void LoginButtonClicked()
         {
-            m_LoginService = new LoginService();
+            m_LoginService = LoginService.Instance;
+            m_User = m_LoginService.m_LoggedInUser;
             
         }
 
@@ -21,5 +56,7 @@ namespace FacebookViewModel
         {
             m_LoginService.LogoutAndSet();
         }
+
+
     }
 }

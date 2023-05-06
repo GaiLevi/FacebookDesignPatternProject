@@ -73,5 +73,8 @@
     <Compile Include="Singleton.cs" />
     <Compile Include="UserData.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

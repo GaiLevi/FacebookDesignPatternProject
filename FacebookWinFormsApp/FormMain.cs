@@ -24,6 +24,12 @@ namespace BasicFacebookFeatures
         {
             Clipboard.SetText("design.patterns.22aa");
             m_ViewModel.LoginButtonClicked();
+
+            BindingSource bSource = new BindingSource();
+            //bSource.DataSource = m_ViewModel.m_User;
+            
+            postBindingSource.DataSource = m_ViewModel.GetPosts();
+            userBindingSource.DataSource = m_ViewModel.m_User;
      //       Clipboard.SetText("design.patterns20cc"); /// the current password for Desig Patter
 
      //       FacebookWrapper.LoginResult loginResult = FacebookService.Login(
