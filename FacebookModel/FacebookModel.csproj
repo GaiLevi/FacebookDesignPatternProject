@@ -68,8 +68,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FacebookCollection.cs" />
     <Compile Include="IUserData.cs" />
     <Compile Include="LoginService.cs" />
+    <Compile Include="Post.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="UserData.cs" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,19 @@ namespace FacebookModel
     {
         public User m_LoggedInUser { get; set; }
         public LoginResult m_LoginResult { get; set; }
+
+        public ObservableCollection<FacebookModel.Post> Posts { get; } = new ObservableCollection<Post>();
+
+        public void LoadPostsFromApi()
+        {
+
+            // Convert API posts to Post objects and add to collection
+            foreach (FacebookWrapper.ObjectModel.Post apiPost in m_LoggedInUser.Posts)
+            {
+                FacebookModel.Post post = new FacebookModel.Post(apiPost.Id, apiPost.Message);
+                Posts.Add(post);
+            }
+        }
 
         public UserData m_UserData { get; set; }
 
