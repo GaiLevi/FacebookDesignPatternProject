@@ -14,14 +14,19 @@ namespace FacebookModel
         public User m_LoggedInUser { get; set; }
         public LoginResult m_LoginResult { get; set; }
 
-        public IUserData m_UserData { get; set; }
+        public UserData m_UserData { get; set; }
 
-        public LoginService()
+        private LoginService()
         {
             loginAndInit();
         }
 
-        private void loginAndInit()
+        public static LoginService Instance
+        {
+            get { return Singleton<LoginService>.Instance;}
+        }
+
+        public void loginAndInit()
         {
             FacebookService.s_CollectionLimit = 100;
             try
@@ -53,7 +58,7 @@ namespace FacebookModel
                     //r_FormMain.SetProfilePictureBox(m_LoggedInUser.PictureNormalURL);
                     //setUserBirthDay();
 
-                    m_UserData = new UserData(m_LoggedInUser);
+                    //m_UserData = new UserData(m_LoggedInUser);
                 }
                 else
                 {
