@@ -15,8 +15,6 @@ namespace FacebookModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<Post> Posts { get; } = new ObservableCollection<Post>();
-
         public ObservableCollection<T> Items
         {
             get => m_Items;

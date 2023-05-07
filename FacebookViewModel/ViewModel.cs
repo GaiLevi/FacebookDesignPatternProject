@@ -20,7 +20,6 @@ namespace FacebookViewModel
 
         public BindingSource m_bsPosts;
 
-        //public User m_User;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -40,24 +39,12 @@ namespace FacebookViewModel
             get => m_bsPosts; set => SetField(ref m_bsPosts, value);
         }
 
-        //public User User
-        //{
-        //    get => m_User; set => SetField(ref m_User, value);
-        //}
+       
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        //public ObservableCollection<Post> GetPosts()
-        //{
-        //    ObservableCollection<Post> urn = null;
-        //    if (!string.IsNullOrEmpty(m_LoginService.m_LoginResult.AccessToken))
-        //    {
-        //        urn = LoginService.m_LoggedInUser.Posts;
-        //    }
-        //    return urn;
-        //}
 
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
@@ -69,9 +56,7 @@ namespace FacebookViewModel
         public void LoginButtonClicked()
         {
             m_LoginService = LoginService.Instance;
-            //m_User = m_LoginService.m_LoggedInUser;
             m_LoginService.LoadPostsFromApi();
-            //m_posts = m_LoginService.Posts;
             m_bsPosts = new BindingSource { DataSource = m_LoginService.Posts };
 
         }
