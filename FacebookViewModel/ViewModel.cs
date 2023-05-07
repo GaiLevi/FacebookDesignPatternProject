@@ -1,4 +1,5 @@
-﻿using FacebookModel;
+﻿using Common.Contracts;
+using FacebookModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +17,9 @@ namespace FacebookViewModel
     {
         public static LoginService m_LoginService;
 
-        private ObservableCollection<Post> m_posts;
+        private IFacebookUser m_FacebookUser;
+
+        private ObservableCollection<PostAdapter> m_posts;
 
         public BindingSource m_bsPosts;
 
@@ -29,7 +32,12 @@ namespace FacebookViewModel
             get => m_LoginService; set => SetField(ref m_LoginService, value);
         }
 
-        public ObservableCollection<Post> Posts
+        public IFacebookUser FacebookUser
+        {
+            get => m_FacebookUser; set => SetField(ref m_FacebookUser, value);
+        }
+
+        public ObservableCollection<PostAdapter> Posts
         {
             get => m_posts; set => SetField(ref m_posts, value);
         }
@@ -53,11 +61,22 @@ namespace FacebookViewModel
             OnPropertyChanged(propertyName);
             return true;
         }
-        public void LoginButtonClicked()
+        public bool LoginButtonClicked()
         {
+            bool isLogginSucceed = false;
             m_LoginService = LoginService.Instance;
-            m_LoginService.LoadPostsFromApi();
-            m_bsPosts = new BindingSource { DataSource = m_LoginService.Posts };
+            m_FacebookUser = m_LoginService.loginAndInit();
+            if(m_FacebookUser != null)
+            {
+                isLogginSucceed = true;
+                if(m_FacebookUser is FacebookUser)
+                {
+                    m_FacebookUser.LoadPostsFromApi();
+                }
+            }
+            return isLogginSucceed;
+            //m_LoginService.LoadPostsFromApi();
+            //m_bsPosts = new BindingSource { DataSource = m_LoginService.Posts };
 
         }
 

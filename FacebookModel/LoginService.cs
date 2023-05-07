@@ -12,27 +12,25 @@ namespace FacebookModel
 {
     public class LoginService
     {
-        public User m_LoggedInUser { get; set; }
         public LoginResult m_LoginResult { get; set; }
 
-        public ObservableCollection<FacebookModel.Post> Posts { get; } = new ObservableCollection<Post>();
+        //public ObservableCollection<FacebookModel.Post> Posts { get; } = new ObservableCollection<Post>();
 
-        public void LoadPostsFromApi()
-        {
+        //public void LoadPostsFromApi()
+        //{
 
-            // Convert API posts to Post objects and add to collection
-            foreach (FacebookWrapper.ObjectModel.Post apiPost in m_LoggedInUser.Posts)
-            {
-                FacebookModel.Post post = new FacebookModel.Post(apiPost.Id, apiPost.Message);
-                Posts.Add(post);
-            }
-        }
+        //    // Convert API posts to Post objects and add to collection
+        //    foreach (FacebookWrapper.ObjectModel.Post apiPost in m_LoggedInUser.Posts)
+        //    {
+        //        FacebookModel.Post post = new FacebookModel.Post(apiPost.Id, apiPost.Message);
+        //        Posts.Add(post);
+        //    }
+        //}
 
         public UserData m_UserData { get; set; }
 
         private LoginService()
         {
-            loginAndInit();
         }
 
         public static LoginService Instance
@@ -40,14 +38,15 @@ namespace FacebookModel
             get { return Singleton<LoginService>.Instance;}
         }
 
-        public void loginAndInit()
+        public FacebookUser loginAndInit()
         {
+            FacebookUser loggedInUser = null;
             FacebookService.s_CollectionLimit = 100;
             try
             {
                 m_LoginResult = FacebookService.Login(
-                    "1450160541956417",
-                    //"901251131122072",
+                    //"1450160541956417",
+                    "901251131122072",
                     "email",
                     "public_profile",
                     "user_age_range",
@@ -66,13 +65,7 @@ namespace FacebookModel
 
                 if (!string.IsNullOrEmpty(m_LoginResult.AccessToken))
                 {
-                    m_LoggedInUser = m_LoginResult.LoggedInUser;
-                    //r_FormMain.InitAppAfterLogin();
-                    //r_FormMain.SetButtonLoginText(m_LoggedInUser.Name);
-                    //r_FormMain.SetProfilePictureBox(m_LoggedInUser.PictureNormalURL);
-                    //setUserBirthDay();
-
-                    //m_UserData = new UserData(m_LoggedInUser);
+                    loggedInUser = new FacebookUser(m_LoginResult.LoggedInUser);
                 }
                 else
                 {
@@ -83,6 +76,8 @@ namespace FacebookModel
             {
                 //MessageBox.Show(ex.Message);
             }
+
+            return loggedInUser;
         }
 
         public void LogoutAndSet()

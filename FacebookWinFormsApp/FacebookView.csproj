@@ -105,8 +105,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
-    <None Include="Properties\DataSources\FacebookWrapper.ObjectModel.Post.datasource" />
-    <None Include="Properties\DataSources\FacebookWrapper.ObjectModel.User.datasource" />
+    <None Include="Properties\DataSources\Common.Contracts.IPost.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -121,6 +120,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common.Contracts\Common.Contracts.csproj">
+      <Project>{e676a1f4-94b8-40db-bd0d-159a8fca74e3}</Project>
+      <Name>Common.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FacebookViewModel\FacebookViewModel.csproj">
       <Project>{39b3249a-37f7-482f-a4a7-56d91328b965}</Project>
       <Name>FacebookViewModel</Name>

@@ -69,14 +69,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FacebookCollection.cs" />
+    <Compile Include="FacebookUser.cs" />
+    <Compile Include="FacebookUserBuilder.cs" />
     <Compile Include="IUserData.cs" />
     <Compile Include="LoginService.cs" />
-    <Compile Include="Post.cs" />
+    <Compile Include="PostAdapter.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="UserData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Contracts\Common.Contracts.csproj">
+      <Project>{e676a1f4-94b8-40db-bd0d-159a8fca74e3}</Project>
+      <Name>Common.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
