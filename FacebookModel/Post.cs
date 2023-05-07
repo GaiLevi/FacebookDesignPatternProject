@@ -11,10 +11,10 @@ namespace FacebookModel
         public string Id { get; set; }
         public string Message { get; set; }
 
-        public Post(string id, string message)
+        public Post(string i_Id, string i_Message)
         {
-            Id = id;
-            Message = message;
+            Id = i_Id;
+            Message = i_Message;
         }
     }
 }
