@@ -66,6 +66,7 @@
       <HintPath>..\..\FaceBookFirstProject\FBApi\FbGraphApiWrapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FacebookCollection.cs" />

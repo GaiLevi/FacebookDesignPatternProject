@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
 
@@ -69,12 +70,12 @@ namespace FacebookModel
                 }
                 else
                 {
-                    //MessageBox.Show(m_LoginResult.ErrorMessage, "Login Failed");
+                    MessageBox.Show(m_LoginResult.ErrorMessage, "Login Failed");
                 }
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
             }
 
             return loggedInUser;

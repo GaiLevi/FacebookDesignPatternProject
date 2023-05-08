@@ -30,12 +30,22 @@ namespace FacebookModel
             m_CreatedTime = i_Post.CreatedTime;
             m_LastEditTime = i_Post.UpdateTime;
             m_PictureUrl = i_Post.PictureURL;
-            m_Comments = new List<string>();
-            foreach (FacebookWrapper.ObjectModel.Comment comment in i_Post.Comments)
+        }
+
+        public void LoadComments()
+        {
+            if(m_Comments == null)
             {
-                if(comment != null)
+                m_Comments = new List<string>();
+                if (m_Post.Comments.Count != 0)
                 {
-                    m_Comments.Add(comment.Message);
+                    foreach (FacebookWrapper.ObjectModel.Comment comment in m_Post.Comments)
+                    {
+                        if (comment != null)
+                        {
+                            m_Comments.Add(comment.Message);
+                        }
+                    }
                 }
             }
         }

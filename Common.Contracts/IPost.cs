@@ -14,5 +14,6 @@ namespace Common.Contracts
         DateTime? m_LastEditTime { get; set; }
         string m_PictureUrl { get; set; }
         List<string> m_Comments { get; set; }
+        void LoadComments();
     }
 }
