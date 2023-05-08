@@ -14,8 +14,8 @@ namespace BasicFacebookFeatures
     public partial class FormMain : Form
     {
         ViewModel m_ViewModel;
+        bool isLoggedIn = false;
         BindingSource bs;
-        BindingSource postsBS;
         public FormMain()
         {
             InitializeComponent();
@@ -27,7 +27,8 @@ namespace BasicFacebookFeatures
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             Clipboard.SetText("design.patterns.22aa");
-            if(m_ViewModel.LoginButtonClicked() == true)
+            isLoggedIn = m_ViewModel.LoginButtonClicked();
+            if (isLoggedIn == true)
             {
                 afterLoginInit();
             }
@@ -35,15 +36,13 @@ namespace BasicFacebookFeatures
 
         private void afterLoginInit()
         {
-            BindingSource postsBS = new BindingSource();
-
             buttonLogin.Text = m_ViewModel.FacebookUser.m_UserName;
-            //buttonLogin.DataBindings.Add("Text", bs, "FacebookUser.m_UserName", true, DataSourceUpdateMode.OnPropertyChanged);
-            //pictureBoxProfile.DataBindings.Add("ImageLocation", bs, "LoginService.m_LoggedInUser.PictureNormalURL", true, DataSourceUpdateMode.OnPropertyChanged);
             pictureBoxProfile.ImageLocation = m_ViewModel.FacebookUser.m_PictureURL;
+            initPostTab();
 
-            iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
-            PictureBoxPictureUrl.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            //iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
+            //PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+
             //listBoxComments.DataSource = iPostBindingSource.DataSource;
             //postsBS = m_ViewModel.bsPosts;
             //labelID.DataBindings.Add("Text", postsBS, "Id", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -52,7 +51,6 @@ namespace BasicFacebookFeatures
         }
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-			//FacebookService.LogoutWithUI();
 			buttonLogin.Text = "Login";
             m_ViewModel.LogoutButtonClicked();
         }
@@ -71,6 +69,90 @@ namespace BasicFacebookFeatures
                     IPost selectedPost = (IPost)listBoxPosts.SelectedItem;
                     selectedPost.LoadComments();
                     listBoxComments.DataSource = selectedPost.m_Comments;
+                }
+            }
+        }
+
+        private void initPostTab()
+        {
+            iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
+            if (m_ViewModel.FacebookUser.m_PostCollection.Count > 0)
+            {
+                PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            }
+            displaySelectedPostComments();
+        }
+
+        private void initGroupTab()
+        {
+            m_ViewModel.FacebookUser.LoadGroupsFromApi();
+            iGroupBindingSource.DataSource = m_ViewModel.FacebookUser.m_GroupCollection;
+            if (m_ViewModel.FacebookUser.m_GroupCollection.Count > 0)
+            {
+                pictureBoxGroup.DataBindings.Add("ImageLocation", iGroupBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            }
+        }
+
+        private void initEventTab()
+        {
+            m_ViewModel.FacebookUser.LoadEventsFromApi();
+            iEventBindingSource.DataSource = m_ViewModel.FacebookUser.m_EventCollection;
+            if (m_ViewModel.FacebookUser.m_EventCollection.Count > 0)
+            {
+                pictureBoxEvent.DataBindings.Add("ImageLocation", iEventBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            }        
+        }
+
+        private void initPageTab()
+        {
+            m_ViewModel.FacebookUser.LoadPagesFromApi();
+            iPageBindingSource.DataSource = m_ViewModel.FacebookUser.m_PageCollection;
+            if (m_ViewModel.FacebookUser.m_PageCollection.Count > 0)
+            {
+                pictureBoxPage.DataBindings.Add("ImageLocation", iPageBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            }
+        }
+
+        private void tabControlFeatures_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLoggedIn)
+            {
+                //timerApp.Stop();
+                switch (tabControlFeatures.SelectedIndex)
+                {
+                    case 0:
+                        if (listBoxPosts.Items.Count == 0)
+                        {
+                            initPostTab();
+                        }
+                        break;
+                    case 1:
+                        if (listBoxGroups.Items.Count == 0)
+                        {
+                            initGroupTab();
+                        }
+                        break;
+                    //case 2:
+                    //    fetchFriends();
+                    //    break;
+                    case 3:
+                        if (listBoxEvents.Items.Count == 0)
+                        {
+                            initEventTab();
+                        }
+                        break;
+                    case 4:
+                        if (listBoxPages.Items.Count == 0)
+                        {
+                            initPageTab();
+                        }
+                        break;
+                        //case 5:
+                        //    fetchAlbums();
+                        //    break;
+                        //case 6:
+                        //    timerApp.Start();
+                        //    break;
                 }
             }
         }

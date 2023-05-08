@@ -19,7 +19,7 @@ namespace FacebookViewModel
 
         private IFacebookUser m_FacebookUser;
 
-        private ObservableCollection<PostAdapter> m_posts;
+        //private ObservableCollection<PostAdapter> m_posts;
 
         public BindingSource m_bsPosts;
 
@@ -37,10 +37,10 @@ namespace FacebookViewModel
             get => m_FacebookUser; set => SetField(ref m_FacebookUser, value);
         }
 
-        public ObservableCollection<PostAdapter> Posts
-        {
-            get => m_posts; set => SetField(ref m_posts, value);
-        }
+        //public ObservableCollection<PostAdapter> Posts
+        //{
+        //    get => m_posts; set => SetField(ref m_posts, value);
+        //}
 
         public BindingSource bsPosts
         {
