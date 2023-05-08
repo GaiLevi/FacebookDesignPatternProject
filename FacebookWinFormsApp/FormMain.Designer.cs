@@ -51,17 +51,23 @@
             this.listBoxGroups = new System.Windows.Forms.ListBox();
             this.tabPageFriends = new System.Windows.Forms.TabPage();
             this.tabPageEvents = new System.Windows.Forms.TabPage();
+            this.pictureBoxEvent = new System.Windows.Forms.PictureBox();
+            this.iEventBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.listBoxEvents = new System.Windows.Forms.ListBox();
             this.tabPagePages = new System.Windows.Forms.TabPage();
             this.labelDescriptionPageContent = new System.Windows.Forms.Label();
             this.iPageBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.pictureBoxPage = new System.Windows.Forms.PictureBox();
             this.listBoxPages = new System.Windows.Forms.ListBox();
             this.tabPageAlbums = new System.Windows.Forms.TabPage();
+            this.listBoxAlbums = new System.Windows.Forms.ListBox();
             this.tabPageTimers = new System.Windows.Forms.TabPage();
             this.mCommentsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.listBoxEvents = new System.Windows.Forms.ListBox();
-            this.iEventBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.pictureBoxEvent = new System.Windows.Forms.PictureBox();
+            this.iAlbumBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.pictureBoxAlbum = new System.Windows.Forms.PictureBox();
+            this.buttonPreviousPicture = new System.Windows.Forms.Button();
+            this.buttonNextPicture = new System.Windows.Forms.Button();
+            this.buttonEditPicture = new System.Windows.Forms.Button();
             m_CreatedTimeLabel = new System.Windows.Forms.Label();
             m_LastEditTimeLabel = new System.Windows.Forms.Label();
             labelDescriptionGroup = new System.Windows.Forms.Label();
@@ -75,12 +81,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.iGroupBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGroup)).BeginInit();
             this.tabPageEvents.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEvent)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iEventBindingSource)).BeginInit();
             this.tabPagePages.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iPageBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPage)).BeginInit();
+            this.tabPageAlbums.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mCommentsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iEventBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEvent)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iAlbumBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbum)).BeginInit();
             this.SuspendLayout();
             // 
             // m_CreatedTimeLabel
@@ -302,6 +311,30 @@
             this.tabPageEvents.Text = "Events";
             this.tabPageEvents.UseVisualStyleBackColor = true;
             // 
+            // pictureBoxEvent
+            // 
+            this.pictureBoxEvent.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iEventBindingSource, "m_PictureUrl", true));
+            this.pictureBoxEvent.Location = new System.Drawing.Point(348, 72);
+            this.pictureBoxEvent.Name = "pictureBoxEvent";
+            this.pictureBoxEvent.Size = new System.Drawing.Size(100, 100);
+            this.pictureBoxEvent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxEvent.TabIndex = 2;
+            this.pictureBoxEvent.TabStop = false;
+            // 
+            // iEventBindingSource
+            // 
+            this.iEventBindingSource.DataSource = typeof(Common.Contracts.IEvent);
+            // 
+            // listBoxEvents
+            // 
+            this.listBoxEvents.DataSource = this.iEventBindingSource;
+            this.listBoxEvents.DisplayMember = "m_Name";
+            this.listBoxEvents.FormattingEnabled = true;
+            this.listBoxEvents.Location = new System.Drawing.Point(10, 11);
+            this.listBoxEvents.Name = "listBoxEvents";
+            this.listBoxEvents.Size = new System.Drawing.Size(236, 251);
+            this.listBoxEvents.TabIndex = 0;
+            // 
             // tabPagePages
             // 
             this.tabPagePages.AutoScroll = true;
@@ -351,6 +384,12 @@
             // 
             // tabPageAlbums
             // 
+            this.tabPageAlbums.AutoScroll = true;
+            this.tabPageAlbums.Controls.Add(this.buttonEditPicture);
+            this.tabPageAlbums.Controls.Add(this.buttonNextPicture);
+            this.tabPageAlbums.Controls.Add(this.buttonPreviousPicture);
+            this.tabPageAlbums.Controls.Add(this.pictureBoxAlbum);
+            this.tabPageAlbums.Controls.Add(this.listBoxAlbums);
             this.tabPageAlbums.Location = new System.Drawing.Point(4, 22);
             this.tabPageAlbums.Name = "tabPageAlbums";
             this.tabPageAlbums.Padding = new System.Windows.Forms.Padding(3);
@@ -358,6 +397,17 @@
             this.tabPageAlbums.TabIndex = 5;
             this.tabPageAlbums.Text = "Albums";
             this.tabPageAlbums.UseVisualStyleBackColor = true;
+            // 
+            // listBoxAlbums
+            // 
+            this.listBoxAlbums.DataSource = this.iAlbumBindingSource;
+            this.listBoxAlbums.DisplayMember = "m_Name";
+            this.listBoxAlbums.FormattingEnabled = true;
+            this.listBoxAlbums.Location = new System.Drawing.Point(10, 11);
+            this.listBoxAlbums.Name = "listBoxAlbums";
+            this.listBoxAlbums.Size = new System.Drawing.Size(236, 251);
+            this.listBoxAlbums.TabIndex = 0;
+            this.listBoxAlbums.SelectedIndexChanged += new System.EventHandler(this.listBoxAlbums_SelectedIndexChanged);
             // 
             // tabPageTimers
             // 
@@ -374,29 +424,46 @@
             this.mCommentsBindingSource.DataMember = "m_Comments";
             this.mCommentsBindingSource.DataSource = this.iPostBindingSource;
             // 
-            // listBoxEvents
+            // iAlbumBindingSource
             // 
-            this.listBoxEvents.DataSource = this.iEventBindingSource;
-            this.listBoxEvents.DisplayMember = "m_Name";
-            this.listBoxEvents.FormattingEnabled = true;
-            this.listBoxEvents.Location = new System.Drawing.Point(10, 11);
-            this.listBoxEvents.Name = "listBoxEvents";
-            this.listBoxEvents.Size = new System.Drawing.Size(236, 251);
-            this.listBoxEvents.TabIndex = 0;
+            this.iAlbumBindingSource.DataSource = typeof(Common.Contracts.IAlbum);
             // 
-            // iEventBindingSource
+            // pictureBoxAlbum
             // 
-            this.iEventBindingSource.DataSource = typeof(Common.Contracts.IEvent);
+            this.pictureBoxAlbum.ImageLocation = "";
+            this.pictureBoxAlbum.Location = new System.Drawing.Point(399, 60);
+            this.pictureBoxAlbum.Name = "pictureBoxAlbum";
+            this.pictureBoxAlbum.Size = new System.Drawing.Size(150, 150);
+            this.pictureBoxAlbum.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxAlbum.TabIndex = 1;
+            this.pictureBoxAlbum.TabStop = false;
             // 
-            // pictureBoxEvent
+            // buttonPreviousPicture
             // 
-            this.pictureBoxEvent.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iEventBindingSource, "m_PictureUrl", true));
-            this.pictureBoxEvent.Location = new System.Drawing.Point(348, 72);
-            this.pictureBoxEvent.Name = "pictureBoxEvent";
-            this.pictureBoxEvent.Size = new System.Drawing.Size(100, 100);
-            this.pictureBoxEvent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxEvent.TabIndex = 2;
-            this.pictureBoxEvent.TabStop = false;
+            this.buttonPreviousPicture.Location = new System.Drawing.Point(318, 126);
+            this.buttonPreviousPicture.Name = "buttonPreviousPicture";
+            this.buttonPreviousPicture.Size = new System.Drawing.Size(75, 23);
+            this.buttonPreviousPicture.TabIndex = 5;
+            this.buttonPreviousPicture.Text = "Previous";
+            this.buttonPreviousPicture.UseVisualStyleBackColor = true;
+            // 
+            // buttonNextPicture
+            // 
+            this.buttonNextPicture.Location = new System.Drawing.Point(555, 126);
+            this.buttonNextPicture.Name = "buttonNextPicture";
+            this.buttonNextPicture.Size = new System.Drawing.Size(75, 23);
+            this.buttonNextPicture.TabIndex = 6;
+            this.buttonNextPicture.Text = "Next";
+            this.buttonNextPicture.UseVisualStyleBackColor = true;
+            // 
+            // buttonEditPicture
+            // 
+            this.buttonEditPicture.Location = new System.Drawing.Point(605, 240);
+            this.buttonEditPicture.Name = "buttonEditPicture";
+            this.buttonEditPicture.Size = new System.Drawing.Size(75, 23);
+            this.buttonEditPicture.TabIndex = 7;
+            this.buttonEditPicture.Text = "Edit";
+            this.buttonEditPicture.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 
@@ -422,13 +489,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.iGroupBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGroup)).EndInit();
             this.tabPageEvents.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEvent)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iEventBindingSource)).EndInit();
             this.tabPagePages.ResumeLayout(false);
             this.tabPagePages.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iPageBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPage)).EndInit();
+            this.tabPageAlbums.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mCommentsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iEventBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEvent)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iAlbumBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbum)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -464,6 +534,12 @@
         private System.Windows.Forms.PictureBox pictureBoxEvent;
         private System.Windows.Forms.BindingSource iEventBindingSource;
         private System.Windows.Forms.ListBox listBoxEvents;
+        private System.Windows.Forms.ListBox listBoxAlbums;
+        private System.Windows.Forms.BindingSource iAlbumBindingSource;
+        private System.Windows.Forms.PictureBox pictureBoxAlbum;
+        private System.Windows.Forms.Button buttonEditPicture;
+        private System.Windows.Forms.Button buttonNextPicture;
+        private System.Windows.Forms.Button buttonPreviousPicture;
     }
 }
 

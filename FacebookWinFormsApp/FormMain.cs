@@ -72,6 +72,27 @@ namespace BasicFacebookFeatures
                 }
             }
         }
+        private void listBoxAlbums_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            displaySelectedAlbumPhotos();
+        }
+
+        private void displaySelectedAlbumPhotos()
+        {
+            if (listBoxAlbums.SelectedItems.Count == 1)
+            {
+                if (listBoxAlbums.SelectedItem is IAlbum)
+                {
+                    IAlbum selectedAlbum = (IAlbum)listBoxAlbums.SelectedItem;
+                    selectedAlbum.LoadAlbumPictures();
+                    if (selectedAlbum.m_PicturesUrl.Count > 0)
+                    {
+                        pictureBoxAlbum.ImageLocation = selectedAlbum.m_PicturesUrl.First();
+                        //pictureBoxAlbum.DataBindings.Add("ImageLocation", iAlbumBindingSource, "m_PicturesUrl.First()", true, DataSourceUpdateMode.OnPropertyChanged);
+                    }
+                }
+            }
+        }
 
         private void initPostTab()
         {
@@ -113,6 +134,17 @@ namespace BasicFacebookFeatures
             }
         }
 
+        private void initAlbumTab()
+        {
+            m_ViewModel.FacebookUser.LoadAlbumsFromApi();
+            iAlbumBindingSource.DataSource = m_ViewModel.FacebookUser.m_AlbumCollection;
+            displaySelectedAlbumPhotos();
+            if (m_ViewModel.FacebookUser.m_AlbumCollection.Count > 0)
+            {
+                //pictureBoxAlbum.DataBindings.Add("ImageLocation", iAlbumBindingSource, "m_PicturesUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            }
+        }
+
         private void tabControlFeatures_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isLoggedIn)
@@ -147,14 +179,32 @@ namespace BasicFacebookFeatures
                             initPageTab();
                         }
                         break;
-                        //case 5:
-                        //    fetchAlbums();
-                        //    break;
+                    case 5:
+                        if (listBoxAlbums.Items.Count == 0)
+                        {
+                            initAlbumTab();
+                        }
+                        break;
                         //case 6:
                         //    timerApp.Start();
                         //    break;
                 }
             }
+        }
+
+        private void buttonEditPicture_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonPreviousPicture_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonNextPicture_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

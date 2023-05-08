@@ -15,9 +15,11 @@ namespace Common.Contracts
         ObservableCollection<IGroup> m_GroupCollection { get; set; }
         ObservableCollection<IEvent> m_EventCollection { get; set; }
         ObservableCollection<IPage> m_PageCollection { get; set; }
+        ObservableCollection<IAlbum> m_AlbumCollection { get; set; }
         void LoadPostsFromApi();
         void LoadGroupsFromApi();
         void LoadPagesFromApi();
         void LoadEventsFromApi();
+        void LoadAlbumsFromApi();
     }
 }

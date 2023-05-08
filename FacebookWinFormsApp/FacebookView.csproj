@@ -105,6 +105,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Common.Contracts.IAlbum.datasource" />
     <None Include="Properties\DataSources\Common.Contracts.IEvent.datasource" />
     <None Include="Properties\DataSources\Common.Contracts.IGroup.datasource" />
     <None Include="Properties\DataSources\Common.Contracts.IPage.datasource" />

@@ -18,6 +18,7 @@ namespace FacebookModel
         public ObservableCollection<IGroup> m_GroupCollection { get; set; }
         public ObservableCollection<IEvent> m_EventCollection { get; set; }
         public ObservableCollection<IPage> m_PageCollection { get; set; }
+        public ObservableCollection<IAlbum> m_AlbumCollection { get; set; }
 
         public FacebookUser(User i_LoggedInUser)
         {
@@ -34,8 +35,8 @@ namespace FacebookModel
                 m_PostCollection = new ObservableCollection<IPost>();
                 foreach (FacebookWrapper.ObjectModel.Post apiPost in m_LogInUser.Posts)
                 {
-                    PostAdapter post = new PostAdapter(apiPost);
-                    m_PostCollection.Add(post);
+                    PostAdapter postToAdd = new PostAdapter(apiPost);
+                    m_PostCollection.Add(postToAdd);
                 }
             }
         }
@@ -47,8 +48,8 @@ namespace FacebookModel
                 m_GroupCollection = new ObservableCollection<IGroup>();
                 foreach (FacebookWrapper.ObjectModel.Group apiGroup in m_LogInUser.Groups)
                 {
-                    GroupAdapter group = new GroupAdapter(apiGroup);
-                    m_GroupCollection.Add(group);
+                    GroupAdapter groupToAdd = new GroupAdapter(apiGroup);
+                    m_GroupCollection.Add(groupToAdd);
                 }
             }
         }
@@ -72,8 +73,20 @@ namespace FacebookModel
                 m_PageCollection = new ObservableCollection<IPage>();
                 foreach (FacebookWrapper.ObjectModel.Page apiPage in m_LogInUser.LikedPages)
                 {
-                    PageAdapter page = new PageAdapter(apiPage);
-                    m_PageCollection.Add(page);
+                    PageAdapter pageToAdd = new PageAdapter(apiPage);
+                    m_PageCollection.Add(pageToAdd);
+                }
+            }
+        }
+        public void LoadAlbumsFromApi()
+        {
+            if (m_AlbumCollection == null)
+            {
+                m_AlbumCollection = new ObservableCollection<IAlbum>();
+                foreach (FacebookWrapper.ObjectModel.Album apiAlbum in m_LogInUser.Albums)
+                {
+                    AlbumAdapter albumToAdd = new AlbumAdapter(apiAlbum);
+                    m_AlbumCollection.Add(albumToAdd);
                 }
             }
         }
