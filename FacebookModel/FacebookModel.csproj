@@ -69,11 +69,14 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventAdapter.cs" />
     <Compile Include="FacebookCollection.cs" />
     <Compile Include="FacebookUser.cs" />
     <Compile Include="FacebookUserBuilder.cs" />
+    <Compile Include="GroupAdapter.cs" />
     <Compile Include="IUserData.cs" />
     <Compile Include="LoginService.cs" />
+    <Compile Include="PageAdapter.cs" />
     <Compile Include="PostAdapter.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="UserData.cs" />

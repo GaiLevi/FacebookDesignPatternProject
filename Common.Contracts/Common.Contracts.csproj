@@ -39,7 +39,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAlbum.cs" />
+    <Compile Include="IEvent.cs" />
     <Compile Include="IFacebookUser.cs" />
+    <Compile Include="IGroup.cs" />
+    <Compile Include="IPage.cs" />
     <Compile Include="IPost.cs" />
   </ItemGroup>
   <ItemGroup>

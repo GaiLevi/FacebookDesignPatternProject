@@ -26,7 +26,18 @@ namespace FacebookModel
         {
             m_Post = i_Post;
             m_Id = i_Post.Id;
-            m_MSG = i_Post.Message;
+            if (i_Post.Message != null)
+            {
+                m_MSG = string.Format($"{i_Post.Message}");
+            }
+            else if (i_Post.Caption != null)
+            {
+                m_MSG = string.Format($"{i_Post.Caption}");
+            }
+            else
+            {
+                m_MSG = string.Format($"Uploaded {i_Post.Type}, press to see");
+            }
             m_CreatedTime = i_Post.CreatedTime;
             m_LastEditTime = i_Post.UpdateTime;
             m_PictureUrl = i_Post.PictureURL;
