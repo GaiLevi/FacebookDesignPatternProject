@@ -37,10 +37,11 @@
             this.tabControlFeatures = new System.Windows.Forms.TabControl();
             this.tabPagePosts = new System.Windows.Forms.TabPage();
             this.listBoxComments = new System.Windows.Forms.ListBox();
-            this.m_CreatedTimeTextBox = new System.Windows.Forms.TextBox();
+            this.mCommentsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.iPostBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.m_CreatedTimeTextBox = new System.Windows.Forms.TextBox();
             this.m_LastEditTimeTextBox = new System.Windows.Forms.TextBox();
-            this.m_PictureUrlPictureBox = new System.Windows.Forms.PictureBox();
+            this.PictureBoxPictureUrl = new System.Windows.Forms.PictureBox();
             this.listBoxPosts = new System.Windows.Forms.ListBox();
             this.tabPageGroups = new System.Windows.Forms.TabPage();
             this.tabPageFriends = new System.Windows.Forms.TabPage();
@@ -53,8 +54,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
             this.tabControlFeatures.SuspendLayout();
             this.tabPagePosts.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mCommentsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iPostBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_PictureUrlPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxPictureUrl)).BeginInit();
             this.SuspendLayout();
             // 
             // m_CreatedTimeLabel
@@ -127,7 +129,7 @@
             this.tabPagePosts.Controls.Add(this.m_CreatedTimeTextBox);
             this.tabPagePosts.Controls.Add(m_LastEditTimeLabel);
             this.tabPagePosts.Controls.Add(this.m_LastEditTimeTextBox);
-            this.tabPagePosts.Controls.Add(this.m_PictureUrlPictureBox);
+            this.tabPagePosts.Controls.Add(this.PictureBoxPictureUrl);
             this.tabPagePosts.Controls.Add(this.listBoxPosts);
             this.tabPagePosts.Location = new System.Drawing.Point(4, 22);
             this.tabPagePosts.Name = "tabPagePosts";
@@ -145,6 +147,15 @@
             this.listBoxComments.Size = new System.Drawing.Size(148, 108);
             this.listBoxComments.TabIndex = 7;
             // 
+            // mCommentsBindingSource
+            // 
+            this.mCommentsBindingSource.DataMember = "m_Comments";
+            this.mCommentsBindingSource.DataSource = this.iPostBindingSource;
+            // 
+            // iPostBindingSource
+            // 
+            this.iPostBindingSource.DataSource = typeof(Common.Contracts.IPost);
+            // 
             // m_CreatedTimeTextBox
             // 
             this.m_CreatedTimeTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iPostBindingSource, "m_CreatedTime", true));
@@ -152,10 +163,6 @@
             this.m_CreatedTimeTextBox.Name = "m_CreatedTimeTextBox";
             this.m_CreatedTimeTextBox.Size = new System.Drawing.Size(100, 20);
             this.m_CreatedTimeTextBox.TabIndex = 2;
-            // 
-            // iPostBindingSource
-            // 
-            this.iPostBindingSource.DataSource = typeof(Common.Contracts.IPost);
             // 
             // m_LastEditTimeTextBox
             // 
@@ -165,16 +172,16 @@
             this.m_LastEditTimeTextBox.Size = new System.Drawing.Size(100, 20);
             this.m_LastEditTimeTextBox.TabIndex = 4;
             // 
-            // m_PictureUrlPictureBox
+            // PictureBoxPictureUrl
             // 
-            this.m_PictureUrlPictureBox.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iPostBindingSource, "m_PictureUrl", true));
-            this.m_PictureUrlPictureBox.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.iPostBindingSource, "m_PictureUrl", true));
-            this.m_PictureUrlPictureBox.Location = new System.Drawing.Point(348, 72);
-            this.m_PictureUrlPictureBox.Name = "m_PictureUrlPictureBox";
-            this.m_PictureUrlPictureBox.Size = new System.Drawing.Size(100, 100);
-            this.m_PictureUrlPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.m_PictureUrlPictureBox.TabIndex = 6;
-            this.m_PictureUrlPictureBox.TabStop = false;
+            this.PictureBoxPictureUrl.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iPostBindingSource, "m_PictureUrl", true));
+            this.PictureBoxPictureUrl.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.iPostBindingSource, "m_PictureUrl", true));
+            this.PictureBoxPictureUrl.Location = new System.Drawing.Point(348, 72);
+            this.PictureBoxPictureUrl.Name = "PictureBoxPictureUrl";
+            this.PictureBoxPictureUrl.Size = new System.Drawing.Size(100, 100);
+            this.PictureBoxPictureUrl.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PictureBoxPictureUrl.TabIndex = 6;
+            this.PictureBoxPictureUrl.TabStop = false;
             // 
             // listBoxPosts
             // 
@@ -185,6 +192,7 @@
             this.listBoxPosts.Name = "listBoxPosts";
             this.listBoxPosts.Size = new System.Drawing.Size(220, 212);
             this.listBoxPosts.TabIndex = 0;
+            this.listBoxPosts.SelectedIndexChanged += new System.EventHandler(this.listBoxPosts_SelectedIndexChanged);
             // 
             // tabPageGroups
             // 
@@ -263,8 +271,9 @@
             this.tabControlFeatures.ResumeLayout(false);
             this.tabPagePosts.ResumeLayout(false);
             this.tabPagePosts.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mCommentsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iPostBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_PictureUrlPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxPictureUrl)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -287,7 +296,8 @@
         private System.Windows.Forms.TextBox m_CreatedTimeTextBox;
         private System.Windows.Forms.BindingSource iPostBindingSource;
         private System.Windows.Forms.TextBox m_LastEditTimeTextBox;
-        private System.Windows.Forms.PictureBox m_PictureUrlPictureBox;
+        private System.Windows.Forms.PictureBox PictureBoxPictureUrl;
+        private System.Windows.Forms.BindingSource mCommentsBindingSource;
     }
 }
 

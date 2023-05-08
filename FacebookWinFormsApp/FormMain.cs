@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Common.Contracts;
 using FacebookViewModel;
 
 namespace BasicFacebookFeatures
@@ -42,7 +43,8 @@ namespace BasicFacebookFeatures
             pictureBoxProfile.ImageLocation = m_ViewModel.FacebookUser.m_PictureURL;
 
             iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
-            //listBoxComments.DataSource = iPostBindingSource.DataMember;
+            PictureBoxPictureUrl.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            //listBoxComments.DataSource = iPostBindingSource.DataSource;
             //postsBS = m_ViewModel.bsPosts;
             //labelID.DataBindings.Add("Text", postsBS, "Id", true, DataSourceUpdateMode.OnPropertyChanged);
             //listBoxPosts.DataSource = postsBS;
@@ -55,5 +57,22 @@ namespace BasicFacebookFeatures
             m_ViewModel.LogoutButtonClicked();
         }
 
+        private void listBoxPosts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            displaySelectedPostComments();
+        }
+
+        private void displaySelectedPostComments()
+        {
+            if (listBoxPosts.SelectedItems.Count == 1)
+            {
+                if (listBoxPosts.SelectedItem is IPost)
+                {
+                    IPost selectedPost = (IPost)listBoxPosts.SelectedItem;
+                    selectedPost.LoadComments();
+                    listBoxComments.DataSource = selectedPost.m_Comments;
+                }
+            }
+        }
     }
 }
