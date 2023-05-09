@@ -60,14 +60,14 @@
             this.pictureBoxPage = new System.Windows.Forms.PictureBox();
             this.listBoxPages = new System.Windows.Forms.ListBox();
             this.tabPageAlbums = new System.Windows.Forms.TabPage();
+            this.buttonEditPicture = new System.Windows.Forms.Button();
+            this.buttonNextPicture = new System.Windows.Forms.Button();
+            this.buttonPreviousPicture = new System.Windows.Forms.Button();
+            this.pictureBoxAlbum = new System.Windows.Forms.PictureBox();
             this.listBoxAlbums = new System.Windows.Forms.ListBox();
+            this.iAlbumBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabPageTimers = new System.Windows.Forms.TabPage();
             this.mCommentsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.iAlbumBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.pictureBoxAlbum = new System.Windows.Forms.PictureBox();
-            this.buttonPreviousPicture = new System.Windows.Forms.Button();
-            this.buttonNextPicture = new System.Windows.Forms.Button();
-            this.buttonEditPicture = new System.Windows.Forms.Button();
             m_CreatedTimeLabel = new System.Windows.Forms.Label();
             m_LastEditTimeLabel = new System.Windows.Forms.Label();
             labelDescriptionGroup = new System.Windows.Forms.Label();
@@ -87,9 +87,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.iPageBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPage)).BeginInit();
             this.tabPageAlbums.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mCommentsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iAlbumBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iAlbumBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mCommentsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // m_CreatedTimeLabel
@@ -398,6 +398,45 @@
             this.tabPageAlbums.Text = "Albums";
             this.tabPageAlbums.UseVisualStyleBackColor = true;
             // 
+            // buttonEditPicture
+            // 
+            this.buttonEditPicture.Location = new System.Drawing.Point(605, 240);
+            this.buttonEditPicture.Name = "buttonEditPicture";
+            this.buttonEditPicture.Size = new System.Drawing.Size(75, 23);
+            this.buttonEditPicture.TabIndex = 7;
+            this.buttonEditPicture.Text = "Edit";
+            this.buttonEditPicture.UseVisualStyleBackColor = true;
+            // 
+            // buttonNextPicture
+            // 
+            this.buttonNextPicture.Location = new System.Drawing.Point(555, 126);
+            this.buttonNextPicture.Name = "buttonNextPicture";
+            this.buttonNextPicture.Size = new System.Drawing.Size(75, 23);
+            this.buttonNextPicture.TabIndex = 6;
+            this.buttonNextPicture.Text = "Next";
+            this.buttonNextPicture.UseVisualStyleBackColor = true;
+            this.buttonNextPicture.Click += new System.EventHandler(this.buttonNextPicture_Click);
+            // 
+            // buttonPreviousPicture
+            // 
+            this.buttonPreviousPicture.Location = new System.Drawing.Point(318, 126);
+            this.buttonPreviousPicture.Name = "buttonPreviousPicture";
+            this.buttonPreviousPicture.Size = new System.Drawing.Size(75, 23);
+            this.buttonPreviousPicture.TabIndex = 5;
+            this.buttonPreviousPicture.Text = "Previous";
+            this.buttonPreviousPicture.UseVisualStyleBackColor = true;
+            this.buttonPreviousPicture.Click += new System.EventHandler(this.buttonPreviousPicture_Click);
+            // 
+            // pictureBoxAlbum
+            // 
+            this.pictureBoxAlbum.ImageLocation = "";
+            this.pictureBoxAlbum.Location = new System.Drawing.Point(287, 27);
+            this.pictureBoxAlbum.Name = "pictureBoxAlbum";
+            this.pictureBoxAlbum.Size = new System.Drawing.Size(75, 77);
+            this.pictureBoxAlbum.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxAlbum.TabIndex = 1;
+            this.pictureBoxAlbum.TabStop = false;
+            // 
             // listBoxAlbums
             // 
             this.listBoxAlbums.DataSource = this.iAlbumBindingSource;
@@ -408,6 +447,10 @@
             this.listBoxAlbums.Size = new System.Drawing.Size(236, 251);
             this.listBoxAlbums.TabIndex = 0;
             this.listBoxAlbums.SelectedIndexChanged += new System.EventHandler(this.listBoxAlbums_SelectedIndexChanged);
+            // 
+            // iAlbumBindingSource
+            // 
+            this.iAlbumBindingSource.DataSource = typeof(Common.Contracts.IAlbum);
             // 
             // tabPageTimers
             // 
@@ -423,47 +466,6 @@
             // 
             this.mCommentsBindingSource.DataMember = "m_Comments";
             this.mCommentsBindingSource.DataSource = this.iPostBindingSource;
-            // 
-            // iAlbumBindingSource
-            // 
-            this.iAlbumBindingSource.DataSource = typeof(Common.Contracts.IAlbum);
-            // 
-            // pictureBoxAlbum
-            // 
-            this.pictureBoxAlbum.ImageLocation = "";
-            this.pictureBoxAlbum.Location = new System.Drawing.Point(399, 60);
-            this.pictureBoxAlbum.Name = "pictureBoxAlbum";
-            this.pictureBoxAlbum.Size = new System.Drawing.Size(150, 150);
-            this.pictureBoxAlbum.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxAlbum.TabIndex = 1;
-            this.pictureBoxAlbum.TabStop = false;
-            // 
-            // buttonPreviousPicture
-            // 
-            this.buttonPreviousPicture.Location = new System.Drawing.Point(318, 126);
-            this.buttonPreviousPicture.Name = "buttonPreviousPicture";
-            this.buttonPreviousPicture.Size = new System.Drawing.Size(75, 23);
-            this.buttonPreviousPicture.TabIndex = 5;
-            this.buttonPreviousPicture.Text = "Previous";
-            this.buttonPreviousPicture.UseVisualStyleBackColor = true;
-            // 
-            // buttonNextPicture
-            // 
-            this.buttonNextPicture.Location = new System.Drawing.Point(555, 126);
-            this.buttonNextPicture.Name = "buttonNextPicture";
-            this.buttonNextPicture.Size = new System.Drawing.Size(75, 23);
-            this.buttonNextPicture.TabIndex = 6;
-            this.buttonNextPicture.Text = "Next";
-            this.buttonNextPicture.UseVisualStyleBackColor = true;
-            // 
-            // buttonEditPicture
-            // 
-            this.buttonEditPicture.Location = new System.Drawing.Point(605, 240);
-            this.buttonEditPicture.Name = "buttonEditPicture";
-            this.buttonEditPicture.Size = new System.Drawing.Size(75, 23);
-            this.buttonEditPicture.TabIndex = 7;
-            this.buttonEditPicture.Text = "Edit";
-            this.buttonEditPicture.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 
@@ -496,9 +498,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.iPageBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPage)).EndInit();
             this.tabPageAlbums.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.mCommentsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iAlbumBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iAlbumBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mCommentsBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
