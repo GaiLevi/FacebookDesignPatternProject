@@ -16,12 +16,13 @@ namespace BasicFacebookFeatures
         ViewModel m_ViewModel;
         bool isLoggedIn = false;
         BindingSource bs;
+        PictureBoxCollection m_PictureBoxCollection;
         public FormMain()
         {
             InitializeComponent();
+            initPictureBoxCollectionForAlbumTab();
             m_ViewModel = new ViewModel();
             bs = new BindingSource { DataSource = m_ViewModel };
-            
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)
@@ -37,6 +38,7 @@ namespace BasicFacebookFeatures
         private void afterLoginInit()
         {
             buttonLogin.Text = m_ViewModel.FacebookUser.m_UserName;
+            buttonLogin.Enabled = false;
             pictureBoxProfile.ImageLocation = m_ViewModel.FacebookUser.m_PictureURL;
             initPostTab();
 
@@ -48,6 +50,15 @@ namespace BasicFacebookFeatures
             //labelID.DataBindings.Add("Text", postsBS, "Id", true, DataSourceUpdateMode.OnPropertyChanged);
             //listBoxPosts.DataSource = postsBS;
             //listBoxPosts.DisplayMember = "Message";
+        }
+        private void initPictureBoxCollectionForAlbumTab()
+        {
+            m_PictureBoxCollection = new PictureBoxCollection();
+            TabPage tabPageAlbum = tabControlFeatures.TabPages[5];
+            tabPageAlbum.Controls.Add(m_PictureBoxCollection);
+            m_PictureBoxCollection.Location = new Point(399, 60);
+            m_PictureBoxCollection.Size = new Size(150,150);
+            m_PictureBoxCollection.SizeMode = PictureBoxSizeMode.StretchImage;
         }
         private void buttonLogout_Click(object sender, EventArgs e)
         {
@@ -87,8 +98,13 @@ namespace BasicFacebookFeatures
                     selectedAlbum.LoadAlbumPictures();
                     if (selectedAlbum.m_PicturesUrl.Count > 0)
                     {
-                        pictureBoxAlbum.ImageLocation = selectedAlbum.m_PicturesUrl.First();
-                        //pictureBoxAlbum.DataBindings.Add("ImageLocation", iAlbumBindingSource, "m_PicturesUrl.First()", true, DataSourceUpdateMode.OnPropertyChanged);
+                        m_PictureBoxCollection.SetList(selectedAlbum.m_PicturesUrl);
+                        m_PictureBoxCollection.MoveNext();
+                    }
+                    else
+                    {
+                        m_PictureBoxCollection.SetList(selectedAlbum.m_PicturesUrl);
+                        m_PictureBoxCollection.MoveNext();
                     }
                 }
             }
@@ -199,12 +215,18 @@ namespace BasicFacebookFeatures
 
         private void buttonPreviousPicture_Click(object sender, EventArgs e)
         {
-
+            if(isLoggedIn)
+            {
+                m_PictureBoxCollection.Prev();
+            }
         }
 
         private void buttonNextPicture_Click(object sender, EventArgs e)
         {
-
+            if (isLoggedIn)
+            {
+                m_PictureBoxCollection.MoveNext();
+            }
         }
     }
 }

@@ -69,6 +69,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdapterFactory.cs" />
     <Compile Include="AlbumAdapter.cs" />
     <Compile Include="EventAdapter.cs" />
     <Compile Include="FacebookCollection.cs" />

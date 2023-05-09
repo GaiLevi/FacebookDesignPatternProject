@@ -19,7 +19,7 @@ namespace FacebookModel
         public ObservableCollection<IEvent> m_EventCollection { get; set; }
         public ObservableCollection<IPage> m_PageCollection { get; set; }
         public ObservableCollection<IAlbum> m_AlbumCollection { get; set; }
-
+        private readonly IAdapterFactory m_AdapterFactory = new AdapterFactory();
         public FacebookUser(User i_LoggedInUser)
         {
             m_LogInUser = i_LoggedInUser;
@@ -35,7 +35,7 @@ namespace FacebookModel
                 m_PostCollection = new ObservableCollection<IPost>();
                 foreach (FacebookWrapper.ObjectModel.Post apiPost in m_LogInUser.Posts)
                 {
-                    PostAdapter postToAdd = new PostAdapter(apiPost);
+                    IPost postToAdd = m_AdapterFactory.CreateAdapter<IPost>(apiPost);
                     m_PostCollection.Add(postToAdd);
                 }
             }
@@ -48,7 +48,8 @@ namespace FacebookModel
                 m_GroupCollection = new ObservableCollection<IGroup>();
                 foreach (FacebookWrapper.ObjectModel.Group apiGroup in m_LogInUser.Groups)
                 {
-                    GroupAdapter groupToAdd = new GroupAdapter(apiGroup);
+                    //GroupAdapter groupToAdd = new GroupAdapter(apiGroup);
+                    IGroup groupToAdd = m_AdapterFactory.CreateAdapter<IGroup>(apiGroup);
                     m_GroupCollection.Add(groupToAdd);
                 }
             }
@@ -60,7 +61,8 @@ namespace FacebookModel
                 m_EventCollection = new ObservableCollection<IEvent>();
                 foreach (FacebookWrapper.ObjectModel.Event apiEvent in m_LogInUser.Events)
                 {
-                    EventAdapter eventToAdd = new EventAdapter(apiEvent);
+                    //EventAdapter eventToAdd = new EventAdapter(apiEvent);
+                    IEvent eventToAdd = m_AdapterFactory.CreateAdapter<IEvent>(apiEvent);
                     m_EventCollection.Add(eventToAdd);
                 }
             }
@@ -73,7 +75,8 @@ namespace FacebookModel
                 m_PageCollection = new ObservableCollection<IPage>();
                 foreach (FacebookWrapper.ObjectModel.Page apiPage in m_LogInUser.LikedPages)
                 {
-                    PageAdapter pageToAdd = new PageAdapter(apiPage);
+                    //PageAdapter pageToAdd = new PageAdapter(apiPage);
+                    IPage pageToAdd = m_AdapterFactory.CreateAdapter<IPage>(apiPage);
                     m_PageCollection.Add(pageToAdd);
                 }
             }
@@ -85,7 +88,8 @@ namespace FacebookModel
                 m_AlbumCollection = new ObservableCollection<IAlbum>();
                 foreach (FacebookWrapper.ObjectModel.Album apiAlbum in m_LogInUser.Albums)
                 {
-                    AlbumAdapter albumToAdd = new AlbumAdapter(apiAlbum);
+                    //AlbumAdapter albumToAdd = new AlbumAdapter(apiAlbum);
+                    IAlbum albumToAdd = m_AdapterFactory.CreateAdapter<IAlbum>(apiAlbum);
                     m_AlbumCollection.Add(albumToAdd);
                 }
             }
