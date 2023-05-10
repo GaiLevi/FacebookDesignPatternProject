@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
 
@@ -14,6 +13,7 @@ namespace FacebookModel
     public class LoginService
     {
         public LoginResult m_LoginResult { get; set; }
+        public FacebookUser m_LoginUser { get; set; }
         public string m_AccessToken { get; set; }
 
         //public ObservableCollection<FacebookModel.Post> Posts { get; } = new ObservableCollection<Post>();
@@ -41,32 +41,26 @@ namespace FacebookModel
         }
 
 
-        public FacebookUser AutoLogin(string i_AccessToken)
+        public void AutoLogin(string i_AccessToken)
         {
-            LoginResult result = null;
-            FacebookUser loggedInUser = null;
             try
             {
-                // m_LoginService = LoginService.Instance;
-                // m_FacebookUser = m_LoginService.loginAndInit();
                 if (!string.IsNullOrEmpty(i_AccessToken))
                 {
-                    result = FacebookService.Connect(i_AccessToken);
-                    loggedInUser = new FacebookUser(result.LoggedInUser);
+                    m_LoginResult = FacebookService.Connect(i_AccessToken);
+                    m_LoginUser = new FacebookUser(m_LoginResult.LoggedInUser);
+                    m_AccessToken = m_LoginResult.AccessToken;
                 }
             }
             catch (Exception ex)
             {
-                    loggedInUser = LoginAndInit();
+                   LoginAndInit();
             }
-
-            return loggedInUser;
         }
 
 
-        public FacebookUser LoginAndInit()
+        public void LoginAndInit()
         {
-            FacebookUser loggedInUser = null;
             FacebookService.s_CollectionLimit = 100;
             try
             {
@@ -87,23 +81,22 @@ namespace FacebookModel
                     "user_photos",
                     "user_posts",
                     "user_videos");
-                m_AccessToken = m_LoginResult.AccessToken;
+               
                
                 if (!string.IsNullOrEmpty(m_LoginResult.AccessToken))
                 {
-                    loggedInUser = new FacebookUser(m_LoginResult.LoggedInUser);
+                    m_LoginUser = new FacebookUser(m_LoginResult.LoggedInUser);
+                    m_AccessToken = m_LoginResult.AccessToken;
                 }
                 else
                 {
-                    MessageBox.Show(m_LoginResult.ErrorMessage, "Login Failed");
+                    throw new InvalidOperationException(m_LoginResult.ErrorMessage);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                throw;
             }
-
-            return loggedInUser;
         }
 
         public void LogoutAndSet()
