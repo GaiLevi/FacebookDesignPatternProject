@@ -5,6 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Common.Contracts;
 using FacebookViewModel;
@@ -25,12 +27,40 @@ namespace BasicFacebookFeatures
             bs = new BindingSource { DataSource = m_ViewModel };
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            //this.Size = ApplicationSettings.Instance.LastWindowSize;
+            //this.WindowState = ApplicationSettings.Instance.LastWindowState;
+            //this.Location = ApplicationSettings.Instance.LastWindowLocation;
+            this.checkBoxAutoLogin.Checked = ApplicationSettings.Instance.AutoLogin;
+            if(this.checkBoxAutoLogin.Checked)
+            {
+                Task<bool> autoLoginTask = Task.Run(() => m_ViewModel.AutoLogin(ApplicationSettings.Instance.AccessToken));
+                isLoggedIn = autoLoginTask.Result;
+                afterLoginInit();
+            }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            //ApplicationSettings.Instance.LastWindowState = this.WindowState;
+            //ApplicationSettings.Instance.LastWindowSize = this.Size;
+            //ApplicationSettings.Instance.LastWindowLocation = this.Location;
+            ApplicationSettings.Instance.AutoLogin = this.checkBoxAutoLogin.Checked;
+            ApplicationSettings.Instance.Save();
+        }
+
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             Clipboard.SetText("design.patterns.22aa");
-            isLoggedIn = m_ViewModel.LoginButtonClicked();
-            if (isLoggedIn == true)
+            string accessToken = m_ViewModel.LoginButtonClicked();
+            if (accessToken != null)
             {
+                isLoggedIn = true;
+                ApplicationSettings.Instance.AccessToken = accessToken;
                 afterLoginInit();
             }
         }

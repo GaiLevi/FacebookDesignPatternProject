@@ -14,6 +14,7 @@ namespace FacebookModel
     public class LoginService
     {
         public LoginResult m_LoginResult { get; set; }
+        public string m_AccessToken { get; set; }
 
         //public ObservableCollection<FacebookModel.Post> Posts { get; } = new ObservableCollection<Post>();
 
@@ -39,7 +40,31 @@ namespace FacebookModel
             get { return Singleton<LoginService>.Instance;}
         }
 
-        public FacebookUser loginAndInit()
+
+        public FacebookUser AutoLogin(string i_AccessToken)
+        {
+            LoginResult result = null;
+            FacebookUser loggedInUser = null;
+            try
+            {
+                // m_LoginService = LoginService.Instance;
+                // m_FacebookUser = m_LoginService.loginAndInit();
+                if (!string.IsNullOrEmpty(i_AccessToken))
+                {
+                    result = FacebookService.Connect(i_AccessToken);
+                    loggedInUser = new FacebookUser(result.LoggedInUser);
+                }
+            }
+            catch (Exception ex)
+            {
+                    loggedInUser = LoginAndInit();
+            }
+
+            return loggedInUser;
+        }
+
+
+        public FacebookUser LoginAndInit()
         {
             FacebookUser loggedInUser = null;
             FacebookService.s_CollectionLimit = 100;
@@ -62,8 +87,8 @@ namespace FacebookModel
                     "user_photos",
                     "user_posts",
                     "user_videos");
-
-
+                m_AccessToken = m_LoginResult.AccessToken;
+               
                 if (!string.IsNullOrEmpty(m_LoginResult.AccessToken))
                 {
                     loggedInUser = new FacebookUser(m_LoginResult.LoggedInUser);

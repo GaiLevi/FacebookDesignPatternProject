@@ -61,20 +61,35 @@ namespace FacebookViewModel
             OnPropertyChanged(propertyName);
             return true;
         }
-        public bool LoginButtonClicked()
+
+        public bool AutoLogin(string i_AccessToken)
         {
             bool isLogginSucceed = false;
             m_LoginService = LoginService.Instance;
-            m_FacebookUser = m_LoginService.loginAndInit();
-            if(m_FacebookUser != null)
+            m_FacebookUser = m_LoginService.AutoLogin(i_AccessToken);
+            if (m_FacebookUser != null)
             {
                 isLogginSucceed = true;
-                if(m_FacebookUser is FacebookUser)
+                if (m_FacebookUser is FacebookUser)
                 {
                     m_FacebookUser.LoadPostsFromApi();
                 }
             }
             return isLogginSucceed;
+
+        }
+
+        public string LoginButtonClicked()
+        {
+            string accessToken = null;
+            m_LoginService = LoginService.Instance;
+            m_FacebookUser = m_LoginService.LoginAndInit();
+            if(m_FacebookUser != null)
+            {
+                accessToken = m_LoginService.m_AccessToken;
+                m_FacebookUser.LoadPostsFromApi();
+            }
+            return accessToken;
             //m_LoginService.LoadPostsFromApi();
             //m_bsPosts = new BindingSource { DataSource = m_LoginService.Posts };
 
