@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FacebookModel
@@ -67,6 +68,25 @@ namespace FacebookModel
                 }
             }
         }
+
+        //public void LoadEventsFromApi()
+        //{
+        //    if (m_EventCollection == null)
+        //    {
+        //        m_EventCollection = new ObservableCollection<IEvent>();
+
+        //        Thread loadEventsThread = new Thread(() =>
+        //        {
+        //            foreach (FacebookWrapper.ObjectModel.Event apiEvent in m_LogInUser.Events)
+        //            {
+        //                IEvent eventToAdd = m_AdapterFactory.CreateAdapter<IEvent>(apiEvent);
+        //                m_EventCollection.Add(eventToAdd);
+        //            }
+        //        });
+
+        //        loadEventsThread.Start();
+        //    }
+        //}
 
         public void LoadPagesFromApi()
         {

@@ -17,18 +17,6 @@ namespace FacebookModel
         public string m_AccessToken { get; set; }
 
         //public ObservableCollection<FacebookModel.Post> Posts { get; } = new ObservableCollection<Post>();
-
-        //public void LoadPostsFromApi()
-        //{
-
-        //    // Convert API posts to Post objects and add to collection
-        //    foreach (FacebookWrapper.ObjectModel.Post apiPost in m_LoggedInUser.Posts)
-        //    {
-        //        FacebookModel.Post post = new FacebookModel.Post(apiPost.Id, apiPost.Message);
-        //        Posts.Add(post);
-        //    }
-        //}
-
         public UserData m_UserData { get; set; }
 
         private LoginService()

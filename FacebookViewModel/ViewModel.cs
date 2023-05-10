@@ -85,7 +85,7 @@ namespace FacebookViewModel
             if (m_FacebookUser != null)
             {
                 m_AccessToken = m_LoginService.m_AccessToken;
-                m_FacebookUser.LoadPostsFromApi();
+                //m_FacebookUser.LoadPostsFromApi();
             }
         }
 
