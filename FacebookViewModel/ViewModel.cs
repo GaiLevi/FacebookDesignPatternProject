@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 //using FacebookWrapper.ObjectModel;
@@ -21,7 +22,8 @@ namespace FacebookViewModel
 
         //private ObservableCollection<PostAdapter> m_posts;
 
-        public BindingSource m_bsPosts;
+        public BindingSource m_BsPosts;
+        public string m_AccessToken { get; set; }
 
 
 
@@ -44,7 +46,7 @@ namespace FacebookViewModel
 
         public BindingSource bsPosts
         {
-            get => m_bsPosts; set => SetField(ref m_bsPosts, value);
+            get => m_BsPosts; set => SetField(ref m_BsPosts, value);
         }
 
        
@@ -61,20 +63,45 @@ namespace FacebookViewModel
             OnPropertyChanged(propertyName);
             return true;
         }
-        public bool LoginButtonClicked()
+
+        public void AutoLogin(string i_AccessToken)
         {
-            bool isLogginSucceed = false;
-            m_LoginService = LoginService.Instance;
-            m_FacebookUser = m_LoginService.loginAndInit();
-            if(m_FacebookUser != null)
+            try
             {
-                isLogginSucceed = true;
-                if(m_FacebookUser is FacebookUser)
-                {
-                    m_FacebookUser.LoadPostsFromApi();
-                }
+                m_LoginService = LoginService.Instance;
+                m_LoginService.AutoLogin(i_AccessToken);
+                m_FacebookUser = m_LoginService.m_LoginUser;
+                doAfterLogin(m_FacebookUser);
             }
-            return isLogginSucceed;
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void doAfterLogin(IFacebookUser i_LoginUser)
+        {
+            m_FacebookUser = m_LoginService.m_LoginUser;
+            if (m_FacebookUser != null)
+            {
+                m_AccessToken = m_LoginService.m_AccessToken;
+                m_FacebookUser.LoadPostsFromApi();
+            }
+        }
+
+        public void LoginButtonClicked()
+        {
+            try
+            {
+                m_LoginService = LoginService.Instance;
+                m_LoginService.LoginAndInit();
+                m_FacebookUser = m_LoginService.m_LoginUser;
+                doAfterLogin(m_FacebookUser);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
             //m_LoginService.LoadPostsFromApi();
             //m_bsPosts = new BindingSource { DataSource = m_LoginService.Posts };
 

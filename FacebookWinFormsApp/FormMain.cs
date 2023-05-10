@@ -5,6 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Common.Contracts;
 using FacebookViewModel;
@@ -17,29 +19,63 @@ namespace BasicFacebookFeatures
         bool isLoggedIn = false;
         BindingSource bs;
         PictureBoxCollection m_PictureBoxCollection;
+
         public FormMain()
         {
             InitializeComponent();
+            //checkBoxAutoLogin.Checked = false;
             initPictureBoxCollectionForAlbumTab();
             m_ViewModel = new ViewModel();
             bs = new BindingSource { DataSource = m_ViewModel };
         }
 
-        private void buttonLogin_Click(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-            Clipboard.SetText("design.patterns.22aa");
-            isLoggedIn = m_ViewModel.LoginButtonClicked();
-            if (isLoggedIn == true)
+            base.OnLoad(e);
+
+            //this.Size = ApplicationSettings.Instance.LastWindowSize;
+            //this.WindowState = ApplicationSettings.Instance.LastWindowState;
+            //this.Location = ApplicationSettings.Instance.LastWindowLocation;
+            //this.checkBoxAutoLogin.Checked = ApplicationSettings.Instance.AutoLogin;
+            if(ApplicationSettings.Instance.AutoLogin)
             {
-                afterLoginInit();
+                new Thread(() => m_ViewModel.AutoLogin(ApplicationSettings.Instance.AccessToken)).Start();
+                if(m_ViewModel.FacebookUser!= null)
+                {
+                    isLoggedIn = true;
+                    afterLoginInit();
+                }
             }
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            //ApplicationSettings.Instance.LastWindowState = this.WindowState;
+            //ApplicationSettings.Instance.LastWindowSize = this.Size;
+            //ApplicationSettings.Instance.LastWindowLocation = this.Location;
+            ApplicationSettings.Instance.AutoLogin = this.checkBoxAutoLogin.Checked;
+            ApplicationSettings.Instance.Save();
+        }
+
+        private void buttonLogin_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText("design.patterns.22aa");
+            m_ViewModel.LoginButtonClicked();
+            if(m_ViewModel.FacebookUser != null)
+            {
+                isLoggedIn = true;
+                afterLoginInit();
+                ApplicationSettings.Instance.AccessToken = m_ViewModel.m_AccessToken;
+            }
+        }
+
+
         private void afterLoginInit()
         {
-            buttonLogin.Text = m_ViewModel.FacebookUser.m_UserName;
-            buttonLogin.Enabled = false;
-            pictureBoxProfile.ImageLocation = m_ViewModel.FacebookUser.m_PictureURL;
+            buttonLogin.Invoke(new Action(() => buttonLogin.Text = m_ViewModel.FacebookUser.m_UserName));
+            buttonLogin.Invoke(new Action(() => buttonLogin.Enabled = false));
+            pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = m_ViewModel.FacebookUser.m_PictureURL));
             initPostTab();
 
             //iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
@@ -68,18 +104,22 @@ namespace BasicFacebookFeatures
 
         private void listBoxPosts_SelectedIndexChanged(object sender, EventArgs e)
         {
-            displaySelectedPostComments();
+            if(isLoggedIn)
+            {
+                displaySelectedPostComments();
+            }
+           
         }
-
         private void displaySelectedPostComments()
         {
-            if (listBoxPosts.SelectedItems.Count == 1)
+            bool hasSingleSelectedItem = (bool)listBoxPosts.Invoke(new Func<bool>(() => listBoxPosts.SelectedItems.Count == 1));
+            if (hasSingleSelectedItem)
             {
-                if (listBoxPosts.SelectedItem is IPost)
+                IPost selectedItemAsIPost = (IPost)listBoxPosts.Invoke(new Func<IPost>(() => listBoxPosts.SelectedItem as IPost));
+                if (selectedItemAsIPost != null)
                 {
-                    IPost selectedPost = (IPost)listBoxPosts.SelectedItem;
-                    selectedPost.LoadComments();
-                    listBoxComments.DataSource = selectedPost.m_Comments;
+                    selectedItemAsIPost.LoadComments();
+                    listBoxComments.Invoke(new Action(() => listBoxComments.DataSource = selectedItemAsIPost.m_Comments));
                 }
             }
         }
@@ -171,7 +211,7 @@ namespace BasicFacebookFeatures
                     case 0:
                         if (listBoxPosts.Items.Count == 0)
                         {
-                            initPostTab();
+                            new Thread(initPostTab).Start();
                         }
                         break;
                     case 1:
