@@ -19,6 +19,13 @@ namespace BasicFacebookFeatures
         bool isLoggedIn = false;
         BindingSource bs;
         PictureBoxCollection m_PictureBoxCollection;
+        //Locks
+        private object postLock = new object();
+        private object groupLock = new object();
+        private object eventLock = new object();
+        private object pageLock = new object();
+        private object albumLock = new object();
+        private Thread m_CurrentThread;
 
         public FormMain()
         {
@@ -27,6 +34,11 @@ namespace BasicFacebookFeatures
             initPictureBoxCollectionForAlbumTab();
             m_ViewModel = new ViewModel();
             bs = new BindingSource { DataSource = m_ViewModel };
+
+            PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            pictureBoxGroup.DataBindings.Add("ImageLocation", iGroupBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            pictureBoxEvent.DataBindings.Add("ImageLocation", iEventBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            pictureBoxPage.DataBindings.Add("ImageLocation", iPageBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -152,53 +164,148 @@ namespace BasicFacebookFeatures
 
         private void initPostTab()
         {
-            iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
-            if (m_ViewModel.FacebookUser.m_PostCollection.Count > 0)
+            //iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
+            //if (m_ViewModel.FacebookUser.m_PostCollection.Count > 0)
+            //{
+            //    //PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            //}
+            //displaySelectedPostComments();
+
+            //m_CurrentThread?.Join();
+            Thread postThread = new Thread(new ThreadStart(() =>
             {
-                PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
-            }
-            displaySelectedPostComments();
+                lock (postLock)
+                {
+                    if (m_ViewModel.FacebookUser.m_PostCollection == null)
+                    {
+                        m_ViewModel.FacebookUser.LoadPostsFromApi();
+                        BeginInvoke(new Action(() =>
+                        {
+                            iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
+                            displaySelectedPostComments();
+                        }));
+                    }
+                }
+            }));
+
+            postThread.Start();
         }
 
         private void initGroupTab()
         {
-            m_ViewModel.FacebookUser.LoadGroupsFromApi();
-            iGroupBindingSource.DataSource = m_ViewModel.FacebookUser.m_GroupCollection;
-            if (m_ViewModel.FacebookUser.m_GroupCollection.Count > 0)
+            //m_ViewModel.FacebookUser.LoadGroupsFromApi();
+            //iGroupBindingSource.DataSource = m_ViewModel.FacebookUser.m_GroupCollection;
+            //if (m_ViewModel.FacebookUser.m_GroupCollection.Count > 0)
+            //{
+            //    //pictureBoxGroup.DataBindings.Add("ImageLocation", iGroupBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            //}
+
+            //m_CurrentThread?.Join();
+            Thread groupThread = new Thread(new ThreadStart(() =>
             {
-                pictureBoxGroup.DataBindings.Add("ImageLocation", iGroupBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
-            }
+                lock (groupLock)
+                {
+                    if (m_ViewModel.FacebookUser.m_GroupCollection == null)
+                    {
+                        m_ViewModel.FacebookUser.LoadGroupsFromApi();
+                        BeginInvoke(new Action(() =>
+                        {
+                            iGroupBindingSource.DataSource = m_ViewModel.FacebookUser.m_GroupCollection;
+                        }));
+                    }
+                }
+            }));
+
+            groupThread.Start();
         }
 
         private void initEventTab()
         {
-            m_ViewModel.FacebookUser.LoadEventsFromApi();
-            iEventBindingSource.DataSource = m_ViewModel.FacebookUser.m_EventCollection;
-            if (m_ViewModel.FacebookUser.m_EventCollection.Count > 0)
+            //m_ViewModel.FacebookUser.LoadEventsFromApi();
+            //iEventBindingSource.DataSource = m_ViewModel.FacebookUser.m_EventCollection;
+            //if (m_ViewModel.FacebookUser.m_EventCollection.Count > 0)
+            //{
+            //    //pictureBoxEvent.DataBindings.Add("ImageLocation", iEventBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            //}        
+
+            //m_CurrentThread?.Join();
+            Thread eventThread = new Thread(new ThreadStart(() =>
             {
-                pictureBoxEvent.DataBindings.Add("ImageLocation", iEventBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
-            }        
+                lock (eventLock)
+                {
+                    if (m_ViewModel.FacebookUser.m_EventCollection == null)
+                    {
+                        m_ViewModel.FacebookUser.LoadEventsFromApi();
+                        BeginInvoke(new Action(() =>
+                        {
+                            iEventBindingSource.DataSource = m_ViewModel.FacebookUser.m_EventCollection;
+                        }));
+                    }
+                } 
+            }));
+
+            eventThread.Start();
         }
 
         private void initPageTab()
         {
-            m_ViewModel.FacebookUser.LoadPagesFromApi();
-            iPageBindingSource.DataSource = m_ViewModel.FacebookUser.m_PageCollection;
-            if (m_ViewModel.FacebookUser.m_PageCollection.Count > 0)
+            //no thread
+            //m_ViewModel.FacebookUser.LoadPagesFromApi();
+            //iPageBindingSource.DataSource = m_ViewModel.FacebookUser.m_PageCollection;
+
+            //if (m_ViewModel.FacebookUser.m_PageCollection.Count > 0)
+            //{
+            //    //pictureBoxPage.DataBindings.Add("ImageLocation", iPageBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            //}
+
+            //first thread try
+            //m_CurrentThread?.Join();
+            Thread pageThread = new Thread(new ThreadStart(() =>
             {
-                pictureBoxPage.DataBindings.Add("ImageLocation", iPageBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
-            }
+                lock (pageLock)
+                {
+                    if (m_ViewModel.FacebookUser.m_PageCollection == null)
+                    {
+                        m_ViewModel.FacebookUser.LoadPagesFromApi();
+                        BeginInvoke(new Action(() =>
+                        {
+                            iPageBindingSource.DataSource = m_ViewModel.FacebookUser.m_PageCollection;
+                        }));
+                    }
+                }
+            }));
+
+            pageThread.Start();
         }
 
         private void initAlbumTab()
         {
-            m_ViewModel.FacebookUser.LoadAlbumsFromApi();
-            iAlbumBindingSource.DataSource = m_ViewModel.FacebookUser.m_AlbumCollection;
-            displaySelectedAlbumPhotos();
-            if (m_ViewModel.FacebookUser.m_AlbumCollection.Count > 0)
+            //m_ViewModel.FacebookUser.LoadAlbumsFromApi();
+            //iAlbumBindingSource.DataSource = m_ViewModel.FacebookUser.m_AlbumCollection;
+            //displaySelectedAlbumPhotos();
+            //if (m_ViewModel.FacebookUser.m_AlbumCollection.Count > 0)
+            //{
+            //    //pictureBoxAlbum.DataBindings.Add("ImageLocation", iAlbumBindingSource, "m_PicturesUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            //}
+
+            //m_CurrentThread?.Join();
+            Thread albumThread = new Thread(new ThreadStart(() =>
             {
-                //pictureBoxAlbum.DataBindings.Add("ImageLocation", iAlbumBindingSource, "m_PicturesUrl", true, DataSourceUpdateMode.OnPropertyChanged);
-            }
+                lock (albumLock)
+                {
+                    if (m_ViewModel.FacebookUser.m_AlbumCollection == null)
+                    {
+                        m_ViewModel.FacebookUser.LoadAlbumsFromApi();
+                        BeginInvoke(new Action(() =>
+                        {
+                            iAlbumBindingSource.DataSource = m_ViewModel.FacebookUser.m_AlbumCollection;
+                            displaySelectedAlbumPhotos();
+                        }));
+                    }
+                }
+            }));
+
+            albumThread.Start();
         }
 
         private void tabControlFeatures_SelectedIndexChanged(object sender, EventArgs e)
@@ -211,7 +318,7 @@ namespace BasicFacebookFeatures
                     case 0:
                         if (listBoxPosts.Items.Count == 0)
                         {
-                            new Thread(initPostTab).Start();
+                            initPostTab();
                         }
                         break;
                     case 1:
