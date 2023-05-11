@@ -67,8 +67,14 @@
             this.listBoxAlbums = new System.Windows.Forms.ListBox();
             this.iAlbumBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabPageTimers = new System.Windows.Forms.TabPage();
+            this.textBoxBetterThingToDo = new System.Windows.Forms.TextBox();
+            this.labelBetterThingToDo = new System.Windows.Forms.Label();
+            this.textBoxTimeSpentInTheApp = new System.Windows.Forms.TextBox();
+            this.labelTimespentintheapp = new System.Windows.Forms.Label();
+            this.buttonGenerateBetterThingToDo = new System.Windows.Forms.Button();
             this.mCommentsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.checkBoxAutoLogin = new System.Windows.Forms.CheckBox();
+            this.timerApp = new System.Windows.Forms.Timer(this.components);
             m_CreatedTimeLabel = new System.Windows.Forms.Label();
             m_LastEditTimeLabel = new System.Windows.Forms.Label();
             labelDescriptionGroup = new System.Windows.Forms.Label();
@@ -90,6 +96,7 @@
             this.tabPageAlbums.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iAlbumBindingSource)).BeginInit();
+            this.tabPageTimers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mCommentsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -217,6 +224,7 @@
             this.m_CreatedTimeTextBox.Location = new System.Drawing.Point(464, 25);
             this.m_CreatedTimeTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.m_CreatedTimeTextBox.Name = "m_CreatedTimeTextBox";
+            this.m_CreatedTimeTextBox.ReadOnly = true;
             this.m_CreatedTimeTextBox.Size = new System.Drawing.Size(132, 22);
             this.m_CreatedTimeTextBox.TabIndex = 2;
             // 
@@ -230,6 +238,7 @@
             this.m_LastEditTimeTextBox.Location = new System.Drawing.Point(464, 57);
             this.m_LastEditTimeTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.m_LastEditTimeTextBox.Name = "m_LastEditTimeTextBox";
+            this.m_LastEditTimeTextBox.ReadOnly = true;
             this.m_LastEditTimeTextBox.Size = new System.Drawing.Size(132, 22);
             this.m_LastEditTimeTextBox.TabIndex = 4;
             // 
@@ -494,6 +503,11 @@
             // 
             // tabPageTimers
             // 
+            this.tabPageTimers.Controls.Add(this.textBoxBetterThingToDo);
+            this.tabPageTimers.Controls.Add(this.labelBetterThingToDo);
+            this.tabPageTimers.Controls.Add(this.textBoxTimeSpentInTheApp);
+            this.tabPageTimers.Controls.Add(this.labelTimespentintheapp);
+            this.tabPageTimers.Controls.Add(this.buttonGenerateBetterThingToDo);
             this.tabPageTimers.Location = new System.Drawing.Point(4, 25);
             this.tabPageTimers.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageTimers.Name = "tabPageTimers";
@@ -502,6 +516,61 @@
             this.tabPageTimers.TabIndex = 6;
             this.tabPageTimers.Text = "Timers";
             this.tabPageTimers.UseVisualStyleBackColor = true;
+            // 
+            // textBoxBetterThingToDo
+            // 
+            this.textBoxBetterThingToDo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxBetterThingToDo.Location = new System.Drawing.Point(487, 247);
+            this.textBoxBetterThingToDo.Multiline = true;
+            this.textBoxBetterThingToDo.Name = "textBoxBetterThingToDo";
+            this.textBoxBetterThingToDo.ReadOnly = true;
+            this.textBoxBetterThingToDo.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxBetterThingToDo.Size = new System.Drawing.Size(431, 86);
+            this.textBoxBetterThingToDo.TabIndex = 4;
+            this.textBoxBetterThingToDo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // labelBetterThingToDo
+            // 
+            this.labelBetterThingToDo.AutoSize = true;
+            this.labelBetterThingToDo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelBetterThingToDo.ForeColor = System.Drawing.Color.Green;
+            this.labelBetterThingToDo.Location = new System.Drawing.Point(402, 219);
+            this.labelBetterThingToDo.Name = "labelBetterThingToDo";
+            this.labelBetterThingToDo.Size = new System.Drawing.Size(251, 25);
+            this.labelBetterThingToDo.TabIndex = 3;
+            this.labelBetterThingToDo.Text = "Instead, You could have:";
+            // 
+            // textBoxTimeSpentInTheApp
+            // 
+            this.textBoxTimeSpentInTheApp.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxTimeSpentInTheApp.Location = new System.Drawing.Point(94, 74);
+            this.textBoxTimeSpentInTheApp.Multiline = true;
+            this.textBoxTimeSpentInTheApp.Name = "textBoxTimeSpentInTheApp";
+            this.textBoxTimeSpentInTheApp.ReadOnly = true;
+            this.textBoxTimeSpentInTheApp.Size = new System.Drawing.Size(281, 201);
+            this.textBoxTimeSpentInTheApp.TabIndex = 2;
+            this.textBoxTimeSpentInTheApp.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // labelTimespentintheapp
+            // 
+            this.labelTimespentintheapp.AutoSize = true;
+            this.labelTimespentintheapp.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTimespentintheapp.ForeColor = System.Drawing.Color.Crimson;
+            this.labelTimespentintheapp.Location = new System.Drawing.Point(7, 32);
+            this.labelTimespentintheapp.Name = "labelTimespentintheapp";
+            this.labelTimespentintheapp.Size = new System.Drawing.Size(176, 25);
+            this.labelTimespentintheapp.TabIndex = 1;
+            this.labelTimespentintheapp.Text = "You just waisted:";
+            // 
+            // buttonGenerateBetterThingToDo
+            // 
+            this.buttonGenerateBetterThingToDo.Location = new System.Drawing.Point(487, 138);
+            this.buttonGenerateBetterThingToDo.Name = "buttonGenerateBetterThingToDo";
+            this.buttonGenerateBetterThingToDo.Size = new System.Drawing.Size(284, 23);
+            this.buttonGenerateBetterThingToDo.TabIndex = 0;
+            this.buttonGenerateBetterThingToDo.Text = "Press to Generate Activity";
+            this.buttonGenerateBetterThingToDo.UseVisualStyleBackColor = true;
+            this.buttonGenerateBetterThingToDo.Click += new System.EventHandler(this.buttonGenerateBetterThingToDo_Click);
             // 
             // mCommentsBindingSource
             // 
@@ -518,6 +587,11 @@
             this.checkBoxAutoLogin.TabIndex = 55;
             this.checkBoxAutoLogin.Text = "Remember Me";
             this.checkBoxAutoLogin.UseVisualStyleBackColor = true;
+            // 
+            // timerApp
+            // 
+            this.timerApp.Interval = 1000;
+            this.timerApp.Tick += new System.EventHandler(this.timerApp_Tick);
             // 
             // FormMain
             // 
@@ -555,6 +629,8 @@
             this.tabPageAlbums.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iAlbumBindingSource)).EndInit();
+            this.tabPageTimers.ResumeLayout(false);
+            this.tabPageTimers.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mCommentsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -599,6 +675,12 @@
         private System.Windows.Forms.Button buttonNextPicture;
         private System.Windows.Forms.Button buttonPreviousPicture;
         private System.Windows.Forms.CheckBox checkBoxAutoLogin;
+        private System.Windows.Forms.Timer timerApp;
+        private System.Windows.Forms.Button buttonGenerateBetterThingToDo;
+        private System.Windows.Forms.Label labelTimespentintheapp;
+        private System.Windows.Forms.TextBox textBoxTimeSpentInTheApp;
+        private System.Windows.Forms.TextBox textBoxBetterThingToDo;
+        private System.Windows.Forms.Label labelBetterThingToDo;
     }
 }
 

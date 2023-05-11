@@ -30,7 +30,6 @@ namespace BasicFacebookFeatures
         public FormMain()
         {
             InitializeComponent();
-            //checkBoxAutoLogin.Checked = false;
             initPictureBoxCollectionForAlbumTab();
             m_ViewModel = new ViewModel();
             m_BindingSource = new BindingSource { DataSource = m_ViewModel };
@@ -49,15 +48,11 @@ namespace BasicFacebookFeatures
             //this.Size = ApplicationSettings.Instance.LastWindowSize;
             //this.WindowState = ApplicationSettings.Instance.LastWindowState;
             //this.Location = ApplicationSettings.Instance.LastWindowLocation;
+            m_ViewModel.m_AppStarTime = DateTime.Now;
             this.checkBoxAutoLogin.Checked = ApplicationSettings.Instance.AutoLogin;
             if(ApplicationSettings.Instance.AutoLogin)
             {
                 new Thread(() => m_ViewModel.AutoLogin(ApplicationSettings.Instance.AccessToken)).Start();
-                //if(m_ViewModel.FacebookUser!= null)
-                //{
-                //    m_IsLoggedIn = true;
-                //    afterLoginInit();
-                //}
             }
         }
 
@@ -85,21 +80,21 @@ namespace BasicFacebookFeatures
         {
             Clipboard.SetText("design.patterns.22aa");
             m_ViewModel.LoginButtonClicked();
-            //if(m_ViewModel.FacebookUser != null)
-            //{
-            //    m_IsLoggedIn = true;
-            //    afterLoginInit();
-            //    ApplicationSettings.Instance.AccessToken = m_ViewModel.m_AccessToken;
-            //}
         }
 
 
         private void afterLoginInit()
         {
+            
+            
+            //textBoxPost.Visible = true;
+            //buttonPost.Visible = true;
             buttonLogin.Invoke(new Action(() => buttonLogin.Text = string.Format($@"Log in as {m_ViewModel.FacebookUser.m_UserName}")));
             buttonLogin.Invoke(new Action(() => buttonLogin.Enabled = false));
             pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = m_ViewModel.FacebookUser.m_PictureURL));
+            tabControlFeatures.Invoke(new Action(() => tabControlFeatures.Visible = true));
             initPostTab();
+            m_IsLoggedIn = true;
 
             //iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
             //PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -126,12 +121,8 @@ namespace BasicFacebookFeatures
         }
 
         private void listBoxPosts_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(m_IsLoggedIn)
-            {
-                displaySelectedPostComments();
-            }
-           
+        { 
+            displaySelectedPostComments();
         }
         private void displaySelectedPostComments()
         {
@@ -150,6 +141,8 @@ namespace BasicFacebookFeatures
         {
             displaySelectedAlbumPhotos();
         }
+
+
 
 
         //private void displaySelectedAlbumPhotos()
@@ -361,9 +354,9 @@ namespace BasicFacebookFeatures
                             initGroupTab();
                         }
                         break;
-                    //case 2:
+                    case 2:
                     //    fetchFriends();
-                    //    break;
+                    // break;
                     case 3:
                         if (listBoxEvents.Items.Count == 0)
                         {
@@ -382,13 +375,32 @@ namespace BasicFacebookFeatures
                             initAlbumTab();
                         }
                         break;
-                        //case 6:
-                        //    timerApp.Start();
-                        //    break;
+                    case 6: 
+                        timerApp.Start(); 
+                        break;
                 }
             }
         }
 
+        private void timerApp_Tick(object sender, EventArgs e)
+        {
+            OnTimerAppTick();
+        }
+
+        protected virtual void OnTimerAppTick()
+        {
+            textBoxTimeSpentInTheApp.Invoke(new Action(() => textBoxTimeSpentInTheApp.Text = m_ViewModel.SetTimersMSG()));
+        }
+
+
+        protected virtual void OnButtonGenerateBetterThingToDoClicked()
+        {
+            textBoxBetterThingToDo.Invoke(new Action(() => textBoxBetterThingToDo.Text = m_ViewModel.GetBetterThingFromDic()));
+        }
+        private void buttonGenerateBetterThingToDo_Click(object sender, EventArgs e)
+        {
+            OnButtonGenerateBetterThingToDoClicked();
+        }
         private void buttonEditPicture_Click(object sender, EventArgs e)
         {
 
