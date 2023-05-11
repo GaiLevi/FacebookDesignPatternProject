@@ -21,6 +21,8 @@ namespace FacebookViewModel
         private IFacebookUser m_FacebookUser;
 
         //private ObservableCollection<PostAdapter> m_posts;
+        public DateTime m_AppStarTime { get; set; }
+        public TimeWellSpend m_TimeWellSpend { get; set; }
 
         public BindingSource m_BindingSourcePosts;
         private string m_AccessToken;
@@ -36,6 +38,7 @@ namespace FacebookViewModel
                 }
             }
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -145,6 +148,34 @@ namespace FacebookViewModel
             m_LoginService.LogoutAndSet();
         }
 
+
+
+        public string SetTimersMSG()
+        {
+            DateTime now = DateTime.Now;
+            TimeSpan timePast = now - m_AppStarTime;
+            string appUsingTime = string.Format(
+                @"{0} days,
+{1} hours,
+{2} minutes,
+{3} seconds
+of your life in our stupid App!",
+                timePast.Days,
+                timePast.Hours,
+                timePast.Minutes,
+                timePast.Seconds);
+            return appUsingTime;
+        }
+
+        public string GetBetterThingFromDic()
+        {
+            if (m_TimeWellSpend == null)
+            {
+                m_TimeWellSpend = new TimeWellSpend();
+            }
+            string betterThingToDo = m_TimeWellSpend.GetActivity(m_AppStarTime);
+            return betterThingToDo;
+        }
 
     }
 }
