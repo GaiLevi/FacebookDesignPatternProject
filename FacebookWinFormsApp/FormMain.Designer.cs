@@ -216,10 +216,10 @@
             // 
             this.listBoxComments.FormattingEnabled = true;
             this.listBoxComments.ItemHeight = 16;
-            this.listBoxComments.Location = new System.Drawing.Point(649, 25);
+            this.listBoxComments.Location = new System.Drawing.Point(639, 25);
             this.listBoxComments.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxComments.Name = "listBoxComments";
-            this.listBoxComments.Size = new System.Drawing.Size(254, 196);
+            this.listBoxComments.Size = new System.Drawing.Size(264, 228);
             this.listBoxComments.TabIndex = 7;
             // 
             // m_CreatedTimeTextBox
@@ -248,9 +248,10 @@
             // 
             // PictureBoxPost
             // 
+            this.PictureBoxPost.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PictureBoxPost.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iPostBindingSource, "m_PictureUrl", true));
             this.PictureBoxPost.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.iPostBindingSource, "m_PictureUrl", true));
-            this.PictureBoxPost.Location = new System.Drawing.Point(464, 89);
+            this.PictureBoxPost.Location = new System.Drawing.Point(394, 116);
             this.PictureBoxPost.Margin = new System.Windows.Forms.Padding(4);
             this.PictureBoxPost.Name = "PictureBoxPost";
             this.PictureBoxPost.Size = new System.Drawing.Size(133, 123);
@@ -258,6 +259,7 @@
             this.PictureBoxPost.TabIndex = 6;
             this.PictureBoxPost.TabStop = false;
             this.PictureBoxPost.UseWaitCursor = true;
+            this.PictureBoxPost.WaitOnLoad = true;
             // 
             // labelWelcomeToApp
             // 
@@ -318,7 +320,7 @@
             // pictureBoxGroup
             // 
             this.pictureBoxGroup.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iGroupBindingSource, "m_PictureUrl", true));
-            this.pictureBoxGroup.Location = new System.Drawing.Point(464, 89);
+            this.pictureBoxGroup.Location = new System.Drawing.Point(395, 128);
             this.pictureBoxGroup.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxGroup.Name = "pictureBoxGroup";
             this.pictureBoxGroup.Size = new System.Drawing.Size(133, 123);
