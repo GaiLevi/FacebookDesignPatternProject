@@ -16,8 +16,8 @@ namespace BasicFacebookFeatures
     public partial class FormMain : Form
     {
         ViewModel m_ViewModel;
-        bool isLoggedIn = false;
-        BindingSource bs;
+        bool m_IsLoggedIn = false;
+        BindingSource m_BindingSource;
         PictureBoxCollection m_PictureBoxCollection;
         //Locks
         private object postLock = new object();
@@ -33,7 +33,8 @@ namespace BasicFacebookFeatures
             //checkBoxAutoLogin.Checked = false;
             initPictureBoxCollectionForAlbumTab();
             m_ViewModel = new ViewModel();
-            bs = new BindingSource { DataSource = m_ViewModel };
+            m_BindingSource = new BindingSource { DataSource = m_ViewModel };
+            m_ViewModel.PropertyChanged += OnViewModel_PropertyChanged;
 
             PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
             pictureBoxGroup.DataBindings.Add("ImageLocation", iGroupBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -48,15 +49,15 @@ namespace BasicFacebookFeatures
             //this.Size = ApplicationSettings.Instance.LastWindowSize;
             //this.WindowState = ApplicationSettings.Instance.LastWindowState;
             //this.Location = ApplicationSettings.Instance.LastWindowLocation;
-            //this.checkBoxAutoLogin.Checked = ApplicationSettings.Instance.AutoLogin;
+            this.checkBoxAutoLogin.Checked = ApplicationSettings.Instance.AutoLogin;
             if(ApplicationSettings.Instance.AutoLogin)
             {
                 new Thread(() => m_ViewModel.AutoLogin(ApplicationSettings.Instance.AccessToken)).Start();
-                if(m_ViewModel.FacebookUser!= null)
-                {
-                    isLoggedIn = true;
-                    afterLoginInit();
-                }
+                //if(m_ViewModel.FacebookUser!= null)
+                //{
+                //    m_IsLoggedIn = true;
+                //    afterLoginInit();
+                //}
             }
         }
 
@@ -68,24 +69,34 @@ namespace BasicFacebookFeatures
             //ApplicationSettings.Instance.LastWindowLocation = this.Location;
             ApplicationSettings.Instance.AutoLogin = this.checkBoxAutoLogin.Checked;
             ApplicationSettings.Instance.Save();
+            m_ViewModel.PropertyChanged -= OnViewModel_PropertyChanged;
+            
         }
 
+        private void OnViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "AccessToken")
+            {
+                afterLoginInit();
+                ApplicationSettings.Instance.AccessToken = m_ViewModel.AccessToken;
+            }
+        }
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             Clipboard.SetText("design.patterns.22aa");
             m_ViewModel.LoginButtonClicked();
-            if(m_ViewModel.FacebookUser != null)
-            {
-                isLoggedIn = true;
-                afterLoginInit();
-                ApplicationSettings.Instance.AccessToken = m_ViewModel.m_AccessToken;
-            }
+            //if(m_ViewModel.FacebookUser != null)
+            //{
+            //    m_IsLoggedIn = true;
+            //    afterLoginInit();
+            //    ApplicationSettings.Instance.AccessToken = m_ViewModel.m_AccessToken;
+            //}
         }
 
 
         private void afterLoginInit()
         {
-            buttonLogin.Invoke(new Action(() => buttonLogin.Text = m_ViewModel.FacebookUser.m_UserName));
+            buttonLogin.Invoke(new Action(() => buttonLogin.Text = string.Format($@"Log in as {m_ViewModel.FacebookUser.m_UserName}")));
             buttonLogin.Invoke(new Action(() => buttonLogin.Enabled = false));
             pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = m_ViewModel.FacebookUser.m_PictureURL));
             initPostTab();
@@ -116,7 +127,7 @@ namespace BasicFacebookFeatures
 
         private void listBoxPosts_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(isLoggedIn)
+            if(m_IsLoggedIn)
             {
                 displaySelectedPostComments();
             }
@@ -140,6 +151,29 @@ namespace BasicFacebookFeatures
             displaySelectedAlbumPhotos();
         }
 
+
+        //private void displaySelectedAlbumPhotos()
+        //{
+        //    bool hasSingleSelectedItem = (bool)listBoxAlbums.Invoke(new Func<bool>(() => listBoxAlbums.SelectedItems.Count == 1));
+        //    if (hasSingleSelectedItem)
+        //    {
+        //        IAlbum selectedAlbum = (IAlbum)listBoxPosts.Invoke(new Func<IPost>(() => listBoxAlbums.SelectedItem as IPost));
+        //        if (selectedAlbum != null)
+        //        {
+        //            selectedAlbum.LoadAlbumPictures();
+        //        }
+        //        if (selectedAlbum != null && selectedAlbum.m_PicturesUrl.Count > 0)
+        //        {
+        //            m_PictureBoxCollection.SetList(selectedAlbum.m_PicturesUrl);
+        //            m_PictureBoxCollection.MoveNext();
+        //        }
+        //        else
+        //        {
+        //            //m_PictureBoxCollection.SetList(selectedAlbum.m_PicturesUrl);
+        //            //m_PictureBoxCollection.MoveNext();
+        //        }
+        //    }
+        //}
         private void displaySelectedAlbumPhotos()
         {
             if (listBoxAlbums.SelectedItems.Count == 1)
@@ -310,7 +344,7 @@ namespace BasicFacebookFeatures
 
         private void tabControlFeatures_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isLoggedIn)
+            if (m_IsLoggedIn)
             {
                 //timerApp.Stop();
                 switch (tabControlFeatures.SelectedIndex)
@@ -362,7 +396,7 @@ namespace BasicFacebookFeatures
 
         private void buttonPreviousPicture_Click(object sender, EventArgs e)
         {
-            if(isLoggedIn)
+            if(m_IsLoggedIn)
             {
                 m_PictureBoxCollection.Prev();
             }
@@ -370,7 +404,7 @@ namespace BasicFacebookFeatures
 
         private void buttonNextPicture_Click(object sender, EventArgs e)
         {
-            if (isLoggedIn)
+            if (m_IsLoggedIn)
             {
                 m_PictureBoxCollection.MoveNext();
             }

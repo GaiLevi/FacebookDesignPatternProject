@@ -22,21 +22,47 @@ namespace FacebookViewModel
 
         //private ObservableCollection<PostAdapter> m_posts;
 
-        public BindingSource m_BsPosts;
-        public string m_AccessToken { get; set; }
-
-
+        public BindingSource m_BindingSourcePosts;
+        private string m_AccessToken;
+        public string AccessToken
+        {
+            get => m_AccessToken;
+            set
+            {
+                if(m_AccessToken != value)
+                {
+                    m_AccessToken = value;
+                    OnPropertyChanged(nameof(AccessToken));
+                }
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public LoginService LoginService
         {
-            get => m_LoginService; set => SetField(ref m_LoginService, value);
+            get => m_LoginService;
+            set
+            {
+                if (m_LoginService != value)
+                {
+                    m_LoginService = value;
+                    OnPropertyChanged(nameof(LoginService));
+                }
+            }
         }
 
         public IFacebookUser FacebookUser
         {
-            get => m_FacebookUser; set => SetField(ref m_FacebookUser, value);
+            get => m_FacebookUser;
+            set
+            {
+                if(m_FacebookUser != value)
+                {
+                    m_FacebookUser = value;
+                    OnPropertyChanged(nameof(FacebookUser));
+                }
+            }
         }
 
         //public ObservableCollection<PostAdapter> Posts
@@ -44,25 +70,33 @@ namespace FacebookViewModel
         //    get => m_posts; set => SetField(ref m_posts, value);
         //}
 
-        public BindingSource bsPosts
+        public BindingSource BindingSourcePosts
         {
-            get => m_BsPosts; set => SetField(ref m_BsPosts, value);
+            get => m_BindingSourcePosts;
+            set
+            {
+                if (m_BindingSourcePosts != value)
+                {
+                    m_BindingSourcePosts = value;
+                    OnPropertyChanged(nameof(BindingSourcePosts));
+                }
+            }
         }
 
-       
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
 
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
+        //protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        //{
+        //    if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        //    field = value;
+        //    OnPropertyChanged(propertyName);
+        //    return true;
+        //}
 
         public void AutoLogin(string i_AccessToken)
         {
@@ -81,10 +115,9 @@ namespace FacebookViewModel
 
         private void doAfterLogin(IFacebookUser i_LoginUser)
         {
-            m_FacebookUser = m_LoginService.m_LoginUser;
-            if (m_FacebookUser != null)
+            if (i_LoginUser != null)
             {
-                m_AccessToken = m_LoginService.m_AccessToken;
+                AccessToken = m_LoginService.m_AccessToken;
                 //m_FacebookUser.LoadPostsFromApi();
             }
         }
