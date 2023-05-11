@@ -26,6 +26,7 @@ namespace BasicFacebookFeatures
         private object pageLock = new object();
         private object albumLock = new object();
         private Thread m_CurrentThread;
+        private const string k_DummyTextForPostTextBox = "What's on your mind?";
 
         public FormMain()
         {
@@ -85,16 +86,19 @@ namespace BasicFacebookFeatures
 
         private void afterLoginInit()
         {
-            
-            
+
             //textBoxPost.Visible = true;
             //buttonPost.Visible = true;
             buttonLogin.Invoke(new Action(() => buttonLogin.Text = string.Format($@"Log in as {m_ViewModel.FacebookUser.m_UserName}")));
             buttonLogin.Invoke(new Action(() => buttonLogin.Enabled = false));
             pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = m_ViewModel.FacebookUser.m_PictureURL));
+            labelWelcomeToApp.Invoke(new Action(() => labelWelcomeToApp.Visible = false));
+            textBoxPost.Invoke(new Action(() => textBoxPost.Visible = true));
+            buttonWritePost.Invoke(new Action(() => buttonWritePost.Visible = true));
             tabControlFeatures.Invoke(new Action(() => tabControlFeatures.Visible = true));
-            initPostTab();
             m_IsLoggedIn = true;
+            initPostTab();
+            
 
             //iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
             //PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -355,8 +359,8 @@ namespace BasicFacebookFeatures
                         }
                         break;
                     case 2:
-                    //    fetchFriends();
-                    // break;
+                        MessageBox.Show("This is not working due to Facebook's new policy", "Problem", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
                     case 3:
                         if (listBoxEvents.Items.Count == 0)
                         {
@@ -421,5 +425,75 @@ namespace BasicFacebookFeatures
                 m_PictureBoxCollection.MoveNext();
             }
         }
+
+        private void buttonWritePost_Click(object sender, EventArgs e)
+        {
+            OnButtonWritePostClicked(textBoxPost.Text);
+        }
+
+        //TODO: need to add post to Posts!!!!!!!!!!!!!!!!!!!!!!!
+        protected virtual void OnButtonWritePostClicked(string i_PostText)
+        {
+            if (textBoxPost.Text != k_DummyTextForPostTextBox && textBoxPost.Text != null)
+            {
+                //if (ButtonPostClicked != null)
+                //{
+                    //ButtonPostClicked.Invoke(i_PostText);
+                    textBoxPost.Text = string.Empty;
+                    setTextBoxPost();
+                //}
+            }
+            else
+            {
+                MessageBox.Show("You need to write somthing!");
+            }
+        }
+
+        private void textBoxPost_Enter(object sender, EventArgs e)
+        {
+           OnTextBoxPost_Enter();
+        }
+
+        protected virtual void OnTextBoxPost_Enter()
+        {
+            if (textBoxPost.Text == k_DummyTextForPostTextBox)
+            {
+                textBoxPost.Text = string.Empty;
+                textBoxPost.ForeColor = Color.Black;
+            }
+        }
+
+        private void setTextBoxPost()
+        {
+            if (string.IsNullOrEmpty(textBoxPost.Text))
+            {
+                textBoxPost.Text = k_DummyTextForPostTextBox;
+                textBoxPost.ForeColor = Color.DarkGray;
+            }
+        }
+
+        private void textBoxPost_Leave(object sender, EventArgs e)
+        {
+            OnTextBoxPost_Leave();
+        }
+
+        protected virtual void OnTextBoxPost_Leave()
+        {
+            setTextBoxPost();
+        }
+
+
+        //public void InsertNewPostToListBoxPosts(string i_Id, string i_Text)
+        //{
+        //    if (listBoxPosts.DataSource is List<KeyValuePair<string, string>>)
+        //    {
+        //        List<KeyValuePair<string, string>> dataSource = (List<KeyValuePair<string, string>>)listBoxPosts.DataSource;
+        //        KeyValuePair<string, string> postToAdd = new KeyValuePair<string, string>(i_Id, i_Text);
+        //        dataSource.Insert(0, postToAdd);
+        //        listBoxPosts.DataSource = null;
+        //        listBoxPosts.DisplayMember = "Value";
+        //        listBoxPosts.DataSource = dataSource;
+        //    }
+        //}
     }
 }
