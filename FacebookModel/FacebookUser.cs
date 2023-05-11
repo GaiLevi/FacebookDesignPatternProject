@@ -34,6 +34,7 @@ namespace FacebookModel
             if (m_PostCollection == null)
             {
                 m_PostCollection = new ObservableCollection<IPost>();
+
                 foreach (FacebookWrapper.ObjectModel.Post apiPost in m_LogInUser.Posts)
                 {
                     IPost postToAdd = m_AdapterFactory.CreateAdapter<IPost>(apiPost);
