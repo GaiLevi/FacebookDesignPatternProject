@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace BasicFacebookFeatures
         private object pageLock = new object();
         private object albumLock = new object();
         private Thread m_CurrentThread;
+        private const string k_DummyTextForPostTextBox = "What's on your mind?";
 
         public FormMain()
         {
@@ -68,7 +70,7 @@ namespace BasicFacebookFeatures
             
         }
 
-        private void OnViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected virtual void OnViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "AccessToken")
             {
@@ -78,6 +80,11 @@ namespace BasicFacebookFeatures
         }
         private void buttonLogin_Click(object sender, EventArgs e)
         {
+            OnButtonLogin_Click();
+        }
+
+        protected virtual void OnButtonLogin_Click()
+        {
             Clipboard.SetText("design.patterns.22aa");
             m_ViewModel.LoginButtonClicked();
         }
@@ -85,16 +92,22 @@ namespace BasicFacebookFeatures
 
         private void afterLoginInit()
         {
-            
-            
+
             //textBoxPost.Visible = true;
             //buttonPost.Visible = true;
-            buttonLogin.Invoke(new Action(() => buttonLogin.Text = string.Format($@"Log in as {m_ViewModel.FacebookUser.m_UserName}")));
-            buttonLogin.Invoke(new Action(() => buttonLogin.Enabled = false));
+            buttonLogin.Invoke(new Action(() =>
+                {
+                    buttonLogin.Text = string.Format($@"Log in as {m_ViewModel.FacebookUser.m_UserName}");
+                    buttonLogin.Enabled = false;
+                }));
             pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = m_ViewModel.FacebookUser.m_PictureURL));
+            labelWelcomeToApp.Invoke(new Action(() => labelWelcomeToApp.Visible = false));
+            textBoxPost.Invoke(new Action(() => textBoxPost.Visible = true));
+            buttonWritePost.Invoke(new Action(() => buttonWritePost.Visible = true));
             tabControlFeatures.Invoke(new Action(() => tabControlFeatures.Visible = true));
-            initPostTab();
             m_IsLoggedIn = true;
+            initPostTab();
+            
 
             //iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
             //PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -116,8 +129,23 @@ namespace BasicFacebookFeatures
         }
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-			buttonLogin.Text = "Login";
+			OnButtonLogOut_Click();
+        }
+
+        protected virtual void OnButtonLogOut_Click()
+        {
             m_ViewModel.LogoutButtonClicked();
+            buttonLogin.Invoke(new Action(() =>
+                {
+                    buttonLogin.Text = string.Format(@"Login");
+                    buttonLogin.Enabled = true;
+                }));
+            pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = null));
+            textBoxPost.Invoke(new Action(() => textBoxPost.Visible = false));
+            buttonWritePost.Invoke(new Action(() => buttonWritePost.Visible = false));
+            tabControlFeatures.Invoke(new Action(() => tabControlFeatures.Visible = false));
+            labelWelcomeToApp.Invoke(new Action(() => labelWelcomeToApp.Visible = true));
+            m_IsLoggedIn = false;
         }
 
         private void listBoxPosts_SelectedIndexChanged(object sender, EventArgs e)
@@ -201,17 +229,26 @@ namespace BasicFacebookFeatures
             //m_CurrentThread?.Join();
             Thread postThread = new Thread(new ThreadStart(() =>
             {
-                lock (postLock)
+                try
                 {
-                    if (m_ViewModel.FacebookUser.m_PostCollection == null)
+                    lock(postLock)
                     {
-                        m_ViewModel.FacebookUser.LoadPostsFromApi();
-                        BeginInvoke(new Action(() =>
+                        if(m_ViewModel.FacebookUser.m_PostCollection == null)
                         {
-                            iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
-                            displaySelectedPostComments();
-                        }));
+                            m_ViewModel.FacebookUser.LoadPostsFromApi();
+                            BeginInvoke(
+                                new Action(
+                                    () =>
+                                        {
+                                            iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
+                                            displaySelectedPostComments();
+                                        }));
+                        }
                     }
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }));
 
@@ -229,22 +266,30 @@ namespace BasicFacebookFeatures
 
             //m_CurrentThread?.Join();
             Thread groupThread = new Thread(new ThreadStart(() =>
-            {
-                lock (groupLock)
                 {
-                    if (m_ViewModel.FacebookUser.m_GroupCollection == null)
+                    try
                     {
-                        m_ViewModel.FacebookUser.LoadGroupsFromApi();
-                        BeginInvoke(new Action(() =>
+                        lock (groupLock)
                         {
-                            iGroupBindingSource.DataSource = m_ViewModel.FacebookUser.m_GroupCollection;
-                        }));
+                            if (m_ViewModel.FacebookUser.m_GroupCollection == null)
+                            {
+                                m_ViewModel.FacebookUser.LoadGroupsFromApi();
+                                BeginInvoke(new Action(() =>
+                                    {
+                                        iGroupBindingSource.DataSource = m_ViewModel.FacebookUser.m_GroupCollection;
+                                    }));
+                            }
+                        }
                     }
-                }
-            }));
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }));
 
             groupThread.Start();
         }
+
 
         private void initEventTab()
         {
@@ -257,19 +302,26 @@ namespace BasicFacebookFeatures
 
             //m_CurrentThread?.Join();
             Thread eventThread = new Thread(new ThreadStart(() =>
-            {
-                lock (eventLock)
                 {
-                    if (m_ViewModel.FacebookUser.m_EventCollection == null)
+                    try
                     {
-                        m_ViewModel.FacebookUser.LoadEventsFromApi();
-                        BeginInvoke(new Action(() =>
+                        lock (eventLock)
                         {
-                            iEventBindingSource.DataSource = m_ViewModel.FacebookUser.m_EventCollection;
-                        }));
+                            if (m_ViewModel.FacebookUser.m_EventCollection == null)
+                            {
+                                m_ViewModel.FacebookUser.LoadEventsFromApi();
+                                BeginInvoke(new Action(() =>
+                                    {
+                                        iEventBindingSource.DataSource = m_ViewModel.FacebookUser.m_EventCollection;
+                                    }));
+                            }
+                        }
                     }
-                } 
-            }));
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }));
 
             eventThread.Start();
         }
@@ -289,16 +341,23 @@ namespace BasicFacebookFeatures
             //m_CurrentThread?.Join();
             Thread pageThread = new Thread(new ThreadStart(() =>
             {
-                lock (pageLock)
+                try
                 {
-                    if (m_ViewModel.FacebookUser.m_PageCollection == null)
+                    lock (pageLock)
                     {
-                        m_ViewModel.FacebookUser.LoadPagesFromApi();
-                        BeginInvoke(new Action(() =>
+                        if (m_ViewModel.FacebookUser.m_PageCollection == null)
                         {
-                            iPageBindingSource.DataSource = m_ViewModel.FacebookUser.m_PageCollection;
-                        }));
+                            m_ViewModel.FacebookUser.LoadPagesFromApi();
+                            BeginInvoke(new Action(() =>
+                                {
+                                    iPageBindingSource.DataSource = m_ViewModel.FacebookUser.m_PageCollection;
+                                }));
+                        }
                     }
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }));
 
@@ -318,17 +377,24 @@ namespace BasicFacebookFeatures
             //m_CurrentThread?.Join();
             Thread albumThread = new Thread(new ThreadStart(() =>
             {
-                lock (albumLock)
+                try
                 {
-                    if (m_ViewModel.FacebookUser.m_AlbumCollection == null)
+                    lock (albumLock)
                     {
-                        m_ViewModel.FacebookUser.LoadAlbumsFromApi();
-                        BeginInvoke(new Action(() =>
+                        if (m_ViewModel.FacebookUser.m_AlbumCollection == null)
                         {
-                            iAlbumBindingSource.DataSource = m_ViewModel.FacebookUser.m_AlbumCollection;
-                            displaySelectedAlbumPhotos();
-                        }));
+                            m_ViewModel.FacebookUser.LoadAlbumsFromApi();
+                            BeginInvoke(new Action(() =>
+                                {
+                                    iAlbumBindingSource.DataSource = m_ViewModel.FacebookUser.m_AlbumCollection;
+                                    displaySelectedAlbumPhotos();
+                                }));
+                        }
                     }
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }));
 
@@ -343,34 +409,39 @@ namespace BasicFacebookFeatures
                 switch (tabControlFeatures.SelectedIndex)
                 {
                     case 0:
-                        if (listBoxPosts.Items.Count == 0)
+                       bool havePostItem = (bool)listBoxPosts.Invoke(new Func<bool>(() => listBoxPosts.Items.Count == 0));
+                        if (havePostItem)
                         {
                             initPostTab();
                         }
                         break;
                     case 1:
-                        if (listBoxGroups.Items.Count == 0)
+                        bool haveGroupItem = (bool)listBoxGroups.Invoke(new Func<bool>(() => listBoxGroups.Items.Count == 0));
+                        if (haveGroupItem)
                         {
                             initGroupTab();
                         }
                         break;
                     case 2:
-                    //    fetchFriends();
-                    // break;
+                        MessageBox.Show("This is not working due to Facebook's new policy", "Problem", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
                     case 3:
-                        if (listBoxEvents.Items.Count == 0)
+                        bool haveEventItem = (bool)listBoxEvents.Invoke(new Func<bool>(() => listBoxEvents.Items.Count == 0));
+                        if (haveEventItem)
                         {
                             initEventTab();
                         }
                         break;
                     case 4:
-                        if (listBoxPages.Items.Count == 0)
+                        bool havePageItem = (bool)listBoxPages.Invoke(new Func<bool>(() => listBoxPages.Items.Count == 0));
+                        if (havePageItem)
                         {
                             initPageTab();
                         }
                         break;
                     case 5:
-                        if (listBoxAlbums.Items.Count == 0)
+                        bool haveAlbumItem = (bool)listBoxAlbums.Invoke(new Func<bool>(() => listBoxAlbums.Items.Count == 0));
+                        if (haveAlbumItem)
                         {
                             initAlbumTab();
                         }
@@ -421,5 +492,75 @@ namespace BasicFacebookFeatures
                 m_PictureBoxCollection.MoveNext();
             }
         }
+
+        private void buttonWritePost_Click(object sender, EventArgs e)
+        {
+            OnButtonWritePostClicked(textBoxPost.Text);
+        }
+
+        //TODO: need to add post to Posts!!!!!!!!!!!!!!!!!!!!!!!
+        protected virtual void OnButtonWritePostClicked(string i_PostText)
+        {
+            if (textBoxPost.Text != k_DummyTextForPostTextBox && textBoxPost.Text != null)
+            {
+                //if (ButtonPostClicked != null)
+                //{
+                    //ButtonPostClicked.Invoke(i_PostText);
+                    textBoxPost.Text = string.Empty;
+                    setTextBoxPost();
+                //}
+            }
+            else
+            {
+                MessageBox.Show("You need to write somthing!");
+            }
+        }
+
+        private void textBoxPost_Enter(object sender, EventArgs e)
+        {
+           OnTextBoxPost_Enter();
+        }
+
+        protected virtual void OnTextBoxPost_Enter()
+        {
+            if (textBoxPost.Text == k_DummyTextForPostTextBox)
+            {
+                textBoxPost.Text = string.Empty;
+                textBoxPost.ForeColor = Color.Black;
+            }
+        }
+
+        private void setTextBoxPost()
+        {
+            if (string.IsNullOrEmpty(textBoxPost.Text))
+            {
+                textBoxPost.Text = k_DummyTextForPostTextBox;
+                textBoxPost.ForeColor = Color.DarkGray;
+            }
+        }
+
+        private void textBoxPost_Leave(object sender, EventArgs e)
+        {
+            OnTextBoxPost_Leave();
+        }
+
+        protected virtual void OnTextBoxPost_Leave()
+        {
+            setTextBoxPost();
+        }
+
+
+        //public void InsertNewPostToListBoxPosts(string i_Id, string i_Text)
+        //{
+        //    if (listBoxPosts.DataSource is List<KeyValuePair<string, string>>)
+        //    {
+        //        List<KeyValuePair<string, string>> dataSource = (List<KeyValuePair<string, string>>)listBoxPosts.DataSource;
+        //        KeyValuePair<string, string> postToAdd = new KeyValuePair<string, string>(i_Id, i_Text);
+        //        dataSource.Insert(0, postToAdd);
+        //        listBoxPosts.DataSource = null;
+        //        listBoxPosts.DisplayMember = "Value";
+        //        listBoxPosts.DataSource = dataSource;
+        //    }
+        //}
     }
 }

@@ -43,6 +43,7 @@
             this.iPostBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.m_LastEditTimeTextBox = new System.Windows.Forms.TextBox();
             this.PictureBoxPost = new System.Windows.Forms.PictureBox();
+            this.labelWelcomeToApp = new System.Windows.Forms.Label();
             this.listBoxPosts = new System.Windows.Forms.ListBox();
             this.tabPageGroups = new System.Windows.Forms.TabPage();
             this.labelDescriptionGroupContent = new System.Windows.Forms.Label();
@@ -75,6 +76,8 @@
             this.mCommentsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.checkBoxAutoLogin = new System.Windows.Forms.CheckBox();
             this.timerApp = new System.Windows.Forms.Timer(this.components);
+            this.buttonWritePost = new System.Windows.Forms.Button();
+            this.textBoxPost = new System.Windows.Forms.TextBox();
             m_CreatedTimeLabel = new System.Windows.Forms.Label();
             m_LastEditTimeLabel = new System.Windows.Forms.Label();
             labelDescriptionGroup = new System.Windows.Forms.Label();
@@ -187,6 +190,7 @@
             this.tabControlFeatures.SelectedIndex = 0;
             this.tabControlFeatures.Size = new System.Drawing.Size(933, 369);
             this.tabControlFeatures.TabIndex = 54;
+            this.tabControlFeatures.Visible = false;
             this.tabControlFeatures.SelectedIndexChanged += new System.EventHandler(this.tabControlFeatures_SelectedIndexChanged);
             // 
             // tabPagePosts
@@ -212,10 +216,10 @@
             // 
             this.listBoxComments.FormattingEnabled = true;
             this.listBoxComments.ItemHeight = 16;
-            this.listBoxComments.Location = new System.Drawing.Point(649, 25);
+            this.listBoxComments.Location = new System.Drawing.Point(639, 25);
             this.listBoxComments.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxComments.Name = "listBoxComments";
-            this.listBoxComments.Size = new System.Drawing.Size(254, 196);
+            this.listBoxComments.Size = new System.Drawing.Size(264, 228);
             this.listBoxComments.TabIndex = 7;
             // 
             // m_CreatedTimeTextBox
@@ -244,9 +248,10 @@
             // 
             // PictureBoxPost
             // 
+            this.PictureBoxPost.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PictureBoxPost.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iPostBindingSource, "m_PictureUrl", true));
             this.PictureBoxPost.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.iPostBindingSource, "m_PictureUrl", true));
-            this.PictureBoxPost.Location = new System.Drawing.Point(464, 89);
+            this.PictureBoxPost.Location = new System.Drawing.Point(394, 116);
             this.PictureBoxPost.Margin = new System.Windows.Forms.Padding(4);
             this.PictureBoxPost.Name = "PictureBoxPost";
             this.PictureBoxPost.Size = new System.Drawing.Size(133, 123);
@@ -254,6 +259,21 @@
             this.PictureBoxPost.TabIndex = 6;
             this.PictureBoxPost.TabStop = false;
             this.PictureBoxPost.UseWaitCursor = true;
+            this.PictureBoxPost.WaitOnLoad = true;
+            // 
+            // labelWelcomeToApp
+            // 
+            this.labelWelcomeToApp.AccessibleName = "labelWelcomeToApp";
+            this.labelWelcomeToApp.AutoSize = true;
+            this.labelWelcomeToApp.BackColor = System.Drawing.Color.SteelBlue;
+            this.labelWelcomeToApp.Font = new System.Drawing.Font("Vladimir Script", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelWelcomeToApp.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.labelWelcomeToApp.Location = new System.Drawing.Point(20, 111);
+            this.labelWelcomeToApp.Name = "labelWelcomeToApp";
+            this.labelWelcomeToApp.Size = new System.Drawing.Size(857, 73);
+            this.labelWelcomeToApp.TabIndex = 57;
+            this.labelWelcomeToApp.Text = "Welcome to out Facebook App (Ver 2)";
+            this.labelWelcomeToApp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // listBoxPosts
             // 
@@ -300,7 +320,7 @@
             // pictureBoxGroup
             // 
             this.pictureBoxGroup.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iGroupBindingSource, "m_PictureUrl", true));
-            this.pictureBoxGroup.Location = new System.Drawing.Point(464, 89);
+            this.pictureBoxGroup.Location = new System.Drawing.Point(395, 128);
             this.pictureBoxGroup.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxGroup.Name = "pictureBoxGroup";
             this.pictureBoxGroup.Size = new System.Drawing.Size(133, 123);
@@ -593,6 +613,30 @@
             this.timerApp.Interval = 1000;
             this.timerApp.Tick += new System.EventHandler(this.timerApp_Tick);
             // 
+            // buttonWritePost
+            // 
+            this.buttonWritePost.Location = new System.Drawing.Point(427, 57);
+            this.buttonWritePost.Name = "buttonWritePost";
+            this.buttonWritePost.Size = new System.Drawing.Size(75, 23);
+            this.buttonWritePost.TabIndex = 58;
+            this.buttonWritePost.Text = "Post";
+            this.buttonWritePost.UseVisualStyleBackColor = true;
+            this.buttonWritePost.Visible = false;
+            this.buttonWritePost.Click += new System.EventHandler(this.buttonWritePost_Click);
+            // 
+            // textBoxPost
+            // 
+            this.textBoxPost.ForeColor = System.Drawing.Color.DarkGray;
+            this.textBoxPost.Location = new System.Drawing.Point(427, 29);
+            this.textBoxPost.Multiline = true;
+            this.textBoxPost.Name = "textBoxPost";
+            this.textBoxPost.Size = new System.Drawing.Size(302, 22);
+            this.textBoxPost.TabIndex = 59;
+            this.textBoxPost.Text = "What\'s on your mind?";
+            this.textBoxPost.Visible = false;
+            this.textBoxPost.Enter += new System.EventHandler(this.textBoxPost_Enter);
+            this.textBoxPost.Leave += new System.EventHandler(this.textBoxPost_Leave);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -600,6 +644,9 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.ClientSize = new System.Drawing.Size(967, 578);
+            this.Controls.Add(this.textBoxPost);
+            this.Controls.Add(this.buttonWritePost);
+            this.Controls.Add(this.labelWelcomeToApp);
             this.Controls.Add(this.checkBoxAutoLogin);
             this.Controls.Add(this.tabControlFeatures);
             this.Controls.Add(this.pictureBoxProfile);
@@ -681,6 +728,9 @@
         private System.Windows.Forms.TextBox textBoxTimeSpentInTheApp;
         private System.Windows.Forms.TextBox textBoxBetterThingToDo;
         private System.Windows.Forms.Label labelBetterThingToDo;
+        private System.Windows.Forms.Label labelWelcomeToApp;
+        private System.Windows.Forms.Button buttonWritePost;
+        private System.Windows.Forms.TextBox textBoxPost;
     }
 }
 

@@ -15,6 +15,13 @@ namespace FacebookModel
             m_BetterThingsToDoDic = new Dictionary<TimeSpan, List<string>>()
                                       {
                                           {
+                                              TimeSpan.FromSeconds(0),
+                                              new List<string>
+                                                  {
+                                                      "Blink :)"
+                                                  }
+                                          },
+                                          {
                                               TimeSpan.FromSeconds(10),
                                               new List<string>
                                                   {
@@ -139,6 +146,7 @@ namespace FacebookModel
 
         public string GetActivity(DateTime i_StartTime)
         {
+            string activityToReturn = null;
             DateTime now = DateTime.Now;
             TimeSpan interval = now - i_StartTime;
             TimeSpan closestTimeDiff = TimeSpan.MaxValue;
@@ -153,10 +161,14 @@ namespace FacebookModel
                     closestDateTime = key;
                 }
             }
-            List<string> activityList = m_BetterThingsToDoDic[closestDateTime];
-            Random random = new Random();
+            if (m_BetterThingsToDoDic.ContainsKey(closestDateTime))
+            {
+                List<string> activityList = m_BetterThingsToDoDic[closestDateTime];
+                Random random = new Random();
+                activityToReturn = activityList[random.Next(activityList.Count)];
+            }
 
-            return activityList[random.Next(activityList.Count)];
+            return activityToReturn;
         }
     }
 }
