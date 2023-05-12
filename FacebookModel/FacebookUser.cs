@@ -26,9 +26,12 @@ namespace FacebookModel
             m_LogInUser = i_LoggedInUser;
             m_UserName = i_LoggedInUser.Name;
             m_PictureURL = i_LoggedInUser.PictureNormalURL;
-            //m_PostCollection = new ObservableCollection<IPost>(); 
         }
-
+        public void AddNewPostToCollection(string i_PostMessage)
+        {
+            IPost newPost = new PostAdapter(i_PostMessage);
+            m_PostCollection.Insert(0,newPost);
+        }
         public void LoadPostsFromApi()
         {
             if (m_PostCollection == null)
@@ -50,7 +53,6 @@ namespace FacebookModel
                 m_GroupCollection = new ObservableCollection<IGroup>();
                 foreach (FacebookWrapper.ObjectModel.Group apiGroup in m_LogInUser.Groups)
                 {
-                    //GroupAdapter groupToAdd = new GroupAdapter(apiGroup);
                     IGroup groupToAdd = m_AdapterFactory.CreateAdapter<IGroup>(apiGroup);
                     m_GroupCollection.Add(groupToAdd);
                 }
@@ -63,32 +65,11 @@ namespace FacebookModel
                 m_EventCollection = new ObservableCollection<IEvent>();
                 foreach (FacebookWrapper.ObjectModel.Event apiEvent in m_LogInUser.Events)
                 {
-                    //EventAdapter eventToAdd = new EventAdapter(apiEvent);
                     IEvent eventToAdd = m_AdapterFactory.CreateAdapter<IEvent>(apiEvent);
                     m_EventCollection.Add(eventToAdd);
                 }
             }
         }
-
-        //public void LoadEventsFromApi()
-        //{
-        //    if (m_EventCollection == null)
-        //    {
-        //        m_EventCollection = new ObservableCollection<IEvent>();
-
-        //        Thread loadEventsThread = new Thread(() =>
-        //        {
-        //            foreach (FacebookWrapper.ObjectModel.Event apiEvent in m_LogInUser.Events)
-        //            {
-        //                IEvent eventToAdd = m_AdapterFactory.CreateAdapter<IEvent>(apiEvent);
-        //                m_EventCollection.Add(eventToAdd);
-        //            }
-        //        });
-
-        //        loadEventsThread.Start();
-        //    }
-        //}
-
         public void LoadPagesFromApi()
         {
             if (m_PageCollection == null)
@@ -96,7 +77,6 @@ namespace FacebookModel
                 m_PageCollection = new ObservableCollection<IPage>();
                 foreach (FacebookWrapper.ObjectModel.Page apiPage in m_LogInUser.LikedPages)
                 {
-                    //PageAdapter pageToAdd = new PageAdapter(apiPage);
                     IPage pageToAdd = m_AdapterFactory.CreateAdapter<IPage>(apiPage);
                     m_PageCollection.Add(pageToAdd);
                 }
@@ -109,7 +89,6 @@ namespace FacebookModel
                 m_AlbumCollection = new ObservableCollection<IAlbum>();
                 foreach (FacebookWrapper.ObjectModel.Album apiAlbum in m_LogInUser.Albums)
                 {
-                    //AlbumAdapter albumToAdd = new AlbumAdapter(apiAlbum);
                     IAlbum albumToAdd = m_AdapterFactory.CreateAdapter<IAlbum>(apiAlbum);
                     m_AlbumCollection.Add(albumToAdd);
                 }
