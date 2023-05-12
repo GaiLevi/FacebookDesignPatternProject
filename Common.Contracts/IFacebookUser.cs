@@ -16,6 +16,7 @@ namespace Common.Contracts
         ObservableCollection<IEvent> m_EventCollection { get; set; }
         ObservableCollection<IPage> m_PageCollection { get; set; }
         ObservableCollection<IAlbum> m_AlbumCollection { get; set; }
+        void AddNewPostToCollection(string i_PostMessage);
         void LoadPostsFromApi();
         void LoadGroupsFromApi();
         void LoadPagesFromApi();

@@ -16,12 +16,6 @@ namespace FacebookModel
         public DateTime? m_LastEditTime { get; set; }
         public string m_PictureUrl { get; set; }
         public List<string> m_Comments { get; set; }
-
-        //public PostAdapter()
-        //{
-        //    m_Comments = new List<string>();
-        //}
-
         public PostAdapter(FacebookWrapper.ObjectModel.Post i_Post)
         {
             m_Post = i_Post;
@@ -42,19 +36,30 @@ namespace FacebookModel
             m_LastEditTime = i_Post.UpdateTime;
             m_PictureUrl = i_Post.PictureURL;
         }
-
+        public PostAdapter(string i_Message)
+        {
+            m_Id = Guid.NewGuid().ToString();
+            m_MSG = i_Message;
+            m_CreatedTime = DateTime.Now;
+            m_LastEditTime = m_CreatedTime;
+            m_PictureUrl = null;
+            m_Comments = null;
+        }
         public void LoadComments()
         {
-            if(m_Comments == null)
+            if (m_Comments == null)
             {
                 m_Comments = new List<string>();
-                if (m_Post.Comments.Count != 0)
+                if (m_Post != null)
                 {
-                    foreach (FacebookWrapper.ObjectModel.Comment comment in m_Post.Comments)
+                    if (m_Post.Comments.Count > 0)
                     {
-                        if (comment != null)
+                        foreach (FacebookWrapper.ObjectModel.Comment comment in m_Post.Comments)
                         {
-                            m_Comments.Add(comment.Message);
+                            if (comment != null)
+                            {
+                                m_Comments.Add(comment.Message);
+                            }
                         }
                     }
                 }

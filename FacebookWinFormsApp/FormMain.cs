@@ -26,8 +26,8 @@ namespace BasicFacebookFeatures
         private object eventLock = new object();
         private object pageLock = new object();
         private object albumLock = new object();
-        private Thread m_CurrentThread;
         private const string k_DummyTextForPostTextBox = "What's on your mind?";
+        private FormEditPicture m_FormEditPicture;
 
         public FormMain()
         {
@@ -46,10 +46,6 @@ namespace BasicFacebookFeatures
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            //this.Size = ApplicationSettings.Instance.LastWindowSize;
-            //this.WindowState = ApplicationSettings.Instance.LastWindowState;
-            //this.Location = ApplicationSettings.Instance.LastWindowLocation;
             m_ViewModel.m_AppStarTime = DateTime.Now;
             this.checkBoxAutoLogin.Checked = ApplicationSettings.Instance.AutoLogin;
             if(ApplicationSettings.Instance.AutoLogin)
@@ -61,9 +57,6 @@ namespace BasicFacebookFeatures
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            //ApplicationSettings.Instance.LastWindowState = this.WindowState;
-            //ApplicationSettings.Instance.LastWindowSize = this.Size;
-            //ApplicationSettings.Instance.LastWindowLocation = this.Location;
             ApplicationSettings.Instance.AutoLogin = this.checkBoxAutoLogin.Checked;
             ApplicationSettings.Instance.Save();
             m_ViewModel.PropertyChanged -= OnViewModel_PropertyChanged;
@@ -92,9 +85,6 @@ namespace BasicFacebookFeatures
 
         private void afterLoginInit()
         {
-
-            //textBoxPost.Visible = true;
-            //buttonPost.Visible = true;
             buttonLogin.Invoke(new Action(() =>
                 {
                     buttonLogin.Text = string.Format($@"Log in as {m_ViewModel.FacebookUser.m_UserName}");
@@ -170,31 +160,6 @@ namespace BasicFacebookFeatures
             displaySelectedAlbumPhotos();
         }
 
-
-
-
-        //private void displaySelectedAlbumPhotos()
-        //{
-        //    bool hasSingleSelectedItem = (bool)listBoxAlbums.Invoke(new Func<bool>(() => listBoxAlbums.SelectedItems.Count == 1));
-        //    if (hasSingleSelectedItem)
-        //    {
-        //        IAlbum selectedAlbum = (IAlbum)listBoxPosts.Invoke(new Func<IPost>(() => listBoxAlbums.SelectedItem as IPost));
-        //        if (selectedAlbum != null)
-        //        {
-        //            selectedAlbum.LoadAlbumPictures();
-        //        }
-        //        if (selectedAlbum != null && selectedAlbum.m_PicturesUrl.Count > 0)
-        //        {
-        //            m_PictureBoxCollection.SetList(selectedAlbum.m_PicturesUrl);
-        //            m_PictureBoxCollection.MoveNext();
-        //        }
-        //        else
-        //        {
-        //            //m_PictureBoxCollection.SetList(selectedAlbum.m_PicturesUrl);
-        //            //m_PictureBoxCollection.MoveNext();
-        //        }
-        //    }
-        //}
         private void displaySelectedAlbumPhotos()
         {
             if (listBoxAlbums.SelectedItems.Count == 1)
@@ -219,14 +184,6 @@ namespace BasicFacebookFeatures
 
         private void initPostTab()
         {
-            //iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
-            //if (m_ViewModel.FacebookUser.m_PostCollection.Count > 0)
-            //{
-            //    //PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
-            //}
-            //displaySelectedPostComments();
-
-            //m_CurrentThread?.Join();
             Thread postThread = new Thread(new ThreadStart(() =>
             {
                 try
@@ -257,14 +214,6 @@ namespace BasicFacebookFeatures
 
         private void initGroupTab()
         {
-            //m_ViewModel.FacebookUser.LoadGroupsFromApi();
-            //iGroupBindingSource.DataSource = m_ViewModel.FacebookUser.m_GroupCollection;
-            //if (m_ViewModel.FacebookUser.m_GroupCollection.Count > 0)
-            //{
-            //    //pictureBoxGroup.DataBindings.Add("ImageLocation", iGroupBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
-            //}
-
-            //m_CurrentThread?.Join();
             Thread groupThread = new Thread(new ThreadStart(() =>
                 {
                     try
@@ -293,14 +242,6 @@ namespace BasicFacebookFeatures
 
         private void initEventTab()
         {
-            //m_ViewModel.FacebookUser.LoadEventsFromApi();
-            //iEventBindingSource.DataSource = m_ViewModel.FacebookUser.m_EventCollection;
-            //if (m_ViewModel.FacebookUser.m_EventCollection.Count > 0)
-            //{
-            //    //pictureBoxEvent.DataBindings.Add("ImageLocation", iEventBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
-            //}        
-
-            //m_CurrentThread?.Join();
             Thread eventThread = new Thread(new ThreadStart(() =>
                 {
                     try
@@ -328,17 +269,6 @@ namespace BasicFacebookFeatures
 
         private void initPageTab()
         {
-            //no thread
-            //m_ViewModel.FacebookUser.LoadPagesFromApi();
-            //iPageBindingSource.DataSource = m_ViewModel.FacebookUser.m_PageCollection;
-
-            //if (m_ViewModel.FacebookUser.m_PageCollection.Count > 0)
-            //{
-            //    //pictureBoxPage.DataBindings.Add("ImageLocation", iPageBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
-            //}
-
-            //first thread try
-            //m_CurrentThread?.Join();
             Thread pageThread = new Thread(new ThreadStart(() =>
             {
                 try
@@ -366,15 +296,6 @@ namespace BasicFacebookFeatures
 
         private void initAlbumTab()
         {
-            //m_ViewModel.FacebookUser.LoadAlbumsFromApi();
-            //iAlbumBindingSource.DataSource = m_ViewModel.FacebookUser.m_AlbumCollection;
-            //displaySelectedAlbumPhotos();
-            //if (m_ViewModel.FacebookUser.m_AlbumCollection.Count > 0)
-            //{
-            //    //pictureBoxAlbum.DataBindings.Add("ImageLocation", iAlbumBindingSource, "m_PicturesUrl", true, DataSourceUpdateMode.OnPropertyChanged);
-            //}
-
-            //m_CurrentThread?.Join();
             Thread albumThread = new Thread(new ThreadStart(() =>
             {
                 try
@@ -405,7 +326,6 @@ namespace BasicFacebookFeatures
         {
             if (m_IsLoggedIn)
             {
-                //timerApp.Stop();
                 switch (tabControlFeatures.SelectedIndex)
                 {
                     case 0:
@@ -472,11 +392,6 @@ namespace BasicFacebookFeatures
         {
             OnButtonGenerateBetterThingToDoClicked();
         }
-        private void buttonEditPicture_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonPreviousPicture_Click(object sender, EventArgs e)
         {
             if(m_IsLoggedIn)
@@ -503,12 +418,12 @@ namespace BasicFacebookFeatures
         {
             if (textBoxPost.Text != k_DummyTextForPostTextBox && textBoxPost.Text != null)
             {
-                //if (ButtonPostClicked != null)
-                //{
-                    //ButtonPostClicked.Invoke(i_PostText);
-                    textBoxPost.Text = string.Empty;
-                    setTextBoxPost();
-                //}
+                m_ViewModel.FacebookUser.AddNewPostToCollection(i_PostText);
+                listBoxPosts.DataSource = null;
+                listBoxPosts.DataSource = iPostBindingSource;
+                listBoxPosts.DisplayMember = "m_MSG";
+                textBoxPost.Text = string.Empty;
+                setTextBoxPost();
             }
             else
             {
@@ -548,6 +463,25 @@ namespace BasicFacebookFeatures
         {
             setTextBoxPost();
         }
+        private void buttonEditPicture_Click(object sender, EventArgs e)
+        {
+            if (m_PictureBoxCollection.Image != null)
+            {
+                m_FormEditPicture = new FormEditPicture(m_PictureBoxCollection.Image);
+                m_FormEditPicture.FormEditPictureClosing += formEditPicture_Closing;
+                m_FormEditPicture.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Please choose an image");
+            }
+        }
+        private void formEditPicture_Closing(object sender, FormClosingEventArgs e)
+        {
+            m_FormEditPicture.Dispose();
+            m_FormEditPicture.FormEditPictureClosing -= formEditPicture_Closing;
+        }
+
 
 
         //public void InsertNewPostToListBoxPosts(string i_Id, string i_Text)
