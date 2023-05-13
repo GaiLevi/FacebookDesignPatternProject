@@ -14,9 +14,9 @@ namespace FacebookModel
         private User m_LoggedInUser;
         private ObservableCollection<IPost> m_PostCollection;
 
-        public void SetLoggedInUser(User loggedInUser)
+        public void SetLoggedInUser(User i_LoggedInUser)
         {
-            m_LoggedInUser = loggedInUser;
+            m_LoggedInUser = i_LoggedInUser;
         }
 
         public void LoadPostsFromApi()

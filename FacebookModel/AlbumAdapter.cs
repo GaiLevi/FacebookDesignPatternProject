@@ -10,7 +10,7 @@ namespace FacebookModel
 {
     public class AlbumAdapter : IAlbum
     {
-        FacebookWrapper.ObjectModel.Album m_Album;
+        private readonly FacebookWrapper.ObjectModel.Album r_Album;
         public string m_Id { get; set; }
         public string m_Name { get; set; }
         public int m_Index { get; set; }
@@ -18,7 +18,7 @@ namespace FacebookModel
 
         public AlbumAdapter(FacebookWrapper.ObjectModel.Album i_Album)
         {
-            m_Album = i_Album;
+            r_Album = i_Album;
             m_Id = i_Album.Id;
             m_Name = i_Album.Name;
         }
@@ -28,9 +28,9 @@ namespace FacebookModel
             if (m_PicturesUrl == null)
             {
                 m_PicturesUrl = new ObservableCollection<string>();
-                if (m_Album.Photos.Count != 0)
+                if (r_Album.Photos.Count != 0)
                 {
-                    foreach (FacebookWrapper.ObjectModel.Photo photo in m_Album.Photos)
+                    foreach (FacebookWrapper.ObjectModel.Photo photo in r_Album.Photos)
                     {
                         if (photo != null)
                         {
