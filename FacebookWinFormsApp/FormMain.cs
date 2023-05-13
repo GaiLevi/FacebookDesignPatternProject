@@ -162,23 +162,44 @@ namespace BasicFacebookFeatures
 
         private void displaySelectedAlbumPhotos()
         {
-            if (listBoxAlbums.SelectedItems.Count == 1)
+            bool hasSingleSelectedItem = (bool)listBoxAlbums.Invoke(new Func<bool>(() => listBoxAlbums.SelectedItems.Count == 1));
+            if (hasSingleSelectedItem)
             {
-                if (listBoxAlbums.SelectedItem is IAlbum)
+                IAlbum selectedItemAsIAlbum = (IAlbum)listBoxAlbums.Invoke(new Func<IAlbum>(() => listBoxAlbums.SelectedItem as IAlbum));
+                if (selectedItemAsIAlbum != null)
                 {
-                    IAlbum selectedAlbum = (IAlbum)listBoxAlbums.SelectedItem;
-                    selectedAlbum.LoadAlbumPictures();
-                    if (selectedAlbum.m_PicturesUrl.Count > 0)
+                    selectedItemAsIAlbum.LoadAlbumPictures();
+                    if (selectedItemAsIAlbum.m_PicturesUrl.Count > 0)
                     {
-                        m_PictureBoxCollection.SetList(selectedAlbum.m_PicturesUrl);
+                        m_PictureBoxCollection.SetList(selectedItemAsIAlbum.m_PicturesUrl);
                         m_PictureBoxCollection.MoveNext();
                     }
                     else
                     {
-                        m_PictureBoxCollection.SetList(selectedAlbum.m_PicturesUrl);
-                        m_PictureBoxCollection.MoveNext();
+                        //m_PictureBoxCollection.SetList(selectedAlbum.m_PicturesUrl);
+                        //m_PictureBoxCollection.MoveNext();
                     }
                 }
+            }
+        }
+        private void enableNextAndPrevButtons(int i_NumberOfPictures, int i_CurrentPictureIndex)
+        {
+            if (i_CurrentPictureIndex < i_NumberOfPictures - 1)
+            {
+                buttonNextPicture.Enabled = true;
+            }
+            else
+            {
+                buttonNextPicture.Enabled = false;
+            }
+
+            if (i_CurrentPictureIndex > 0)
+            {
+                buttonPreviousPicture.Enabled = true;
+            }
+            else
+            {
+                buttonPreviousPicture.Enabled = false;
             }
         }
 
@@ -322,14 +343,20 @@ namespace BasicFacebookFeatures
             albumThread.Start();
         }
 
+
         private void tabControlFeatures_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OnTabControlFeaturesSelectedIndexChanged();
+        }
+
+        protected virtual void OnTabControlFeaturesSelectedIndexChanged()
         {
             if (m_IsLoggedIn)
             {
                 switch (tabControlFeatures.SelectedIndex)
                 {
                     case 0:
-                       bool havePostItem = (bool)listBoxPosts.Invoke(new Func<bool>(() => listBoxPosts.Items.Count == 0));
+                        bool havePostItem = (bool)listBoxPosts.Invoke(new Func<bool>(() => listBoxPosts.Items.Count == 0));
                         if (havePostItem)
                         {
                             initPostTab();
@@ -346,11 +373,12 @@ namespace BasicFacebookFeatures
                         MessageBox.Show("This is not working due to Facebook's new policy", "Problem", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
                     case 3:
-                        bool haveEventItem = (bool)listBoxEvents.Invoke(new Func<bool>(() => listBoxEvents.Items.Count == 0));
-                        if (haveEventItem)
-                        {
-                            initEventTab();
-                        }
+                        MessageBox.Show("This is not working due to Facebook's new policy", "Problem", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        //bool haveEventItem = (bool)listBoxEvents.Invoke(new Func<bool>(() => listBoxEvents.Items.Count == 0));
+                        //if (haveEventItem)
+                        //{
+                        //    initEventTab();
+                        //}
                         break;
                     case 4:
                         bool havePageItem = (bool)listBoxPages.Invoke(new Func<bool>(() => listBoxPages.Items.Count == 0));
@@ -366,8 +394,8 @@ namespace BasicFacebookFeatures
                             initAlbumTab();
                         }
                         break;
-                    case 6: 
-                        timerApp.Start(); 
+                    case 6:
+                        timerApp.Start();
                         break;
                 }
             }
@@ -375,10 +403,10 @@ namespace BasicFacebookFeatures
 
         private void timerApp_Tick(object sender, EventArgs e)
         {
-            OnTimerAppTick();
+            OnTimerAppTicked();
         }
 
-        protected virtual void OnTimerAppTick()
+        protected virtual void OnTimerAppTicked()
         {
             textBoxTimeSpentInTheApp.Invoke(new Action(() => textBoxTimeSpentInTheApp.Text = m_ViewModel.SetTimersMSG()));
         }
@@ -394,13 +422,23 @@ namespace BasicFacebookFeatures
         }
         private void buttonPreviousPicture_Click(object sender, EventArgs e)
         {
-            if(m_IsLoggedIn)
+            OnButtonPreviousPictureClicked();
+        }
+
+        protected virtual void OnButtonPreviousPictureClicked()
+        {
+            if (m_IsLoggedIn)
             {
                 m_PictureBoxCollection.Prev();
             }
         }
 
         private void buttonNextPicture_Click(object sender, EventArgs e)
+        {
+          OnButtonNextPictureClicked();
+        }
+
+        protected virtual void OnButtonNextPictureClicked()
         {
             if (m_IsLoggedIn)
             {
@@ -413,7 +451,7 @@ namespace BasicFacebookFeatures
             OnButtonWritePostClicked(textBoxPost.Text);
         }
 
-        //TODO: need to add post to Posts!!!!!!!!!!!!!!!!!!!!!!!
+       
         protected virtual void OnButtonWritePostClicked(string i_PostText)
         {
             if (textBoxPost.Text != k_DummyTextForPostTextBox && textBoxPost.Text != null)
@@ -433,10 +471,10 @@ namespace BasicFacebookFeatures
 
         private void textBoxPost_Enter(object sender, EventArgs e)
         {
-           OnTextBoxPost_Enter();
+           OnTextBoxPostEntered();
         }
 
-        protected virtual void OnTextBoxPost_Enter()
+        protected virtual void OnTextBoxPostEntered()
         {
             if (textBoxPost.Text == k_DummyTextForPostTextBox)
             {
@@ -456,14 +494,19 @@ namespace BasicFacebookFeatures
 
         private void textBoxPost_Leave(object sender, EventArgs e)
         {
-            OnTextBoxPost_Leave();
+            OnTextBoxPostLeaved();
         }
 
-        protected virtual void OnTextBoxPost_Leave()
+        protected virtual void OnTextBoxPostLeaved()
         {
             setTextBoxPost();
         }
         private void buttonEditPicture_Click(object sender, EventArgs e)
+        {
+            OnButtonEditPictureClicked();
+        }
+
+        protected virtual void OnButtonEditPictureClicked()
         {
             if (m_PictureBoxCollection.Image != null)
             {
@@ -478,10 +521,16 @@ namespace BasicFacebookFeatures
         }
         private void formEditPicture_Closing(object sender, FormClosingEventArgs e)
         {
-            m_FormEditPicture.Dispose();
-            m_FormEditPicture.FormEditPictureClosing -= formEditPicture_Closing;
+            OnFormEditPictureClosing();
         }
 
+        protected virtual void OnFormEditPictureClosing()
+        {
+            m_FormEditPicture.FormEditPictureClosing -= formEditPicture_Closing;
+            m_FormEditPicture.Dispose();
+        }
+
+       
 
 
         //public void InsertNewPostToListBoxPosts(string i_Id, string i_Text)
