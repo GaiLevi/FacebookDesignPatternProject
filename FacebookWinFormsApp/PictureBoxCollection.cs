@@ -15,6 +15,7 @@ namespace BasicFacebookFeatures
         private int m_Index;
         private ObservableCollection<string> m_URLCollection;
         private Label m_Label;
+        public object Current { get { return m_URLCollection[m_Index]; } }
 
         public PictureBoxCollection()
         {
@@ -30,7 +31,7 @@ namespace BasicFacebookFeatures
         {
             m_Index = -1;
             m_URLCollection = list;
-            UpdateLabel();
+            updateLabel();
             if(list.Count == 0)
             {
                 this.Image = null;
@@ -40,56 +41,48 @@ namespace BasicFacebookFeatures
 
         public bool MoveNext()
         {
+            bool hasNext = false;
             if (m_Index < m_URLCollection.Count - 1)
             {
                 m_Index++;
                 this.LoadAsync(m_URLCollection[m_Index]);
-                UpdateLabel();
-                return true;
+                updateLabel();
+                hasNext = true;
             }
-            else
-            {
-                return false;
-            }
+
+            return hasNext;
         }
 
         public void Reset()
         {
             m_Index = -1;
-            UpdateLabel();
+            updateLabel();
         }
 
-        public object Current
-        {
-            get
-            {
-                return m_URLCollection[m_Index];
-            }
-        }
 
         public bool Prev()
         {
+            bool hasPrev = false;
             if (m_Index > 0)
             {
                 m_Index--;
                 this.LoadAsync(m_URLCollection[m_Index]);
-                UpdateLabel();
-                return true;
+                updateLabel();
+                hasPrev = true;
             }
-            else
-            {
-                return false;
-            }
+
+            return hasPrev;
         }
 
-        private void UpdateLabel()
+        private void updateLabel()
         {
+            int count = m_URLCollection.Count;
             if (m_URLCollection == null)
             {
                 m_Label.Text = "";
                 return;
             }
-            int count = m_URLCollection.Count;
+            
             if (count > 0)
             {
                 m_Label.Text = $"{m_Index + 1}/{count}";
