@@ -14,29 +14,25 @@ namespace BasicFacebookFeatures
     {
         private int m_Index;
         private ObservableCollection<string> m_URLCollection;
-        private Label m_Label;
+        private readonly Label r_LabelImageIndexer;
         public object Current { get { return m_URLCollection[m_Index]; } }
 
         public PictureBoxCollection()
         {
-            m_Label = new Label();
-            m_Label.TextAlign = ContentAlignment.MiddleCenter;
-            m_Label.Size = new Size(this.Width / 2, 20);
-            m_Label.AutoSize = true;
-            m_Label.Location = new Point(0, 0);
-            m_Label.BackColor = Color.FromArgb(100, Color.White);
-            this.Controls.Add(m_Label);
+            r_LabelImageIndexer = new Label();
+            r_LabelImageIndexer.TextAlign = ContentAlignment.MiddleCenter;
+            r_LabelImageIndexer.Size = new Size(this.Width / 2, 20);
+            r_LabelImageIndexer.AutoSize = true;
+            r_LabelImageIndexer.Location = new Point(0, 0);
+            r_LabelImageIndexer.BackColor = Color.FromArgb(100, Color.White);
+            this.Controls.Add(r_LabelImageIndexer);
         }
-        public void SetList(ObservableCollection<string> list)
+        public void SetList(ObservableCollection<string> i_ImageList)
         {
             m_Index = -1;
-            m_URLCollection = list;
+            r_LabelImageIndexer.Text = string.Format(@"Loading Album");
+            m_URLCollection = i_ImageList;
             updateLabel();
-            if(list.Count == 0)
-            {
-                this.Image = null;
-                m_Label.Text = string.Format(@"No Images in album");
-            }
         }
 
         public bool MoveNext()
@@ -48,6 +44,7 @@ namespace BasicFacebookFeatures
                 this.LoadAsync(m_URLCollection[m_Index]);
                 updateLabel();
                 hasNext = true;
+                
             }
 
             return hasNext;
@@ -76,20 +73,18 @@ namespace BasicFacebookFeatures
 
         private void updateLabel()
         {
-            int count = m_URLCollection.Count;
-            if (m_URLCollection == null)
+            if(m_URLCollection != null)
             {
-                m_Label.Text = "";
-                return;
-            }
-            
-            if (count > 0)
-            {
-                m_Label.Text = $"{m_Index + 1}/{count}";
-            }
-            else
-            {
-                m_Label.Text = "";
+                int count = m_URLCollection.Count;
+                if (count == 0)
+                {
+                    this.Image = null;
+                    r_LabelImageIndexer.Text = string.Format(@"No Images in album");
+                }
+                else
+                {
+                    r_LabelImageIndexer.Text = string.Format($@"{m_Index + 1}/{count}");
+                }
             }
         }
     }

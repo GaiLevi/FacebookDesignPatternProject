@@ -21,7 +21,7 @@ namespace FacebookModel
             m_Id = i_Event.Id;
             m_Name = i_Event.Name;
             m_PictureUrl = i_Event.PictureNormalURL;
-            m_Description = i_Event.Description ?? string.Format(@"Page has no description");
+            m_Description = i_Event.Description ?? string.Format(@"Event has no description");
         }
     }
 }
