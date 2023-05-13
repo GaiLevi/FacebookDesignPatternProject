@@ -34,9 +34,9 @@ namespace FacebookModel
 
         //    throw new ArgumentException("Invalid type or object");
         //}
-        public T CreateAdapter<T>(object apiObject)
+        public T CreateAdapter<T>(object i_ApiObject)
         {
-            switch (apiObject)
+            switch (i_ApiObject)
             {
                 case FacebookWrapper.ObjectModel.Post post when typeof(T) == typeof(IPost):
                     return (T)(object)new PostAdapter(post);

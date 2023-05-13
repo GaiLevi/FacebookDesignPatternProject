@@ -9,7 +9,7 @@ namespace FacebookModel
 {
     public class PostAdapter : IPost
     {
-        private FacebookWrapper.ObjectModel.Post m_Post;
+        private readonly FacebookWrapper.ObjectModel.Post r_Post;
         public string m_Id { get; set; }
         public string m_MSG { get; set; }
         public DateTime? m_CreatedTime { get; set; }
@@ -18,7 +18,7 @@ namespace FacebookModel
         public List<string> m_Comments { get; set; }
         public PostAdapter(FacebookWrapper.ObjectModel.Post i_Post)
         {
-            m_Post = i_Post;
+            r_Post = i_Post;
             m_Id = i_Post.Id;
             if (i_Post.Message != null)
             {
@@ -50,17 +50,21 @@ namespace FacebookModel
             if (m_Comments == null)
             {
                 m_Comments = new List<string>();
-                if (m_Post != null)
+                if (r_Post != null)
                 {
-                    if (m_Post.Comments.Count > 0)
+                    if (r_Post.Comments.Count > 0)
                     {
-                        foreach (FacebookWrapper.ObjectModel.Comment comment in m_Post.Comments)
+                        foreach (FacebookWrapper.ObjectModel.Comment comment in r_Post.Comments)
                         {
                             if (comment != null)
                             {
                                 m_Comments.Add(comment.Message);
                             }
                         }
+                    }
+                    else
+                    {
+                        m_Comments.Add(string.Format(@"Post has no Comments yet"));
                     }
                 }
             }

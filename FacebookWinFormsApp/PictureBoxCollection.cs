@@ -21,6 +21,7 @@ namespace BasicFacebookFeatures
             m_Label = new Label();
             m_Label.TextAlign = ContentAlignment.MiddleCenter;
             m_Label.Size = new Size(this.Width / 2, 20);
+            m_Label.AutoSize = true;
             m_Label.Location = new Point(0, 0);
             m_Label.BackColor = Color.FromArgb(100, Color.White);
             this.Controls.Add(m_Label);
@@ -33,7 +34,7 @@ namespace BasicFacebookFeatures
             if(list.Count == 0)
             {
                 this.Image = null;
-                m_Label.Text = "Empty";
+                m_Label.Text = string.Format(@"No Images in album");
             }
         }
 

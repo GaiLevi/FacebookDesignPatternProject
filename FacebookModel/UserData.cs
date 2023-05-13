@@ -33,18 +33,13 @@ namespace FacebookModel
                 }
             }
         }
-        //public UserData(User i_LoggedInUser)
-        //{
 
-        //    m_UserName = i_LoggedInUser.Name;
-        //    m_PictureURL = i_LoggedInUser.PictureNormalURL;
-        //}
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public UserData()
         {
 
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

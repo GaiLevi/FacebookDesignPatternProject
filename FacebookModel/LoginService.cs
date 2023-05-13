@@ -90,12 +90,6 @@ namespace FacebookModel
         public void LogoutAndSet()
         {
             FacebookService.LogoutWithUI();
-            //if (m_UserData != null)
-            //{
-            //    r_FormMain.SetAppAfterLogout();
-            //    m_LoggedInUser = null;
-            //    m_LoginResult = null;
-            //}
         }
     }
 }
