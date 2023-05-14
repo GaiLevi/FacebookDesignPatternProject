@@ -10,20 +10,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-//using FacebookWrapper.ObjectModel;
 
 namespace FacebookViewModel
 {
     public class ViewModel : INotifyPropertyChanged
     {
         public static LoginService m_LoginService;
-
         private IFacebookUser m_FacebookUser;
-
-        //private ObservableCollection<PostAdapter> m_posts;
         public DateTime m_AppStarTime { get; set; }
         public TimeWellSpend m_TimeWellSpend { get; set; }
-
         public BindingSource m_BindingSourcePosts;
         public event PropertyChangedEventHandler PropertyChanged;
         private string m_AccessToken;
