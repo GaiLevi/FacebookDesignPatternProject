@@ -10,6 +10,9 @@ namespace FacebookViewModel
     public class ApplicationSettings
     {
         private static readonly string sr_FileName;
+        private static ApplicationSettings s_This;
+        public bool m_AutoLogin { get; set; } 
+        public string m_AccessToken { get; set; }
 
         static ApplicationSettings()
         {
@@ -20,8 +23,6 @@ namespace FacebookViewModel
         {
         }
 
-        private static ApplicationSettings s_This;
-       
         public static ApplicationSettings Instance
         {
             get
@@ -34,12 +35,6 @@ namespace FacebookViewModel
                 return s_This;
             }
         }
-
-        public bool AutoLogin { get; set; }
-        //public Size LastWindowSize { get; set; }
-        //public FormWindowState LastWindowState { get; set; }
-        //public Point LastWindowLocation { get; set; }
-        public string AccessToken { get; set; }
 
         public void Save()
         {
@@ -66,9 +61,7 @@ namespace FacebookViewModel
             {
                 loadedThis = new ApplicationSettings()
                                  {
-                                     AutoLogin = false,
-                                     //LastWindowSize = new Size(800, 500),
-                                     //LastWindowState = FormWindowState.Normal
+                                     m_AutoLogin = false,
                                  };
             }
 

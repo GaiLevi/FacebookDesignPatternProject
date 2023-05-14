@@ -25,7 +25,9 @@ namespace FacebookViewModel
         public TimeWellSpend m_TimeWellSpend { get; set; }
 
         public BindingSource m_BindingSourcePosts;
+        public event PropertyChangedEventHandler PropertyChanged;
         private string m_AccessToken;
+
         public string AccessToken
         {
             get => m_AccessToken;
@@ -38,9 +40,6 @@ namespace FacebookViewModel
                 }
             }
         }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public LoginService LoginService
         {
@@ -68,11 +67,6 @@ namespace FacebookViewModel
             }
         }
 
-        //public ObservableCollection<PostAdapter> Posts
-        //{
-        //    get => m_posts; set => SetField(ref m_posts, value);
-        //}
-
         public BindingSource BindingSourcePosts
         {
             get => m_BindingSourcePosts;
@@ -86,20 +80,10 @@ namespace FacebookViewModel
             }
         }
 
-
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged(string i_PropertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(i_PropertyName));
         }
-
-
-        //protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-        //{
-        //    if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-        //    field = value;
-        //    OnPropertyChanged(propertyName);
-        //    return true;
-        //}
 
         public void AutoLogin(string i_AccessToken)
         {
@@ -121,7 +105,6 @@ namespace FacebookViewModel
             if (i_LoginUser != null)
             {
                 AccessToken = m_LoginService.m_AccessToken;
-                //m_FacebookUser.LoadPostsFromApi();
             }
         }
 
@@ -138,17 +121,12 @@ namespace FacebookViewModel
             {
                 MessageBox.Show(e.Message);
             }
-            //m_LoginService.LoadPostsFromApi();
-            //m_bsPosts = new BindingSource { DataSource = m_LoginService.Posts };
-
         }
 
         public void LogoutButtonClicked()
         {
             m_LoginService.LogoutAndSet();
         }
-
-
 
         public string SetTimersMSG()
         {
@@ -176,6 +154,5 @@ of your life in our stupid App!",
             string betterThingToDo = m_TimeWellSpend.GetActivity(m_AppStarTime);
             return betterThingToDo;
         }
-
     }
 }

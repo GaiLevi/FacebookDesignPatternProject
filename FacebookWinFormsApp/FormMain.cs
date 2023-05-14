@@ -16,27 +16,31 @@ namespace BasicFacebookFeatures
 {
     public partial class FormMain : Form
     {
-        ViewModel m_ViewModel;
-        bool m_IsLoggedIn = false;
+        private readonly ViewModel r_ViewModel;
+        private bool m_IsLoggedIn { get; set; }
         BindingSource m_BindingSource;
         PictureBoxCollection m_PictureBoxCollection;
-        //Locks
-        private object postLock = new object();
-        private object groupLock = new object();
-        private object eventLock = new object();
-        private object pageLock = new object();
-        private object albumLock = new object();
+        private readonly object r_PostLock = new object();
+        private readonly object r_GroupLock = new object();
+        private readonly object r_EventLock = new object();
+        private readonly object r_PageLock = new object();
+        private readonly object r_AlbumLock = new object();
         private const string k_DummyTextForPostTextBox = "What's on your mind?";
         private FormEditPicture m_FormEditPicture;
 
         public FormMain()
         {
-            InitializeComponent();
-            initPictureBoxCollectionForAlbumTab();
-            m_ViewModel = new ViewModel();
-            m_BindingSource = new BindingSource { DataSource = m_ViewModel };
-            m_ViewModel.PropertyChanged += OnViewModel_PropertyChanged;
+            r_ViewModel = new ViewModel();
+            initForm();
+        }
 
+        private void initForm()
+        {
+            InitializeComponent();
+            m_IsLoggedIn = false;
+            initPictureBoxCollectionForAlbumTab();
+            m_BindingSource = new BindingSource { DataSource = r_ViewModel };
+            r_ViewModel.PropertyChanged += OnViewModel_PropertyChanged;
             PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
             pictureBoxGroup.DataBindings.Add("ImageLocation", iGroupBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
             pictureBoxEvent.DataBindings.Add("ImageLocation", iEventBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -46,21 +50,20 @@ namespace BasicFacebookFeatures
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            m_ViewModel.m_AppStarTime = DateTime.Now;
-            this.checkBoxAutoLogin.Checked = ApplicationSettings.Instance.AutoLogin;
-            if(ApplicationSettings.Instance.AutoLogin)
+            r_ViewModel.m_AppStarTime = DateTime.Now;
+            this.checkBoxAutoLogin.Checked = ApplicationSettings.Instance.m_AutoLogin;
+            if(ApplicationSettings.Instance.m_AutoLogin)
             {
-                new Thread(() => m_ViewModel.AutoLogin(ApplicationSettings.Instance.AccessToken)).Start();
+                new Thread(() => r_ViewModel.AutoLogin(ApplicationSettings.Instance.m_AccessToken)).Start();
             }
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            ApplicationSettings.Instance.AutoLogin = this.checkBoxAutoLogin.Checked;
+            ApplicationSettings.Instance.m_AutoLogin = this.checkBoxAutoLogin.Checked;
             ApplicationSettings.Instance.Save();
-            m_ViewModel.PropertyChanged -= OnViewModel_PropertyChanged;
-            
+            r_ViewModel.PropertyChanged -= OnViewModel_PropertyChanged;
         }
 
         protected virtual void OnViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -68,46 +71,37 @@ namespace BasicFacebookFeatures
             if (e.PropertyName == "AccessToken")
             {
                 afterLoginInit();
-                ApplicationSettings.Instance.AccessToken = m_ViewModel.AccessToken;
+                ApplicationSettings.Instance.m_AccessToken = r_ViewModel.AccessToken;
             }
         }
+
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-            OnButtonLogin_Click();
+            OnButtonLoginClicked();
         }
 
-        protected virtual void OnButtonLogin_Click()
+        protected virtual void OnButtonLoginClicked()
         {
             Clipboard.SetText("design.patterns.22aa");
-            m_ViewModel.LoginButtonClicked();
+            r_ViewModel.LoginButtonClicked();
         }
-
 
         private void afterLoginInit()
         {
             buttonLogin.Invoke(new Action(() =>
                 {
-                    buttonLogin.Text = string.Format($@"Log in as {m_ViewModel.FacebookUser.m_UserName}");
+                    buttonLogin.Text = string.Format($@"Log in as {r_ViewModel.FacebookUser.m_UserName}");
                     buttonLogin.Enabled = false;
                 }));
-            pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = m_ViewModel.FacebookUser.m_PictureURL));
+            pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = r_ViewModel.FacebookUser.m_PictureURL));
             labelWelcomeToApp.Invoke(new Action(() => labelWelcomeToApp.Visible = false));
             textBoxPost.Invoke(new Action(() => textBoxPost.Visible = true));
             buttonWritePost.Invoke(new Action(() => buttonWritePost.Visible = true));
             tabControlFeatures.Invoke(new Action(() => tabControlFeatures.Visible = true));
             m_IsLoggedIn = true;
             initPostTab();
-            
-
-            //iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
-            //PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
-
-            //listBoxComments.DataSource = iPostBindingSource.DataSource;
-            //postsBS = m_ViewModel.bsPosts;
-            //labelID.DataBindings.Add("Text", postsBS, "Id", true, DataSourceUpdateMode.OnPropertyChanged);
-            //listBoxPosts.DataSource = postsBS;
-            //listBoxPosts.DisplayMember = "Message";
         }
+
         private void initPictureBoxCollectionForAlbumTab()
         {
             m_PictureBoxCollection = new PictureBoxCollection();
@@ -117,14 +111,15 @@ namespace BasicFacebookFeatures
             m_PictureBoxCollection.Size = new Size(150,150);
             m_PictureBoxCollection.SizeMode = PictureBoxSizeMode.StretchImage;
         }
+
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-			OnButtonLogOut_Click();
+			OnButtonLogOutClicked();
         }
 
-        protected virtual void OnButtonLogOut_Click()
+        protected virtual void OnButtonLogOutClicked()
         {
-            m_ViewModel.LogoutButtonClicked();
+            r_ViewModel.LogoutButtonClicked();
             buttonLogin.Invoke(new Action(() =>
                 {
                     buttonLogin.Text = string.Format(@"Login");
@@ -142,6 +137,7 @@ namespace BasicFacebookFeatures
         { 
             displaySelectedPostComments();
         }
+
         private void displaySelectedPostComments()
         {
             bool hasSingleSelectedItem = (bool)listBoxPosts.Invoke(new Func<bool>(() => listBoxPosts.SelectedItems.Count == 1));
@@ -155,6 +151,7 @@ namespace BasicFacebookFeatures
                 }
             }
         }
+
         private void listBoxAlbums_SelectedIndexChanged(object sender, EventArgs e)
         {
             displaySelectedAlbumPhotos();
@@ -182,6 +179,7 @@ namespace BasicFacebookFeatures
                 }
             }
         }
+
         private void enableNextAndPrevButtons(int i_NumberOfPictures, int i_CurrentPictureIndex)
         {
             if (i_CurrentPictureIndex < i_NumberOfPictures - 1)
@@ -209,16 +207,16 @@ namespace BasicFacebookFeatures
             {
                 try
                 {
-                    lock(postLock)
+                    lock(r_PostLock)
                     {
-                        if(m_ViewModel.FacebookUser.m_PostCollection == null)
+                        if(r_ViewModel.FacebookUser.m_PostCollection == null)
                         {
-                            m_ViewModel.FacebookUser.LoadPostsFromApi();
+                            r_ViewModel.FacebookUser.LoadPostsFromApi();
                             BeginInvoke(
                                 new Action(
                                     () =>
                                         {
-                                            iPostBindingSource.DataSource = m_ViewModel.FacebookUser.m_PostCollection;
+                                            iPostBindingSource.DataSource = r_ViewModel.FacebookUser.m_PostCollection;
                                             displaySelectedPostComments();
                                         }));
                         }
@@ -239,14 +237,14 @@ namespace BasicFacebookFeatures
                 {
                     try
                     {
-                        lock (groupLock)
+                        lock (r_GroupLock)
                         {
-                            if (m_ViewModel.FacebookUser.m_GroupCollection == null)
+                            if (r_ViewModel.FacebookUser.m_GroupCollection == null)
                             {
-                                m_ViewModel.FacebookUser.LoadGroupsFromApi();
+                                r_ViewModel.FacebookUser.LoadGroupsFromApi();
                                 BeginInvoke(new Action(() =>
                                     {
-                                        iGroupBindingSource.DataSource = m_ViewModel.FacebookUser.m_GroupCollection;
+                                        iGroupBindingSource.DataSource = r_ViewModel.FacebookUser.m_GroupCollection;
                                     }));
                             }
                         }
@@ -260,21 +258,20 @@ namespace BasicFacebookFeatures
             groupThread.Start();
         }
 
-
         private void initEventTab()
         {
             Thread eventThread = new Thread(new ThreadStart(() =>
                 {
                     try
                     {
-                        lock (eventLock)
+                        lock (r_EventLock)
                         {
-                            if (m_ViewModel.FacebookUser.m_EventCollection == null)
+                            if (r_ViewModel.FacebookUser.m_EventCollection == null)
                             {
-                                m_ViewModel.FacebookUser.LoadEventsFromApi();
+                                r_ViewModel.FacebookUser.LoadEventsFromApi();
                                 BeginInvoke(new Action(() =>
                                     {
-                                        iEventBindingSource.DataSource = m_ViewModel.FacebookUser.m_EventCollection;
+                                        iEventBindingSource.DataSource = r_ViewModel.FacebookUser.m_EventCollection;
                                     }));
                             }
                         }
@@ -294,14 +291,14 @@ namespace BasicFacebookFeatures
             {
                 try
                 {
-                    lock (pageLock)
+                    lock (r_PageLock)
                     {
-                        if (m_ViewModel.FacebookUser.m_PageCollection == null)
+                        if (r_ViewModel.FacebookUser.m_PageCollection == null)
                         {
-                            m_ViewModel.FacebookUser.LoadPagesFromApi();
+                            r_ViewModel.FacebookUser.LoadPagesFromApi();
                             BeginInvoke(new Action(() =>
                                 {
-                                    iPageBindingSource.DataSource = m_ViewModel.FacebookUser.m_PageCollection;
+                                    iPageBindingSource.DataSource = r_ViewModel.FacebookUser.m_PageCollection;
                                 }));
                         }
                     }
@@ -321,14 +318,14 @@ namespace BasicFacebookFeatures
             {
                 try
                 {
-                    lock (albumLock)
+                    lock (r_AlbumLock)
                     {
-                        if (m_ViewModel.FacebookUser.m_AlbumCollection == null)
+                        if (r_ViewModel.FacebookUser.m_AlbumCollection == null)
                         {
-                            m_ViewModel.FacebookUser.LoadAlbumsFromApi();
+                            r_ViewModel.FacebookUser.LoadAlbumsFromApi();
                             BeginInvoke(new Action(() =>
                                 {
-                                    iAlbumBindingSource.DataSource = m_ViewModel.FacebookUser.m_AlbumCollection;
+                                    iAlbumBindingSource.DataSource = r_ViewModel.FacebookUser.m_AlbumCollection;
                                     displaySelectedAlbumPhotos();
                                 }));
                         }
@@ -342,7 +339,6 @@ namespace BasicFacebookFeatures
 
             albumThread.Start();
         }
-
 
         private void tabControlFeatures_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -408,18 +404,19 @@ namespace BasicFacebookFeatures
 
         protected virtual void OnTimerAppTicked()
         {
-            textBoxTimeSpentInTheApp.Invoke(new Action(() => textBoxTimeSpentInTheApp.Text = m_ViewModel.SetTimersMSG()));
+            textBoxTimeSpentInTheApp.Invoke(new Action(() => textBoxTimeSpentInTheApp.Text = r_ViewModel.SetTimersMSG()));
         }
-
 
         protected virtual void OnButtonGenerateBetterThingToDoClicked()
         {
-            textBoxBetterThingToDo.Invoke(new Action(() => textBoxBetterThingToDo.Text = m_ViewModel.GetBetterThingFromDic()));
+            textBoxBetterThingToDo.Invoke(new Action(() => textBoxBetterThingToDo.Text = r_ViewModel.GetBetterThingFromDic()));
         }
+
         private void buttonGenerateBetterThingToDo_Click(object sender, EventArgs e)
         {
             OnButtonGenerateBetterThingToDoClicked();
         }
+
         private void buttonPreviousPicture_Click(object sender, EventArgs e)
         {
             OnButtonPreviousPictureClicked();
@@ -451,12 +448,11 @@ namespace BasicFacebookFeatures
             OnButtonWritePostClicked(textBoxPost.Text);
         }
 
-       
         protected virtual void OnButtonWritePostClicked(string i_PostText)
         {
             if (textBoxPost.Text != k_DummyTextForPostTextBox && textBoxPost.Text != null)
             {
-                m_ViewModel.FacebookUser.AddNewPostToCollection(i_PostText);
+                r_ViewModel.FacebookUser.AddNewPostToCollection(i_PostText);
                 listBoxPosts.DataSource = null;
                 listBoxPosts.DataSource = iPostBindingSource;
                 listBoxPosts.DisplayMember = "m_MSG";
@@ -501,6 +497,7 @@ namespace BasicFacebookFeatures
         {
             setTextBoxPost();
         }
+
         private void buttonEditPicture_Click(object sender, EventArgs e)
         {
             OnButtonEditPictureClicked();
@@ -529,21 +526,5 @@ namespace BasicFacebookFeatures
             m_FormEditPicture.FormEditPictureClosing -= formEditPicture_Closing;
             m_FormEditPicture.Dispose();
         }
-
-       
-
-
-        //public void InsertNewPostToListBoxPosts(string i_Id, string i_Text)
-        //{
-        //    if (listBoxPosts.DataSource is List<KeyValuePair<string, string>>)
-        //    {
-        //        List<KeyValuePair<string, string>> dataSource = (List<KeyValuePair<string, string>>)listBoxPosts.DataSource;
-        //        KeyValuePair<string, string> postToAdd = new KeyValuePair<string, string>(i_Id, i_Text);
-        //        dataSource.Insert(0, postToAdd);
-        //        listBoxPosts.DataSource = null;
-        //        listBoxPosts.DisplayMember = "Value";
-        //        listBoxPosts.DataSource = dataSource;
-        //    }
-        //}
     }
 }
