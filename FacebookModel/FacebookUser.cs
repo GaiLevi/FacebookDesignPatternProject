@@ -21,17 +21,20 @@ namespace FacebookModel
         public ObservableCollection<IPage> m_PageCollection { get; set; }
         public ObservableCollection<IAlbum> m_AlbumCollection { get; set; }
         private readonly IAdapterFactory r_AdapterFactory = new AdapterFactory();
+
         public FacebookUser(User i_LoggedInUser)
         {
             r_LogInUser = i_LoggedInUser;
             m_UserName = i_LoggedInUser.Name;
             m_PictureURL = i_LoggedInUser.PictureNormalURL;
         }
+
         public void AddNewPostToCollection(string i_PostMessage)
         {
             IPost newPost = new PostAdapter(i_PostMessage);
             m_PostCollection.Insert(0,newPost);
         }
+
         public void LoadPostsFromApi()
         {
             if (m_PostCollection == null)
@@ -58,6 +61,7 @@ namespace FacebookModel
                 }
             }
         }
+
         public void LoadEventsFromApi()
         {
             if (m_EventCollection == null)
@@ -70,6 +74,7 @@ namespace FacebookModel
                 }
             }
         }
+
         public void LoadPagesFromApi()
         {
             if (m_PageCollection == null)
@@ -82,6 +87,7 @@ namespace FacebookModel
                 }
             }
         }
+
         public void LoadAlbumsFromApi()
         {
             if (m_AlbumCollection == null)

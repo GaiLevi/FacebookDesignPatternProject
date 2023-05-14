@@ -8,6 +8,6 @@ namespace Common.Contracts
 {
     public interface IAdapterFactory
     {
-        T CreateAdapter<T>(object apiObject);
+        T CreateAdapter<T>(object i_ApiObject);
     }
 }

@@ -16,21 +16,22 @@ namespace BasicFacebookFeatures
         private Graphics m_GraphicImage;
         private Bitmap m_BitMap;
         private Color m_Color;
-        private Image m_Image;
-        bool m_IsDrawing = false;
+        private readonly Image r_Image;
+        public bool m_IsDrawing { get; set; }
         public event FormClosingEventHandler FormEditPictureClosing;
-        private Rectangle m_PanelLocation;
+        private readonly Rectangle r_PanelLocation;
 
 
         public FormEditPicture(Image i_Image)
         {
             InitializeComponent();
+            m_IsDrawing = false;
             m_Color = Color.Black;
-            m_Image = i_Image;
+            r_Image = i_Image;
             FormClosing += OnFormEditPictureClosing;
-            panelEditPicture.BackgroundImage = m_Image;
+            panelEditPicture.BackgroundImage = r_Image;
             panelEditPicture.BackgroundImageLayout = ImageLayout.Stretch;
-            m_PanelLocation = new Rectangle(0, 0, panelEditPicture.Width, panelEditPicture.Height);
+            r_PanelLocation = new Rectangle(0, 0, panelEditPicture.Width, panelEditPicture.Height);
         }
 
         private void formEditPicture_Load(object sender, EventArgs e)
@@ -38,9 +39,9 @@ namespace BasicFacebookFeatures
             m_GraphicPanel = panelEditPicture.CreateGraphics();
             m_BitMap = new Bitmap(panelEditPicture.Width, panelEditPicture.Height);
             m_GraphicImage = Graphics.FromImage(m_BitMap);
-            Bitmap chosenPictureBitmap = new Bitmap(m_Image);
-            m_GraphicImage.DrawImage(chosenPictureBitmap, m_PanelLocation);
-            m_GraphicPanel.DrawImage(m_BitMap, m_PanelLocation);
+            Bitmap chosenPictureBitmap = new Bitmap(r_Image);
+            m_GraphicImage.DrawImage(chosenPictureBitmap, r_PanelLocation);
+            m_GraphicPanel.DrawImage(m_BitMap, r_PanelLocation);
         }
 
         private void panelEditPicture_MouseDown(object sender, MouseEventArgs e)
@@ -66,7 +67,7 @@ namespace BasicFacebookFeatures
             {
                 Rectangle mouseRect = new Rectangle(e.X - (trackBar1.Value / 2), e.Y - (trackBar1.Value / 2), (trackBar1.Value), (trackBar1.Value));
                 m_GraphicImage.FillRectangle(new SolidBrush(m_Color), mouseRect);
-                m_GraphicPanel.DrawImage(m_BitMap, m_PanelLocation);
+                m_GraphicPanel.DrawImage(m_BitMap, r_PanelLocation);
             }
         }
 

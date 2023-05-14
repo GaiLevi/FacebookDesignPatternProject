@@ -30,18 +30,16 @@ namespace FacebookModel
 
                             try
                             {
-                                /// Binding flags exclude public and static constructors.
                                 constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null);
                             }
                             catch (Exception exception)
                             {
                                 throw new Exception(null, exception);
                             }
-                            if (constructor == null || constructor.IsAssembly) /// Also exclude internal constructors.
+                            if (constructor == null || constructor.IsAssembly)
                             {
                                 throw new Exception(string.Format("A private or protected constructor is missing for '{0}'.", typeof(T).Name));
                             }
-
                             s_Instance = constructor.Invoke(null) as T;
                         }
                     }

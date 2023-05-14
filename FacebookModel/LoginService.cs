@@ -15,9 +15,7 @@ namespace FacebookModel
         public LoginResult m_LoginResult { get; set; }
         public FacebookUser m_LoginUser { get; set; }
         public string m_AccessToken { get; set; }
-
-        //public ObservableCollection<FacebookModel.Post> Posts { get; } = new ObservableCollection<Post>();
-        public UserData m_UserData { get; set; }
+        
 
         private LoginService()
         {
@@ -27,7 +25,6 @@ namespace FacebookModel
         {
             get { return Singleton<LoginService>.Instance;}
         }
-
 
         public void AutoLogin(string i_AccessToken)
         {
@@ -45,7 +42,6 @@ namespace FacebookModel
                    LoginAndInit();
             }
         }
-
 
         public void LoginAndInit()
         {

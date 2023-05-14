@@ -16,6 +16,7 @@ namespace FacebookModel
         public DateTime? m_LastEditTime { get; set; }
         public string m_PictureUrl { get; set; }
         public List<string> m_Comments { get; set; }
+
         public PostAdapter(FacebookWrapper.ObjectModel.Post i_Post)
         {
             r_Post = i_Post;
@@ -36,6 +37,7 @@ namespace FacebookModel
             m_LastEditTime = i_Post.UpdateTime;
             m_PictureUrl = i_Post.PictureURL;
         }
+
         public PostAdapter(string i_Message)
         {
             m_Id = Guid.NewGuid().ToString();
@@ -45,6 +47,7 @@ namespace FacebookModel
             m_PictureUrl = null;
             m_Comments = null;
         }
+
         public void LoadComments()
         {
             if (m_Comments == null)
