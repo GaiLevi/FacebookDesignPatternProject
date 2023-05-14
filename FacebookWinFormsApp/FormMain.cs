@@ -25,6 +25,7 @@ namespace BasicFacebookFeatures
         private readonly object r_EventLock = new object();
         private readonly object r_PageLock = new object();
         private readonly object r_AlbumLock = new object();
+        private readonly object r_PicturesLock = new object();
         private const string k_DummyTextForPostTextBox = "What's on your mind?";
         private FormEditPicture m_FormEditPicture;
 
@@ -165,39 +166,32 @@ namespace BasicFacebookFeatures
                 IAlbum selectedItemAsIAlbum = (IAlbum)listBoxAlbums.Invoke(new Func<IAlbum>(() => listBoxAlbums.SelectedItem as IAlbum));
                 if (selectedItemAsIAlbum != null)
                 {
-                    selectedItemAsIAlbum.LoadAlbumPictures();
-                    if (selectedItemAsIAlbum.m_PicturesUrl.Count > 0)
+                    Thread picturesThread = new Thread(new ThreadStart(() =>
                     {
-                        m_PictureBoxCollection.SetList(selectedItemAsIAlbum.m_PicturesUrl);
-                        m_PictureBoxCollection.MoveNext();
-                    }
-                    else
-                    {
-                        //m_PictureBoxCollection.SetList(selectedAlbum.m_PicturesUrl);
-                        //m_PictureBoxCollection.MoveNext();
-                    }
+                        try
+                        {
+                            lock (r_PicturesLock)
+                            {
+                                if (selectedItemAsIAlbum.m_PicturesUrl == null)
+                                {
+                                    selectedItemAsIAlbum.LoadAlbumPictures();
+                                    labelIsAlbumLoading.Invoke(new Action(() => labelIsAlbumLoading.Visible = true));
+                                }
+                                BeginInvoke(new Action(() =>
+                                {
+                                    m_PictureBoxCollection.SetList(selectedItemAsIAlbum.m_PicturesUrl);
+                                    m_PictureBoxCollection.MoveNext();
+                                    labelIsAlbumLoading.Invoke(new Action(() => labelIsAlbumLoading.Visible = false));
+                                }));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }));
+                    picturesThread.Start();
                 }
-            }
-        }
-
-        private void enableNextAndPrevButtons(int i_NumberOfPictures, int i_CurrentPictureIndex)
-        {
-            if (i_CurrentPictureIndex < i_NumberOfPictures - 1)
-            {
-                buttonNextPicture.Enabled = true;
-            }
-            else
-            {
-                buttonNextPicture.Enabled = false;
-            }
-
-            if (i_CurrentPictureIndex > 0)
-            {
-                buttonPreviousPicture.Enabled = true;
-            }
-            else
-            {
-                buttonPreviousPicture.Enabled = false;
             }
         }
 

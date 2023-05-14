@@ -9,31 +9,6 @@ namespace FacebookModel
 {
     public class AdapterFactory : IAdapterFactory
     {
-        //public T CreateAdapter<T>(object apiObject)
-        //{
-        //    if (typeof(T) == typeof(IPost) && apiObject is FacebookWrapper.ObjectModel.Post post)
-        //    {
-        //        return (T)(object)new PostAdapter(post);
-        //    }
-        //    else if (typeof(T) == typeof(IGroup) && apiObject is FacebookWrapper.ObjectModel.Group group)
-        //    {
-        //        return (T)(object)new GroupAdapter(group);
-        //    }
-        //    else if (typeof(T) == typeof(IEvent) && apiObject is FacebookWrapper.ObjectModel.Event i_event)
-        //    {
-        //        return (T)(object)new EventAdapter(i_event);
-        //    }
-        //    else if (typeof(T) == typeof(IPage) && apiObject is FacebookWrapper.ObjectModel.Page page)
-        //    {
-        //        return (T)(object)new PageAdapter(page);
-        //    }
-        //    else if (typeof(T) == typeof(IAlbum) && apiObject is FacebookWrapper.ObjectModel.Album album)
-        //    {
-        //        return (T)(object)new AlbumAdapter(album);
-        //    }
-
-        //    throw new ArgumentException("Invalid type or object");
-        //}
         public T CreateAdapter<T>(object i_ApiObject)
         {
             switch (i_ApiObject)

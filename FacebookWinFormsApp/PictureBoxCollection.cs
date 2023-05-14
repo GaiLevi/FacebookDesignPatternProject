@@ -30,7 +30,6 @@ namespace BasicFacebookFeatures
         public void SetList(ObservableCollection<string> i_ImageList)
         {
             m_Index = -1;
-            r_LabelImageIndexer.Text = string.Format(@"Loading Album");
             m_URLCollection = i_ImageList;
             updateLabel();
         }

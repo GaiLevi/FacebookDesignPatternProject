@@ -73,14 +73,12 @@
     <Compile Include="AlbumAdapter.cs" />
     <Compile Include="EventAdapter.cs" />
     <Compile Include="FacebookUser.cs" />
-    <Compile Include="FacebookUserBuilder.cs" />
     <Compile Include="GroupAdapter.cs" />
     <Compile Include="LoginService.cs" />
     <Compile Include="PageAdapter.cs" />
     <Compile Include="PostAdapter.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="TimeWellSpend.cs" />
-    <Compile Include="UserData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
