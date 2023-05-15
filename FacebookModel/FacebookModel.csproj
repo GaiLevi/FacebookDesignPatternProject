@@ -57,6 +57,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Facebook">
@@ -75,6 +76,7 @@
     <Compile Include="FacebookUser.cs" />
     <Compile Include="GroupAdapter.cs" />
     <Compile Include="LoginService.cs" />
+    <Compile Include="NewFactory.cs" />
     <Compile Include="PageAdapter.cs" />
     <Compile Include="PostAdapter.cs" />
     <Compile Include="Singleton.cs" />

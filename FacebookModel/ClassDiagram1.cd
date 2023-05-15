@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FacebookModel.AlbumAdapter" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EEAAAAAAECAAAAAAAAAAAAAAAAAAAAQAAgAAAAAAAAA=</HashCode>
+      <FileName>AlbumAdapter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.1" Collapsed="true" />
+  </Class>
+  <Class Name="FacebookModel.EventAdapter" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAEAAAAAAAAAAAAAAAAAAAAQAAAAAAABAAQA=</HashCode>
+      <FileName>EventAdapter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.1" Collapsed="true" />
+  </Class>
+  <Class Name="FacebookModel.GroupAdapter" BaseTypeListCollapsed="true">
+    <Position X="4" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAEAAAAAABAAAAAAAAAAAAAQAAAAAAABAAAA=</HashCode>
+      <FileName>GroupAdapter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.1" Collapsed="true" />
+  </Class>
+  <Class Name="FacebookModel.PageAdapter" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAEAAAAAAAAAAAgAAAAAAAAQAAAAAAABAAAA=</HashCode>
+      <FileName>PageAdapter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.1" Collapsed="true" />
+  </Class>
+  <Class Name="FacebookModel.PostAdapter" BaseTypeListCollapsed="true">
+    <Position X="7.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQQAAAAEAAAAAIAEAAAAAAAAAAAARAAAAAAAAAAIA=</HashCode>
+      <FileName>PostAdapter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.1" Collapsed="true" />
+  </Class>
+  <Class Name="FacebookWrapper.ObjectModel.Group" Collapsed="true">
+    <Position X="13" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="FacebookWrapper.ObjectModel.Group.ePrivacy" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FacebookWrapper.ObjectModel.Event" Collapsed="true">
+    <Position X="14.5" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="FacebookWrapper.ObjectModel.Event.ePrivacy" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+      <Enum Name="FacebookWrapper.ObjectModel.Event.eRsvpType" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FacebookWrapper.ObjectModel.Album" Collapsed="true">
+    <Position X="17.5" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="FacebookWrapper.ObjectModel.Album.eType" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FacebookWrapper.ObjectModel.Page" Collapsed="true">
+    <Position X="16" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FacebookWrapper.ObjectModel.Post" Collapsed="true">
+    <Position X="11.5" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="FacebookWrapper.ObjectModel.Post.eType" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FacebookWrapper.ObjectModel.User" Collapsed="true">
+    <Position X="20.25" Y="2" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="FacebookWrapper.ObjectModel.User.eGender" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+      <Enum Name="FacebookWrapper.ObjectModel.User.eRelationshipStatus" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+      <Enum Name="FacebookWrapper.ObjectModel.User.eOnlineStatus" Collapsed="true">
+        <TypeIdentifier />
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="Common.Contracts.IAlbum">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Common.Contracts.IEvent">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Common.Contracts.IGroup">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Common.Contracts.IPost">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Common.Contracts.IPage">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -21,6 +21,7 @@ namespace FacebookModel
         public ObservableCollection<IPage> m_PageCollection { get; set; }
         public ObservableCollection<IAlbum> m_AlbumCollection { get; set; }
         private readonly IAdapterFactory r_AdapterFactory = new AdapterFactory();
+        private readonly NewFactory newF = new NewFactory();
 
         public FacebookUser(User i_LoggedInUser)
         {
@@ -35,6 +36,7 @@ namespace FacebookModel
             m_PostCollection.Insert(0,newPost);
         }
 
+        //  ******** New Factory **********
         public void LoadPostsFromApi()
         {
             if (m_PostCollection == null)
@@ -43,8 +45,8 @@ namespace FacebookModel
 
                 foreach (FacebookWrapper.ObjectModel.Post apiPost in r_LogInUser.Posts)
                 {
-                    IPost postToAdd = r_AdapterFactory.CreateAdapter<IPost>(apiPost);
-                    m_PostCollection.Add(postToAdd);
+                    IAdapter postToAdd = newF.CreateAdapter(apiPost);
+                    m_PostCollection.Add(postToAdd as IPost);
                 }
             }
         }
@@ -56,8 +58,8 @@ namespace FacebookModel
                 m_GroupCollection = new ObservableCollection<IGroup>();
                 foreach (FacebookWrapper.ObjectModel.Group apiGroup in r_LogInUser.Groups)
                 {
-                    IGroup groupToAdd = r_AdapterFactory.CreateAdapter<IGroup>(apiGroup);
-                    m_GroupCollection.Add(groupToAdd);
+                    IAdapter groupToAdd = newF.CreateAdapter(apiGroup);
+                    m_GroupCollection.Add(groupToAdd as IGroup);
                 }
             }
         }
@@ -69,8 +71,8 @@ namespace FacebookModel
                 m_EventCollection = new ObservableCollection<IEvent>();
                 foreach (FacebookWrapper.ObjectModel.Event apiEvent in r_LogInUser.Events)
                 {
-                    IEvent eventToAdd = r_AdapterFactory.CreateAdapter<IEvent>(apiEvent);
-                    m_EventCollection.Add(eventToAdd);
+                    IAdapter eventToAdd = newF.CreateAdapter(apiEvent);
+                    m_EventCollection.Add(eventToAdd as IEvent);
                 }
             }
         }
@@ -82,8 +84,8 @@ namespace FacebookModel
                 m_PageCollection = new ObservableCollection<IPage>();
                 foreach (FacebookWrapper.ObjectModel.Page apiPage in r_LogInUser.LikedPages)
                 {
-                    IPage pageToAdd = r_AdapterFactory.CreateAdapter<IPage>(apiPage);
-                    m_PageCollection.Add(pageToAdd);
+                    IAdapter pageToAdd = newF.CreateAdapter(apiPage);
+                    m_PageCollection.Add(pageToAdd as IPage);
                 }
             }
         }
@@ -95,10 +97,77 @@ namespace FacebookModel
                 m_AlbumCollection = new ObservableCollection<IAlbum>();
                 foreach (FacebookWrapper.ObjectModel.Album apiAlbum in r_LogInUser.Albums)
                 {
-                    IAlbum albumToAdd = r_AdapterFactory.CreateAdapter<IAlbum>(apiAlbum);
-                    m_AlbumCollection.Add(albumToAdd);
+                    IAdapter albumToAdd = newF.CreateAdapter(apiAlbum);
+                    m_AlbumCollection.Add(albumToAdd as IAlbum);
                 }
             }
         }
+
+        // ********  Old factory ********
+        //public void LoadPostsFromApi()
+        //{
+        //    if (m_PostCollection == null)
+        //    {
+        //        m_PostCollection = new ObservableCollection<IPost>();
+
+        //        foreach (FacebookWrapper.ObjectModel.Post apiPost in r_LogInUser.Posts)
+        //        {
+        //            IPost postToAdd = r_AdapterFactory.CreateAdapter<IPost>(apiPost);
+        //            m_PostCollection.Add(postToAdd);
+        //        }
+        //    }
+        //}
+
+        //public void LoadGroupsFromApi()
+        //{
+        //    if (m_GroupCollection == null)
+        //    {
+        //        m_GroupCollection = new ObservableCollection<IGroup>();
+        //        foreach (FacebookWrapper.ObjectModel.Group apiGroup in r_LogInUser.Groups)
+        //        {
+        //            IGroup groupToAdd = r_AdapterFactory.CreateAdapter<IGroup>(apiGroup);
+        //            m_GroupCollection.Add(groupToAdd);
+        //        }
+        //    }
+        //}
+
+        //public void LoadEventsFromApi()
+        //{
+        //    if (m_EventCollection == null)
+        //    {
+        //        m_EventCollection = new ObservableCollection<IEvent>();
+        //        foreach (FacebookWrapper.ObjectModel.Event apiEvent in r_LogInUser.Events)
+        //        {
+        //            IEvent eventToAdd = r_AdapterFactory.CreateAdapter<IEvent>(apiEvent);
+        //            m_EventCollection.Add(eventToAdd);
+        //        }
+        //    }
+        //}
+
+        //public void LoadPagesFromApi()
+        //{
+        //    if (m_PageCollection == null)
+        //    {
+        //        m_PageCollection = new ObservableCollection<IPage>();
+        //        foreach (FacebookWrapper.ObjectModel.Page apiPage in r_LogInUser.LikedPages)
+        //        {
+        //            IPage pageToAdd = r_AdapterFactory.CreateAdapter<IPage>(apiPage);
+        //            m_PageCollection.Add(pageToAdd);
+        //        }
+        //    }
+        //}
+
+        //public void LoadAlbumsFromApi()
+        //{
+        //    if (m_AlbumCollection == null)
+        //    {
+        //        m_AlbumCollection = new ObservableCollection<IAlbum>();
+        //        foreach (FacebookWrapper.ObjectModel.Album apiAlbum in r_LogInUser.Albums)
+        //        {
+        //            IAlbum albumToAdd = r_AdapterFactory.CreateAdapter<IAlbum>(apiAlbum);
+        //            m_AlbumCollection.Add(albumToAdd);
+        //        }
+        //    }
+        //}
     }
 }

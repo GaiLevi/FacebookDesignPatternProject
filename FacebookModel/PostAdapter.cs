@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FacebookModel
 {
-    public class PostAdapter : IPost
+    public class PostAdapter : IPost,IAdapter
     {
         private readonly FacebookWrapper.ObjectModel.Post r_Post;
         public string m_Id { get; set; }
