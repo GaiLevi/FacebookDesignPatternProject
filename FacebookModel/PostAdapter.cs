@@ -63,19 +63,26 @@ namespace FacebookModel
                 m_Comments = new List<string>();
                 if (r_Post != null)
                 {
-                    if (r_Post.Comments.Count > 0)
+                    try
                     {
-                        foreach (FacebookWrapper.ObjectModel.Comment comment in r_Post.Comments)
+                        if (r_Post.Comments.Count > 0)
                         {
-                            if (comment != null)
+                            foreach (FacebookWrapper.ObjectModel.Comment comment in r_Post.Comments)
                             {
-                                m_Comments.Add(comment.Message);
+                                if (comment != null)
+                                {
+                                    m_Comments.Add(comment.Message);
+                                }
                             }
                         }
+                        else
+                        {
+                            m_Comments.Add(string.Format(@"Post has no Comments yet"));
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        m_Comments.Add(string.Format(@"Post has no Comments yet"));
+                        throw new Exception("Can't load this post's comments because missing permissions.");
                     }
                 }
             }
