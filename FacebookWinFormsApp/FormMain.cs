@@ -18,8 +18,8 @@ namespace BasicFacebookFeatures
     {
         private readonly ViewModel r_ViewModel;
         private bool m_IsLoggedIn { get; set; }
-        BindingSource m_BindingSource;
-        PictureBoxCollection m_PictureBoxCollection;
+        private BindingSource m_BindingSource;
+        public PictureBoxCollection m_PictureBoxCollection { get; set; }
         private readonly object r_PostLock = new object();
         private readonly object r_GroupLock = new object();
         private readonly object r_EventLock = new object();
@@ -28,6 +28,7 @@ namespace BasicFacebookFeatures
         private readonly object r_PicturesLock = new object();
         private const string k_DummyTextForPostTextBox = "What's on your mind?";
         private FormEditPicture m_FormEditPicture;
+
 
         public FormMain()
         {
@@ -205,7 +206,7 @@ namespace BasicFacebookFeatures
                     {
                         if(r_ViewModel.FacebookUser.m_PostCollection == null)
                         {
-                            r_ViewModel.FacebookUser.LoadPostsFromApi();
+                            r_ViewModel.FacebookUser.LoadCollection<IPost>();
                             BeginInvoke(
                                 new Action(
                                     () =>
@@ -235,7 +236,7 @@ namespace BasicFacebookFeatures
                         {
                             if (r_ViewModel.FacebookUser.m_GroupCollection == null)
                             {
-                                r_ViewModel.FacebookUser.LoadGroupsFromApi();
+                                r_ViewModel.FacebookUser.LoadCollection<IGroup>();
                                 BeginInvoke(new Action(() =>
                                     {
                                         iGroupBindingSource.DataSource = r_ViewModel.FacebookUser.m_GroupCollection;
@@ -262,7 +263,7 @@ namespace BasicFacebookFeatures
                         {
                             if (r_ViewModel.FacebookUser.m_EventCollection == null)
                             {
-                                r_ViewModel.FacebookUser.LoadEventsFromApi();
+                                r_ViewModel.FacebookUser.LoadCollection<IEvent>();
                                 BeginInvoke(new Action(() =>
                                     {
                                         iEventBindingSource.DataSource = r_ViewModel.FacebookUser.m_EventCollection;
@@ -289,7 +290,7 @@ namespace BasicFacebookFeatures
                     {
                         if (r_ViewModel.FacebookUser.m_PageCollection == null)
                         {
-                            r_ViewModel.FacebookUser.LoadPagesFromApi();
+                            r_ViewModel.FacebookUser.LoadCollection<IPage>();
                             BeginInvoke(new Action(() =>
                                 {
                                     iPageBindingSource.DataSource = r_ViewModel.FacebookUser.m_PageCollection;
@@ -316,7 +317,7 @@ namespace BasicFacebookFeatures
                     {
                         if (r_ViewModel.FacebookUser.m_AlbumCollection == null)
                         {
-                            r_ViewModel.FacebookUser.LoadAlbumsFromApi();
+                            r_ViewModel.FacebookUser.LoadCollection<IAlbum>();
                             BeginInvoke(new Action(() =>
                                 {
                                     iAlbumBindingSource.DataSource = r_ViewModel.FacebookUser.m_AlbumCollection;

@@ -9,7 +9,7 @@ namespace FacebookModel
 {
     public class NewFactory : IAdapterFactory
     {
-        public IAdapter CreateAdapter(object i_ApiObject)
+        public IObject CreateAdapter(object i_ApiObject)
         {
             switch (i_ApiObject)
             {

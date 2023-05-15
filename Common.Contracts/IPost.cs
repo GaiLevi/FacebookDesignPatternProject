@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Common.Contracts
 {
-    public interface IPost
+    public interface IPost : IObject
     {
-        string m_Id { get; set; }
         string m_MSG { get; set; }
         DateTime? m_CreatedTime { get; set; }
         DateTime? m_LastEditTime { get; set; }

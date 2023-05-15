@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FacebookModel
 {
-    public class GroupAdapter:IGroup, IAdapter
+    public class GroupAdapter:IGroup, IObject
     {
         private readonly FacebookWrapper.ObjectModel.Group r_Group;
         public string m_Id { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FacebookModel
 {
-    public class PostAdapter : IPost,IAdapter
+    public class PostAdapter : IPost,IObject
     {
         private readonly FacebookWrapper.ObjectModel.Post r_Post;
         public string m_Id { get; set; }
@@ -21,18 +21,7 @@ namespace FacebookModel
         {
             r_Post = i_Post;
             m_Id = i_Post.Id;
-            if (i_Post.Message != null)
-            {
-                m_MSG = string.Format($"{i_Post.Message}");
-            }
-            else if (i_Post.Caption != null)
-            {
-                m_MSG = string.Format($"{i_Post.Caption}");
-            }
-            else
-            {
-                m_MSG = string.Format($"Uploaded {i_Post.Type}, press to see");
-            }
+            m_MSG = setPostText(i_Post);
             m_CreatedTime = i_Post.CreatedTime;
             m_LastEditTime = i_Post.UpdateTime;
             m_PictureUrl = i_Post.PictureURL;
@@ -46,6 +35,25 @@ namespace FacebookModel
             m_LastEditTime = m_CreatedTime;
             m_PictureUrl = null;
             m_Comments = null;
+        }
+
+        private string setPostText(FacebookWrapper.ObjectModel.Post i_Post)
+        {
+            string postText;
+            if (i_Post.Message != null)
+            {
+                postText = string.Format($"{i_Post.Message}");
+            }
+            else if (i_Post.Caption != null)
+            {
+                postText = string.Format($"{i_Post.Caption}");
+            }
+            else
+            {
+                postText = string.Format($"Uploaded {i_Post.Type}, press to see");
+            }
+
+            return postText;
         }
 
         public void LoadComments()

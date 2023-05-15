@@ -17,10 +17,13 @@ namespace Common.Contracts
         ObservableCollection<IPage> m_PageCollection { get; set; }
         ObservableCollection<IAlbum> m_AlbumCollection { get; set; }
         void AddNewPostToCollection(string i_PostMessage);
-        void LoadPostsFromApi();
-        void LoadGroupsFromApi();
-        void LoadPagesFromApi();
-        void LoadEventsFromApi();
-        void LoadAlbumsFromApi();
+        //void LoadPostsFromApi();
+        //void LoadGroupsFromApi();
+        //void LoadPagesFromApi();
+        //void LoadEventsFromApi();
+        //void LoadAlbumsFromApi();
+
+        void LoadCollection<T>()
+            where T : class, IObject;
     }
 }

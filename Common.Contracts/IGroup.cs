@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Common.Contracts
 {
-    public interface IGroup
+    public interface IGroup : IObject
     {
-        string m_Id { get; set; }
         string m_Name { get; set; }
         string m_PictureUrl { get; set; }
         string m_Description { get; set; }

@@ -20,7 +20,6 @@ namespace FacebookModel
         public ObservableCollection<IEvent> m_EventCollection { get; set; }
         public ObservableCollection<IPage> m_PageCollection { get; set; }
         public ObservableCollection<IAlbum> m_AlbumCollection { get; set; }
-        //private readonly IAdapterFactory r_AdapterFactory = new AdapterFactory();
         private readonly IAdapterFactory r_AdapterFactory = new NewFactory();
 
         public FacebookUser(User i_LoggedInUser)
@@ -36,138 +35,73 @@ namespace FacebookModel
             m_PostCollection.Insert(0,newPost);
         }
 
-        //  ******** New Factory **********
-        public void LoadPostsFromApi()
+        public void LoadFromApi<T>(ObservableCollection<T> i_Collection, IEnumerable<object> i_ApiCollection) where T : IObject
         {
-            if (m_PostCollection == null)
+            foreach (object apiItem in i_ApiCollection)
             {
-                m_PostCollection = new ObservableCollection<IPost>();
-
-                foreach (FacebookWrapper.ObjectModel.Post apiPost in r_LogInUser.Posts)
-                {
-                    IAdapter postToAdd = r_AdapterFactory.CreateAdapter(apiPost);
-                    m_PostCollection.Add(postToAdd as IPost);
-                }
+                T itemToAdd = (T)r_AdapterFactory.CreateAdapter(apiItem);
+                i_Collection.Add(itemToAdd);
             }
         }
 
-        public void LoadGroupsFromApi()
+        public void LoadCollection<T>() where T : class, IObject
         {
-            if (m_GroupCollection == null)
+            ObservableCollection<T> collection = null;
+            IEnumerable<object> apiCollection;
+
+            switch (typeof(T).Name)
             {
-                m_GroupCollection = new ObservableCollection<IGroup>();
-                foreach (FacebookWrapper.ObjectModel.Group apiGroup in r_LogInUser.Groups)
-                {
-                    IAdapter groupToAdd = r_AdapterFactory.CreateAdapter(apiGroup);
-                    m_GroupCollection.Add(groupToAdd as IGroup);
-                }
+                case nameof(IPost):
+                    if (m_PostCollection == null)
+                    {
+                        m_PostCollection = new ObservableCollection<IPost>();
+                    }
+                    collection = m_PostCollection as ObservableCollection<T>;
+                    apiCollection = r_LogInUser.Posts;
+                    break;
+                case nameof(IGroup):
+                    if (m_GroupCollection == null)
+                    {
+                        m_GroupCollection = new ObservableCollection<IGroup>();
+                    }
+                    collection = m_GroupCollection as ObservableCollection<T>;
+                    apiCollection = r_LogInUser.Groups;
+                    break;
+                case nameof(IPage):
+                    if (m_PageCollection == null)
+                    {
+                        m_PageCollection = new ObservableCollection<IPage>();
+                    }
+                    collection = m_PageCollection as ObservableCollection<T>;
+                    apiCollection = r_LogInUser.LikedPages;
+                    break;
+                case nameof(IAlbum):
+                    if (m_AlbumCollection == null)
+                    {
+                        m_AlbumCollection = new ObservableCollection<IAlbum>();
+                    }
+                    collection = m_AlbumCollection as ObservableCollection<T>;
+                    apiCollection = r_LogInUser.Albums;
+                    break;
+                case nameof(IEvent):
+                    if (m_EventCollection == null)
+                    {
+                        m_EventCollection = new ObservableCollection<IEvent>();
+                    }
+                    collection = m_EventCollection as ObservableCollection<T>;
+                    apiCollection = r_LogInUser.Events;
+                    break;
+                default:
+                    throw new ArgumentException("Invalid type");
             }
-        }
 
-        public void LoadEventsFromApi()
-        {
-            if (m_EventCollection == null)
+            if (collection == null)
             {
-                m_EventCollection = new ObservableCollection<IEvent>();
-                foreach (FacebookWrapper.ObjectModel.Event apiEvent in r_LogInUser.Events)
-                {
-                    IAdapter eventToAdd = r_AdapterFactory.CreateAdapter(apiEvent);
-                    m_EventCollection.Add(eventToAdd as IEvent);
-                }
+                throw new InvalidOperationException($"Failed to cast collection to ObservableCollection<{typeof(T).Name}>");
             }
+
+            LoadFromApi(collection, apiCollection);
         }
-
-        public void LoadPagesFromApi()
-        {
-            if (m_PageCollection == null)
-            {
-                m_PageCollection = new ObservableCollection<IPage>();
-                foreach (FacebookWrapper.ObjectModel.Page apiPage in r_LogInUser.LikedPages)
-                {
-                    IAdapter pageToAdd = r_AdapterFactory.CreateAdapter(apiPage);
-                    m_PageCollection.Add(pageToAdd as IPage);
-                }
-            }
-        }
-
-        public void LoadAlbumsFromApi()
-        {
-            if (m_AlbumCollection == null)
-            {
-                m_AlbumCollection = new ObservableCollection<IAlbum>();
-                foreach (FacebookWrapper.ObjectModel.Album apiAlbum in r_LogInUser.Albums)
-                {
-                    IAdapter albumToAdd = r_AdapterFactory.CreateAdapter(apiAlbum);
-                    m_AlbumCollection.Add(albumToAdd as IAlbum);
-                }
-            }
-        }
-
-        // ********  Old factory ********
-        //public void LoadPostsFromApi()
-        //{
-        //    if (m_PostCollection == null)
-        //    {
-        //        m_PostCollection = new ObservableCollection<IPost>();
-
-        //        foreach (FacebookWrapper.ObjectModel.Post apiPost in r_LogInUser.Posts)
-        //        {
-        //            IPost postToAdd = r_AdapterFactory.CreateAdapter<IPost>(apiPost);
-        //            m_PostCollection.Add(postToAdd);
-        //        }
-        //    }
-        //}
-
-        //public void LoadGroupsFromApi()
-        //{
-        //    if (m_GroupCollection == null)
-        //    {
-        //        m_GroupCollection = new ObservableCollection<IGroup>();
-        //        foreach (FacebookWrapper.ObjectModel.Group apiGroup in r_LogInUser.Groups)
-        //        {
-        //            IGroup groupToAdd = r_AdapterFactory.CreateAdapter<IGroup>(apiGroup);
-        //            m_GroupCollection.Add(groupToAdd);
-        //        }
-        //    }
-        //}
-
-        //public void LoadEventsFromApi()
-        //{
-        //    if (m_EventCollection == null)
-        //    {
-        //        m_EventCollection = new ObservableCollection<IEvent>();
-        //        foreach (FacebookWrapper.ObjectModel.Event apiEvent in r_LogInUser.Events)
-        //        {
-        //            IEvent eventToAdd = r_AdapterFactory.CreateAdapter<IEvent>(apiEvent);
-        //            m_EventCollection.Add(eventToAdd);
-        //        }
-        //    }
-        //}
-
-        //public void LoadPagesFromApi()
-        //{
-        //    if (m_PageCollection == null)
-        //    {
-        //        m_PageCollection = new ObservableCollection<IPage>();
-        //        foreach (FacebookWrapper.ObjectModel.Page apiPage in r_LogInUser.LikedPages)
-        //        {
-        //            IPage pageToAdd = r_AdapterFactory.CreateAdapter<IPage>(apiPage);
-        //            m_PageCollection.Add(pageToAdd);
-        //        }
-        //    }
-        //}
-
-        //public void LoadAlbumsFromApi()
-        //{
-        //    if (m_AlbumCollection == null)
-        //    {
-        //        m_AlbumCollection = new ObservableCollection<IAlbum>();
-        //        foreach (FacebookWrapper.ObjectModel.Album apiAlbum in r_LogInUser.Albums)
-        //        {
-        //            IAlbum albumToAdd = r_AdapterFactory.CreateAdapter<IAlbum>(apiAlbum);
-        //            m_AlbumCollection.Add(albumToAdd);
-        //        }
-        //    }
-        //}
     }
 }
+

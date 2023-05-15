@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Common.Contracts
 {
-    public interface IAdapter
+    public interface IObject
     {
         string m_Id { get; set; }
     }
