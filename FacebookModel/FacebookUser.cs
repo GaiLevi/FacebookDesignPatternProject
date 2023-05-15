@@ -20,8 +20,8 @@ namespace FacebookModel
         public ObservableCollection<IEvent> m_EventCollection { get; set; }
         public ObservableCollection<IPage> m_PageCollection { get; set; }
         public ObservableCollection<IAlbum> m_AlbumCollection { get; set; }
-        private readonly IAdapterFactory r_AdapterFactory = new AdapterFactory();
-        private readonly NewFactory newF = new NewFactory();
+        //private readonly IAdapterFactory r_AdapterFactory = new AdapterFactory();
+        private readonly IAdapterFactory r_AdapterFactory = new NewFactory();
 
         public FacebookUser(User i_LoggedInUser)
         {
@@ -45,7 +45,7 @@ namespace FacebookModel
 
                 foreach (FacebookWrapper.ObjectModel.Post apiPost in r_LogInUser.Posts)
                 {
-                    IAdapter postToAdd = newF.CreateAdapter(apiPost);
+                    IAdapter postToAdd = r_AdapterFactory.CreateAdapter(apiPost);
                     m_PostCollection.Add(postToAdd as IPost);
                 }
             }
@@ -58,7 +58,7 @@ namespace FacebookModel
                 m_GroupCollection = new ObservableCollection<IGroup>();
                 foreach (FacebookWrapper.ObjectModel.Group apiGroup in r_LogInUser.Groups)
                 {
-                    IAdapter groupToAdd = newF.CreateAdapter(apiGroup);
+                    IAdapter groupToAdd = r_AdapterFactory.CreateAdapter(apiGroup);
                     m_GroupCollection.Add(groupToAdd as IGroup);
                 }
             }
@@ -71,7 +71,7 @@ namespace FacebookModel
                 m_EventCollection = new ObservableCollection<IEvent>();
                 foreach (FacebookWrapper.ObjectModel.Event apiEvent in r_LogInUser.Events)
                 {
-                    IAdapter eventToAdd = newF.CreateAdapter(apiEvent);
+                    IAdapter eventToAdd = r_AdapterFactory.CreateAdapter(apiEvent);
                     m_EventCollection.Add(eventToAdd as IEvent);
                 }
             }
@@ -84,7 +84,7 @@ namespace FacebookModel
                 m_PageCollection = new ObservableCollection<IPage>();
                 foreach (FacebookWrapper.ObjectModel.Page apiPage in r_LogInUser.LikedPages)
                 {
-                    IAdapter pageToAdd = newF.CreateAdapter(apiPage);
+                    IAdapter pageToAdd = r_AdapterFactory.CreateAdapter(apiPage);
                     m_PageCollection.Add(pageToAdd as IPage);
                 }
             }
@@ -97,7 +97,7 @@ namespace FacebookModel
                 m_AlbumCollection = new ObservableCollection<IAlbum>();
                 foreach (FacebookWrapper.ObjectModel.Album apiAlbum in r_LogInUser.Albums)
                 {
-                    IAdapter albumToAdd = newF.CreateAdapter(apiAlbum);
+                    IAdapter albumToAdd = r_AdapterFactory.CreateAdapter(apiAlbum);
                     m_AlbumCollection.Add(albumToAdd as IAlbum);
                 }
             }

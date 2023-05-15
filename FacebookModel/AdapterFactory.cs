@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FacebookModel
 {
-    public class AdapterFactory : IAdapterFactory
+    public class AdapterFactory
     {
         public T CreateAdapter<T>(object i_ApiObject)
         {
