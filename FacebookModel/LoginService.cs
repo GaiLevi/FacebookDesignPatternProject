@@ -16,7 +16,6 @@ namespace FacebookModel
         public FacebookUser m_LoginUser { get; set; }
         public string m_AccessToken { get; set; }
         
-
         private LoginService()
         {
         }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FacebookModel
 {
-    public class AlbumAdapter : IAlbum, IObject
+    public class AlbumAdapter : IAlbum
     {
         private readonly FacebookWrapper.ObjectModel.Album r_Album;
         public string m_Id { get; set; }
