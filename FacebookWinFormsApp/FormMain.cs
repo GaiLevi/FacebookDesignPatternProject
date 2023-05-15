@@ -148,8 +148,15 @@ namespace BasicFacebookFeatures
                 IPost selectedItemAsIPost = (IPost)listBoxPosts.Invoke(new Func<IPost>(() => listBoxPosts.SelectedItem as IPost));
                 if (selectedItemAsIPost != null)
                 {
-                    selectedItemAsIPost.LoadComments();
-                    listBoxComments.Invoke(new Action(() => listBoxComments.DataSource = selectedItemAsIPost.m_Comments));
+                    try
+                    {
+                        selectedItemAsIPost.LoadComments();
+                        listBoxComments.Invoke(new Action(() => listBoxComments.DataSource = selectedItemAsIPost.m_Comments));
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
             }
         }

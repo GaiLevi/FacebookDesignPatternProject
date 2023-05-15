@@ -20,7 +20,7 @@ namespace FacebookModel
         public ObservableCollection<IEvent> m_EventCollection { get; set; }
         public ObservableCollection<IPage> m_PageCollection { get; set; }
         public ObservableCollection<IAlbum> m_AlbumCollection { get; set; }
-        private readonly IAdapterFactory r_AdapterFactory = new NewFactory();
+        private readonly IAdapterFactory r_AdapterFactory = new AdapterFactory();
 
         public FacebookUser(User i_LoggedInUser)
         {

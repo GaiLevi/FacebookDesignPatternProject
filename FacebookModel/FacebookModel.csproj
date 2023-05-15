@@ -70,13 +70,12 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdapterFactory.cs" />
     <Compile Include="AlbumAdapter.cs" />
     <Compile Include="EventAdapter.cs" />
     <Compile Include="FacebookUser.cs" />
     <Compile Include="GroupAdapter.cs" />
     <Compile Include="LoginService.cs" />
-    <Compile Include="NewFactory.cs" />
+    <Compile Include="AdapterFactory.cs" />
     <Compile Include="PageAdapter.cs" />
     <Compile Include="PostAdapter.cs" />
     <Compile Include="Singleton.cs" />
