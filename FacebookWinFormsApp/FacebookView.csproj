@@ -116,7 +116,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Common.Contracts.IAlbum.datasource" />
     <None Include="Properties\DataSources\Common.Contracts.IEvent.datasource" />

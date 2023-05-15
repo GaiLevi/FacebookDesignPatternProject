@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FacebookModel
 {
-    public class EventAdapter:IEvent,IObject
+    public class EventAdapter : IEvent
     {
         private readonly FacebookWrapper.ObjectModel.Event r_Event;
         public string m_Id { get; set; }

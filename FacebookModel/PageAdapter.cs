@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FacebookModel
 {
-    public class PageAdapter:IPage, IObject
+    public class PageAdapter : IPage
     {
         private readonly FacebookWrapper.ObjectModel.Page r_Page;
         public string m_Id { get; set; }
