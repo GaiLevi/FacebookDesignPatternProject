@@ -47,6 +47,7 @@ namespace BasicFacebookFeatures
             pictureBoxGroup.DataBindings.Add("ImageLocation", iGroupBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
             pictureBoxEvent.DataBindings.Add("ImageLocation", iEventBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
             pictureBoxPage.DataBindings.Add("ImageLocation", iPageBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
+            r_ViewModel.NewPostAdded += OnViewModel_NewPostAdded;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -445,27 +446,33 @@ namespace BasicFacebookFeatures
             }
         }
 
+
         private void buttonWritePost_Click(object sender, EventArgs e)
         {
             OnButtonWritePostClicked(textBoxPost.Text);
+        }
+
+        private void OnViewModel_NewPostAdded()
+        {
+            listBoxPosts.DataSource = null;
+            listBoxPosts.DataSource = iPostBindingSource;
+            listBoxPosts.DisplayMember = "m_MSG";
         }
 
         protected virtual void OnButtonWritePostClicked(string i_PostText)
         {
             if (textBoxPost.Text != k_DummyTextForPostTextBox && textBoxPost.Text != null)
             {
-                r_ViewModel.FacebookUser.AddNewPostToCollection(i_PostText);
-                listBoxPosts.DataSource = null;
-                listBoxPosts.DataSource = iPostBindingSource;
-                listBoxPosts.DisplayMember = "m_MSG";
+                r_ViewModel.AddNewPost(i_PostText);
                 textBoxPost.Text = string.Empty;
                 setTextBoxPost();
             }
             else
             {
-                MessageBox.Show("You need to write somthing!");
+                MessageBox.Show("You need to write something!");
             }
         }
+     
 
         private void textBoxPost_Enter(object sender, EventArgs e)
         {
@@ -527,6 +534,11 @@ namespace BasicFacebookFeatures
         {
             m_FormEditPicture.FormEditPictureClosing -= formEditPicture_Closing;
             m_FormEditPicture.Dispose();
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
