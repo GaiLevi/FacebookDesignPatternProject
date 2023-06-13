@@ -22,6 +22,7 @@ namespace FacebookViewModel
         public BindingSource m_BindingSourcePosts;
         public event PropertyChangedEventHandler PropertyChanged;
         private string m_AccessToken;
+        public event Action NewPostAdded;
 
         public string AccessToken
         {
@@ -78,6 +79,19 @@ namespace FacebookViewModel
         protected virtual void OnPropertyChanged(string i_PropertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(i_PropertyName));
+        }
+
+
+
+        public void AddNewPost(string i_PostMessage)
+        {
+            FacebookUser.AddNewPostToCollection(i_PostMessage);
+            OnNewPostAdded();
+        }
+
+        protected virtual void OnNewPostAdded()
+        {
+            NewPostAdded?.Invoke();
         }
 
         public void AutoLogin(string i_AccessToken)
