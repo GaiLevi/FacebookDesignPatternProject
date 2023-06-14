@@ -48,6 +48,7 @@ namespace BasicFacebookFeatures
             pictureBoxEvent.DataBindings.Add("ImageLocation", iEventBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
             pictureBoxPage.DataBindings.Add("ImageLocation", iPageBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
             r_ViewModel.NewPostAdded += OnViewModel_NewPostAdded;
+            initTabsCommands();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -343,59 +344,91 @@ namespace BasicFacebookFeatures
             albumThread.Start();
         }
 
+        private class ActionCommand:ICommand
+        {
+            public Action Action { get; set; }
+            public void Execute()
+            {
+                Action?.Invoke();
+            }
+
+        }
+
+        private void initTabsCommands()
+        {
+            tabControlFeatures.TabPages[0].Tag = new ActionCommand { Action = selectedPostsTab };
+            tabControlFeatures.TabPages[1].Tag = new ActionCommand { Action = selectedGroupsTab };
+            tabControlFeatures.TabPages[2].Tag = new ActionCommand { Action = selectedFriendsTab };
+            tabControlFeatures.TabPages[3].Tag = new ActionCommand { Action = selectedEventsTab };
+            tabControlFeatures.TabPages[4].Tag = new ActionCommand { Action = selectedPagesTab };
+            tabControlFeatures.TabPages[5].Tag = new ActionCommand { Action = selectedAlbumsTab };
+            tabControlFeatures.TabPages[6].Tag = new ActionCommand { Action = selectedTimersTab };
+        }
+
         private void tabControlFeatures_SelectedIndexChanged(object sender, EventArgs e)
         {
             OnTabControlFeaturesSelectedIndexChanged();
+        }
+
+        private void selectedPostsTab()
+        {
+            bool havePostItem = (bool)listBoxPosts.Invoke(new Func<bool>(() => listBoxPosts.Items.Count == 0));
+            if (havePostItem)
+            {
+                initPostTab();
+            }
+        }
+
+        private void selectedGroupsTab()
+        {
+            bool haveGroupItem = (bool)listBoxGroups.Invoke(new Func<bool>(() => listBoxGroups.Items.Count == 0));
+            if (haveGroupItem)
+            {
+                initGroupTab();
+            }
+        }
+
+        private void selectedFriendsTab()
+        {
+            MessageBox.Show("This is not working due to Facebook's new policy", "Problem", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void selectedEventsTab()
+        {
+            MessageBox.Show("This is not working due to Facebook's new policy", "Problem", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void selectedPagesTab()
+        {
+            bool havePageItem = (bool)listBoxPages.Invoke(new Func<bool>(() => listBoxPages.Items.Count == 0));
+            if (havePageItem)
+            {
+                initPageTab();
+            }
+        }
+
+        private void selectedAlbumsTab()
+        {
+            bool haveAlbumItem = (bool)listBoxAlbums.Invoke(new Func<bool>(() => listBoxAlbums.Items.Count == 0));
+            if (haveAlbumItem)
+            {
+                initAlbumTab();
+            }
+        }
+
+        private void selectedTimersTab()
+        {
+            timerApp.Start();
         }
 
         protected virtual void OnTabControlFeaturesSelectedIndexChanged()
         {
             if (m_IsLoggedIn)
             {
-                switch (tabControlFeatures.SelectedIndex)
+                TabPage selectedTabPage = tabControlFeatures.SelectedTab;
+                if (selectedTabPage.Tag is ActionCommand command)
                 {
-                    case 0:
-                        bool havePostItem = (bool)listBoxPosts.Invoke(new Func<bool>(() => listBoxPosts.Items.Count == 0));
-                        if (havePostItem)
-                        {
-                            initPostTab();
-                        }
-                        break;
-                    case 1:
-                        bool haveGroupItem = (bool)listBoxGroups.Invoke(new Func<bool>(() => listBoxGroups.Items.Count == 0));
-                        if (haveGroupItem)
-                        {
-                            initGroupTab();
-                        }
-                        break;
-                    case 2:
-                        MessageBox.Show("This is not working due to Facebook's new policy", "Problem", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        break;
-                    case 3:
-                        MessageBox.Show("This is not working due to Facebook's new policy", "Problem", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        //bool haveEventItem = (bool)listBoxEvents.Invoke(new Func<bool>(() => listBoxEvents.Items.Count == 0));
-                        //if (haveEventItem)
-                        //{
-                        //    initEventTab();
-                        //}
-                        break;
-                    case 4:
-                        bool havePageItem = (bool)listBoxPages.Invoke(new Func<bool>(() => listBoxPages.Items.Count == 0));
-                        if (havePageItem)
-                        {
-                            initPageTab();
-                        }
-                        break;
-                    case 5:
-                        bool haveAlbumItem = (bool)listBoxAlbums.Invoke(new Func<bool>(() => listBoxAlbums.Items.Count == 0));
-                        if (haveAlbumItem)
-                        {
-                            initAlbumTab();
-                        }
-                        break;
-                    case 6:
-                        timerApp.Start();
-                        break;
+                    command.Execute();
                 }
             }
         }
