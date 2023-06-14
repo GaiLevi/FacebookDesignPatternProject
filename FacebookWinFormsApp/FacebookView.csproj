@@ -95,7 +95,7 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="PictureBoxCollection.cs">
+    <Compile Include="ImageNavigator.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />

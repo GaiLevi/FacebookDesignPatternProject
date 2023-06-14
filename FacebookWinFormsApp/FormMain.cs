@@ -19,7 +19,7 @@ namespace BasicFacebookFeatures
         private readonly ViewModel r_ViewModel;
         private bool m_IsLoggedIn { get; set; }
         private BindingSource m_BindingSource;
-        public PictureBoxCollection m_PictureBoxCollection { get; set; }
+        //public PictureBoxCollection m_PictureBoxCollection { get; set; }
         private readonly object r_PostLock = new object();
         private readonly object r_GroupLock = new object();
         private readonly object r_EventLock = new object();
@@ -28,6 +28,8 @@ namespace BasicFacebookFeatures
         private readonly object r_PicturesLock = new object();
         private const string k_DummyTextForPostTextBox = "What's on your mind?";
         private FormEditPicture m_FormEditPicture;
+        private ImageNavigator m_ImageNavigator;
+
 
 
         public FormMain()
@@ -108,12 +110,12 @@ namespace BasicFacebookFeatures
 
         private void initPictureBoxCollectionForAlbumTab()
         {
-            m_PictureBoxCollection = new PictureBoxCollection();
+            m_ImageNavigator = new ImageNavigator();
             TabPage tabPageAlbum = tabControlFeatures.TabPages[5];
-            tabPageAlbum.Controls.Add(m_PictureBoxCollection);
-            m_PictureBoxCollection.Location = new Point(399, 60);
-            m_PictureBoxCollection.Size = new Size(150,150);
-            m_PictureBoxCollection.SizeMode = PictureBoxSizeMode.StretchImage;
+            tabPageAlbum.Controls.Add(m_ImageNavigator);
+            m_ImageNavigator.Location = new Point(399, 60);
+            m_ImageNavigator.Size = new Size(150,150);
+            m_ImageNavigator.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         private void buttonLogout_Click(object sender, EventArgs e)
@@ -168,6 +170,7 @@ namespace BasicFacebookFeatures
             displaySelectedAlbumPhotos();
         }
 
+
         private void displaySelectedAlbumPhotos()
         {
             bool hasSingleSelectedItem = (bool)listBoxAlbums.Invoke(new Func<bool>(() => listBoxAlbums.SelectedItems.Count == 1));
@@ -177,34 +180,33 @@ namespace BasicFacebookFeatures
                 if (selectedItemAsIAlbum != null)
                 {
                     Thread picturesThread = new Thread(new ThreadStart(() =>
-                    {
-                        try
                         {
-                            lock (r_PicturesLock)
+                            try
                             {
-                                if (selectedItemAsIAlbum.m_PicturesUrl == null)
+                                lock (r_PicturesLock)
                                 {
-                                    selectedItemAsIAlbum.LoadAlbumPictures();
-                                    labelIsAlbumLoading.Invoke(new Action(() => labelIsAlbumLoading.Visible = true));
+                                    if (selectedItemAsIAlbum.m_PicturesUrl == null)
+                                    {
+                                        selectedItemAsIAlbum.LoadAlbumPictures();
+                                        labelIsAlbumLoading.Invoke(new Action(() => labelIsAlbumLoading.Visible = true));
+                                    }
+                                    BeginInvoke(new Action(() =>
+                                        {
+                                            m_ImageNavigator.SetImageUrls(selectedItemAsIAlbum.m_PicturesUrl);
+                                            labelIsAlbumLoading.Invoke(new Action(() => labelIsAlbumLoading.Visible = false));
+                                        }));
                                 }
-                                BeginInvoke(new Action(() =>
-                                {
-                                    m_PictureBoxCollection.SetList(selectedItemAsIAlbum.m_PicturesUrl);
-                                    m_PictureBoxCollection.MoveNext();
-                                    labelIsAlbumLoading.Invoke(new Action(() => labelIsAlbumLoading.Visible = false));
-                                }));
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }));
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }));
                     picturesThread.Start();
                 }
             }
         }
-
+        
         private void initPostTab()
         {
             Thread postThread = new Thread(new ThreadStart(() =>
@@ -458,13 +460,22 @@ namespace BasicFacebookFeatures
             OnButtonPreviousPictureClicked();
         }
 
-        protected virtual void OnButtonPreviousPictureClicked()
+
+       
+    protected virtual void OnButtonPreviousPictureClicked()
+    {
+        if (m_IsLoggedIn)
         {
-            if (m_IsLoggedIn)
+            if (m_ImageNavigator.ShowPrevious())
             {
-                m_PictureBoxCollection.Prev();
+                buttonNextPicture.Enabled = true;
+            }
+            else
+            {
+                //buttonPreviousPicture.Enabled = false;
             }
         }
+    }
 
         private void buttonNextPicture_Click(object sender, EventArgs e)
         {
@@ -475,7 +486,14 @@ namespace BasicFacebookFeatures
         {
             if (m_IsLoggedIn)
             {
-                m_PictureBoxCollection.MoveNext();
+                if (m_ImageNavigator.ShowNext())
+                {
+                    buttonPreviousPicture.Enabled = true;
+                }
+                else
+                {
+                    //buttonNextPicture.Enabled = false;
+                }
             }
         }
 
@@ -547,9 +565,9 @@ namespace BasicFacebookFeatures
 
         protected virtual void OnButtonEditPictureClicked()
         {
-            if (m_PictureBoxCollection.Image != null)
+            if (m_ImageNavigator.Image != null)
             {
-                m_FormEditPicture = new FormEditPicture(m_PictureBoxCollection.Image);
+                m_FormEditPicture = new FormEditPicture(m_ImageNavigator.Image);
                 m_FormEditPicture.FormEditPictureClosing += formEditPicture_Closing;
                 m_FormEditPicture.ShowDialog();
             }
