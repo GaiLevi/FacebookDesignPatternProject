@@ -19,7 +19,6 @@ namespace BasicFacebookFeatures
         private readonly ViewModel r_ViewModel;
         private bool m_IsLoggedIn { get; set; }
         private BindingSource m_BindingSource;
-        //public PictureBoxCollection m_PictureBoxCollection { get; set; }
         private readonly object r_PostLock = new object();
         private readonly object r_GroupLock = new object();
         private readonly object r_EventLock = new object();
