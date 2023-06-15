@@ -30,12 +30,12 @@ namespace BasicFacebookFeatures
         private ImageNavigator m_ImageNavigator;
 
 
-
         public FormMain()
         {
             r_ViewModel = new ViewModel();
             initForm();
         }
+
 
         private void initForm()
         {
@@ -57,7 +57,7 @@ namespace BasicFacebookFeatures
             base.OnLoad(e);
             r_ViewModel.m_AppStarTime = DateTime.Now;
             this.checkBoxAutoLogin.Checked = ApplicationSettings.Instance.m_AutoLogin;
-            if(ApplicationSettings.Instance.m_AutoLogin)
+            if (ApplicationSettings.Instance.m_AutoLogin)
             {
                 new Thread(() => r_ViewModel.AutoLogin(ApplicationSettings.Instance.m_AccessToken)).Start();
             }
@@ -94,10 +94,10 @@ namespace BasicFacebookFeatures
         private void afterLoginInit()
         {
             buttonLogin.Invoke(new Action(() =>
-                {
-                    buttonLogin.Text = string.Format($@"Log in as {r_ViewModel.FacebookUser.m_UserName}");
-                    buttonLogin.Enabled = false;
-                }));
+            {
+                buttonLogin.Text = string.Format($@"Log in as {r_ViewModel.FacebookUser.m_UserName}");
+                buttonLogin.Enabled = false;
+            }));
             pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = r_ViewModel.FacebookUser.m_PictureURL));
             labelWelcomeToApp.Invoke(new Action(() => labelWelcomeToApp.Visible = false));
             textBoxPost.Invoke(new Action(() => textBoxPost.Visible = true));
@@ -113,23 +113,23 @@ namespace BasicFacebookFeatures
             TabPage tabPageAlbum = tabControlFeatures.TabPages[5];
             tabPageAlbum.Controls.Add(m_ImageNavigator);
             m_ImageNavigator.Location = new Point(399, 60);
-            m_ImageNavigator.Size = new Size(150,150);
+            m_ImageNavigator.Size = new Size(150, 150);
             m_ImageNavigator.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-			OnButtonLogOutClicked();
+            OnButtonLogOutClicked();
         }
 
         protected virtual void OnButtonLogOutClicked()
         {
             r_ViewModel.LogoutButtonClicked();
             buttonLogin.Invoke(new Action(() =>
-                {
-                    buttonLogin.Text = string.Format(@"Login");
-                    buttonLogin.Enabled = true;
-                }));
+            {
+                buttonLogin.Text = string.Format(@"Login");
+                buttonLogin.Enabled = true;
+            }));
             pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = null));
             textBoxPost.Invoke(new Action(() => textBoxPost.Visible = false));
             buttonWritePost.Invoke(new Action(() => buttonWritePost.Visible = false));
@@ -139,7 +139,7 @@ namespace BasicFacebookFeatures
         }
 
         private void listBoxPosts_SelectedIndexChanged(object sender, EventArgs e)
-        { 
+        {
             displaySelectedPostComments();
         }
 
@@ -156,7 +156,7 @@ namespace BasicFacebookFeatures
                         selectedItemAsIPost.LoadComments();
                         listBoxComments.Invoke(new Action(() => listBoxComments.DataSource = selectedItemAsIPost.m_Comments));
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
                     }
@@ -169,7 +169,6 @@ namespace BasicFacebookFeatures
             displaySelectedAlbumPhotos();
         }
 
-
         private void displaySelectedAlbumPhotos()
         {
             bool hasSingleSelectedItem = (bool)listBoxAlbums.Invoke(new Func<bool>(() => listBoxAlbums.SelectedItems.Count == 1));
@@ -179,55 +178,59 @@ namespace BasicFacebookFeatures
                 if (selectedItemAsIAlbum != null)
                 {
                     Thread picturesThread = new Thread(new ThreadStart(() =>
+                    {
+                        try
                         {
-                            try
+                            lock (r_PicturesLock)
                             {
-                                lock (r_PicturesLock)
+                                if (selectedItemAsIAlbum.m_PicturesUrl == null)
                                 {
-                                    if (selectedItemAsIAlbum.m_PicturesUrl == null)
-                                    {
-                                        selectedItemAsIAlbum.LoadAlbumPictures();
-                                        labelIsAlbumLoading.Invoke(new Action(() => labelIsAlbumLoading.Visible = true));
-                                    }
-                                    BeginInvoke(new Action(() =>
-                                        {
-                                            m_ImageNavigator.SetImageUrls(selectedItemAsIAlbum.m_PicturesUrl);
-                                            labelIsAlbumLoading.Invoke(new Action(() => labelIsAlbumLoading.Visible = false));
-                                        }));
+                                    selectedItemAsIAlbum.LoadAlbumPictures();
+                                    labelIsAlbumLoading.Invoke(new Action(() => labelIsAlbumLoading.Visible = true));
                                 }
+                                BeginInvoke(new Action(() =>
+                                {
+                                    m_ImageNavigator.SetImageUrls(selectedItemAsIAlbum.m_PicturesUrl);
+                                    labelIsAlbumLoading.Invoke(new Action(() => labelIsAlbumLoading.Visible = false));
+                                    buttonNextPicture.Enabled = m_ImageNavigator.ShowNext();
+                                    m_ImageNavigator.ShowPrevious();
+                                    buttonPreviousPicture.Enabled = false;
+
+                                }));
                             }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                        }));
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }));
                     picturesThread.Start();
                 }
             }
         }
-        
+
         private void initPostTab()
         {
             Thread postThread = new Thread(new ThreadStart(() =>
             {
                 try
                 {
-                    lock(r_PostLock)
+                    lock (r_PostLock)
                     {
-                        if(r_ViewModel.FacebookUser.m_PostCollection == null)
+                        if (r_ViewModel.FacebookUser.m_PostCollection == null)
                         {
                             r_ViewModel.FacebookUser.LoadCollection<IPost>();
                             BeginInvoke(
                                 new Action(
                                     () =>
-                                        {
-                                            iPostBindingSource.DataSource = r_ViewModel.FacebookUser.m_PostCollection;
-                                            displaySelectedPostComments();
-                                        }));
+                                    {
+                                        iPostBindingSource.DataSource = r_ViewModel.FacebookUser.m_PostCollection;
+                                        displaySelectedPostComments();
+                                    }));
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -239,26 +242,26 @@ namespace BasicFacebookFeatures
         private void initGroupTab()
         {
             Thread groupThread = new Thread(new ThreadStart(() =>
+            {
+                try
                 {
-                    try
+                    lock (r_GroupLock)
                     {
-                        lock (r_GroupLock)
+                        if (r_ViewModel.FacebookUser.m_GroupCollection == null)
                         {
-                            if (r_ViewModel.FacebookUser.m_GroupCollection == null)
+                            r_ViewModel.FacebookUser.LoadCollection<IGroup>();
+                            BeginInvoke(new Action(() =>
                             {
-                                r_ViewModel.FacebookUser.LoadCollection<IGroup>();
-                                BeginInvoke(new Action(() =>
-                                    {
-                                        iGroupBindingSource.DataSource = r_ViewModel.FacebookUser.m_GroupCollection;
-                                    }));
-                            }
+                                iGroupBindingSource.DataSource = r_ViewModel.FacebookUser.m_GroupCollection;
+                            }));
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }));
 
             groupThread.Start();
         }
@@ -266,26 +269,26 @@ namespace BasicFacebookFeatures
         private void initEventTab()
         {
             Thread eventThread = new Thread(new ThreadStart(() =>
+            {
+                try
                 {
-                    try
+                    lock (r_EventLock)
                     {
-                        lock (r_EventLock)
+                        if (r_ViewModel.FacebookUser.m_EventCollection == null)
                         {
-                            if (r_ViewModel.FacebookUser.m_EventCollection == null)
+                            r_ViewModel.FacebookUser.LoadCollection<IEvent>();
+                            BeginInvoke(new Action(() =>
                             {
-                                r_ViewModel.FacebookUser.LoadCollection<IEvent>();
-                                BeginInvoke(new Action(() =>
-                                    {
-                                        iEventBindingSource.DataSource = r_ViewModel.FacebookUser.m_EventCollection;
-                                    }));
-                            }
+                                iEventBindingSource.DataSource = r_ViewModel.FacebookUser.m_EventCollection;
+                            }));
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }));
 
             eventThread.Start();
         }
@@ -302,13 +305,13 @@ namespace BasicFacebookFeatures
                         {
                             r_ViewModel.FacebookUser.LoadCollection<IPage>();
                             BeginInvoke(new Action(() =>
-                                {
-                                    iPageBindingSource.DataSource = r_ViewModel.FacebookUser.m_PageCollection;
-                                }));
+                            {
+                                iPageBindingSource.DataSource = r_ViewModel.FacebookUser.m_PageCollection;
+                            }));
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -329,14 +332,14 @@ namespace BasicFacebookFeatures
                         {
                             r_ViewModel.FacebookUser.LoadCollection<IAlbum>();
                             BeginInvoke(new Action(() =>
-                                {
-                                    iAlbumBindingSource.DataSource = r_ViewModel.FacebookUser.m_AlbumCollection;
-                                    displaySelectedAlbumPhotos();
-                                }));
+                            {
+                                iAlbumBindingSource.DataSource = r_ViewModel.FacebookUser.m_AlbumCollection;
+                                displaySelectedAlbumPhotos();
+                            }));
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -345,7 +348,7 @@ namespace BasicFacebookFeatures
             albumThread.Start();
         }
 
-        private class ActionCommand:ICommand
+        private class ActionCommand : ICommand
         {
             public Action Action { get; set; }
             public void Execute()
@@ -459,26 +462,24 @@ namespace BasicFacebookFeatures
             OnButtonPreviousPictureClicked();
         }
 
-
-       
-    protected virtual void OnButtonPreviousPictureClicked()
-    {
-        if (m_IsLoggedIn)
+        protected virtual void OnButtonPreviousPictureClicked()
         {
-            if (m_ImageNavigator.ShowPrevious())
+            if (m_IsLoggedIn)
             {
-                buttonNextPicture.Enabled = true;
-            }
-            else
-            {
-                //buttonPreviousPicture.Enabled = false;
+                if (m_ImageNavigator.ShowPrevious())
+                {
+                    buttonNextPicture.BeginInvoke(new Action(() => buttonNextPicture.Enabled = true));
+                }
+                else
+                {
+                    buttonPreviousPicture.BeginInvoke(new Action(() => buttonPreviousPicture.Enabled = false));
+                }
             }
         }
-    }
 
         private void buttonNextPicture_Click(object sender, EventArgs e)
         {
-          OnButtonNextPictureClicked();
+            OnButtonNextPictureClicked();
         }
 
         protected virtual void OnButtonNextPictureClicked()
@@ -487,15 +488,14 @@ namespace BasicFacebookFeatures
             {
                 if (m_ImageNavigator.ShowNext())
                 {
-                    buttonPreviousPicture.Enabled = true;
+                    buttonPreviousPicture.BeginInvoke(new Action(() => buttonPreviousPicture.Enabled = true));
                 }
                 else
                 {
-                    //buttonNextPicture.Enabled = false;
+                    buttonNextPicture.BeginInvoke(new Action(() => buttonNextPicture.Enabled = false));
                 }
             }
         }
-
 
         private void buttonWritePost_Click(object sender, EventArgs e)
         {
@@ -522,11 +522,10 @@ namespace BasicFacebookFeatures
                 MessageBox.Show("You need to write something!");
             }
         }
-     
 
         private void textBoxPost_Enter(object sender, EventArgs e)
         {
-           OnTextBoxPostEntered();
+            OnTextBoxPostEntered();
         }
 
         protected virtual void OnTextBoxPostEntered()
@@ -590,5 +589,6 @@ namespace BasicFacebookFeatures
         {
 
         }
+
     }
 }
