@@ -165,42 +165,5 @@ of your life in our stupid App!",
             return betterThingToDo;
         }
 
-        public class ImageURLIterator : IEnumerator<string>
-        {
-            private readonly ObservableCollection<string> urlCollection;
-            private int index = -1;
-
-            public ImageURLIterator(ObservableCollection<string> urlCollection)
-            {
-                this.urlCollection = urlCollection;
-            }
-
-            public string Current => urlCollection[index];
-
-            object IEnumerator.Current => Current;
-
-            public void Dispose() { }
-
-            public bool MoveNext()
-            {
-                index++;
-                return (index < urlCollection.Count);
-            }
-
-            public void Reset()
-            {
-                index = -1;
-            }
-
-            public bool MovePrevious()
-            {
-                if (index > 0)
-                {
-                    index--;
-                    return true;
-                }
-                return false;
-            }
-        }
     }
 }
