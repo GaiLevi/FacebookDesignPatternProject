@@ -190,7 +190,7 @@ namespace BasicFacebookFeatures
                                 }
                                 BeginInvoke(new Action(() =>
                                 {
-                                    m_ImageNavigator.SetImageUrls(selectedItemAsIAlbum.m_PicturesUrl);
+                                    m_ImageNavigator.CreateIterator(selectedItemAsIAlbum.m_PicturesUrl);
                                     labelIsAlbumLoading.Invoke(new Action(() => labelIsAlbumLoading.Visible = false));
                                     buttonNextPicture.Enabled = m_ImageNavigator.ShowNext();
                                     m_ImageNavigator.ShowPrevious();
@@ -346,16 +346,6 @@ namespace BasicFacebookFeatures
             }));
 
             albumThread.Start();
-        }
-
-        private class ActionCommand : ICommand
-        {
-            public Action Action { get; set; }
-            public void Execute()
-            {
-                Action?.Invoke();
-            }
-
         }
 
         private void initTabsCommands()
