@@ -193,7 +193,7 @@
             // buttonLogin
             // 
             this.buttonLogin.Location = new System.Drawing.Point(16, 15);
-            this.buttonLogin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonLogin.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(239, 28);
             this.buttonLogin.TabIndex = 36;
@@ -204,7 +204,7 @@
             // buttonLogout
             // 
             this.buttonLogout.Location = new System.Drawing.Point(16, 50);
-            this.buttonLogout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonLogout.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLogout.Name = "buttonLogout";
             this.buttonLogout.Size = new System.Drawing.Size(239, 28);
             this.buttonLogout.TabIndex = 52;
@@ -215,7 +215,7 @@
             // pictureBoxProfile
             // 
             this.pictureBoxProfile.Location = new System.Drawing.Point(276, 15);
-            this.pictureBoxProfile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxProfile.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxProfile.Name = "pictureBoxProfile";
             this.pictureBoxProfile.Size = new System.Drawing.Size(69, 64);
             this.pictureBoxProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -232,7 +232,7 @@
             this.tabControlFeatures.Controls.Add(this.tabPageAlbums);
             this.tabControlFeatures.Controls.Add(this.tabPageTimers);
             this.tabControlFeatures.Location = new System.Drawing.Point(16, 193);
-            this.tabControlFeatures.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControlFeatures.Margin = new System.Windows.Forms.Padding(4);
             this.tabControlFeatures.Name = "tabControlFeatures";
             this.tabControlFeatures.SelectedIndex = 0;
             this.tabControlFeatures.Size = new System.Drawing.Size(933, 369);
@@ -253,9 +253,9 @@
             this.tabPagePosts.Controls.Add(this.PictureBoxPost);
             this.tabPagePosts.Controls.Add(this.listBoxPosts);
             this.tabPagePosts.Location = new System.Drawing.Point(4, 25);
-            this.tabPagePosts.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPagePosts.Margin = new System.Windows.Forms.Padding(4);
             this.tabPagePosts.Name = "tabPagePosts";
-            this.tabPagePosts.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPagePosts.Padding = new System.Windows.Forms.Padding(4);
             this.tabPagePosts.Size = new System.Drawing.Size(925, 340);
             this.tabPagePosts.TabIndex = 0;
             this.tabPagePosts.Text = "Posts";
@@ -266,7 +266,7 @@
             this.listBoxComments.FormattingEnabled = true;
             this.listBoxComments.ItemHeight = 16;
             this.listBoxComments.Location = new System.Drawing.Point(631, 76);
-            this.listBoxComments.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBoxComments.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxComments.Name = "listBoxComments";
             this.listBoxComments.Size = new System.Drawing.Size(264, 228);
             this.listBoxComments.TabIndex = 7;
@@ -275,7 +275,7 @@
             // 
             this.m_CreatedTimeTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iPostBindingSource, "m_CreatedTime", true));
             this.m_CreatedTimeTextBox.Location = new System.Drawing.Point(464, 25);
-            this.m_CreatedTimeTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.m_CreatedTimeTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.m_CreatedTimeTextBox.Name = "m_CreatedTimeTextBox";
             this.m_CreatedTimeTextBox.ReadOnly = true;
             this.m_CreatedTimeTextBox.Size = new System.Drawing.Size(132, 22);
@@ -289,7 +289,7 @@
             // 
             this.m_LastEditTimeTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iPostBindingSource, "m_LastEditTime", true));
             this.m_LastEditTimeTextBox.Location = new System.Drawing.Point(464, 57);
-            this.m_LastEditTimeTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.m_LastEditTimeTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.m_LastEditTimeTextBox.Name = "m_LastEditTimeTextBox";
             this.m_LastEditTimeTextBox.ReadOnly = true;
             this.m_LastEditTimeTextBox.Size = new System.Drawing.Size(132, 22);
@@ -301,7 +301,7 @@
             this.PictureBoxPost.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iPostBindingSource, "m_PictureUrl", true));
             this.PictureBoxPost.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.iPostBindingSource, "m_PictureUrl", true));
             this.PictureBoxPost.Location = new System.Drawing.Point(395, 116);
-            this.PictureBoxPost.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PictureBoxPost.Margin = new System.Windows.Forms.Padding(4);
             this.PictureBoxPost.Name = "PictureBoxPost";
             this.PictureBoxPost.Size = new System.Drawing.Size(133, 123);
             this.PictureBoxPost.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -317,7 +317,7 @@
             this.listBoxPosts.FormattingEnabled = true;
             this.listBoxPosts.ItemHeight = 16;
             this.listBoxPosts.Location = new System.Drawing.Point(13, 14);
-            this.listBoxPosts.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBoxPosts.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxPosts.Name = "listBoxPosts";
             this.listBoxPosts.Size = new System.Drawing.Size(313, 308);
             this.listBoxPosts.TabIndex = 0;
@@ -332,9 +332,9 @@
             this.tabPageGroups.Controls.Add(this.pictureBoxGroup);
             this.tabPageGroups.Controls.Add(this.listBoxGroups);
             this.tabPageGroups.Location = new System.Drawing.Point(4, 25);
-            this.tabPageGroups.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageGroups.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageGroups.Name = "tabPageGroups";
-            this.tabPageGroups.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageGroups.Padding = new System.Windows.Forms.Padding(4);
             this.tabPageGroups.Size = new System.Drawing.Size(925, 340);
             this.tabPageGroups.TabIndex = 1;
             this.tabPageGroups.Text = "Groups";
@@ -347,7 +347,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDescriptionGroupContent.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iGroupBindingSource, "m_Description", true));
             this.textBoxDescriptionGroupContent.Location = new System.Drawing.Point(633, 46);
-            this.textBoxDescriptionGroupContent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxDescriptionGroupContent.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDescriptionGroupContent.Name = "textBoxDescriptionGroupContent";
             this.textBoxDescriptionGroupContent.Size = new System.Drawing.Size(257, 205);
             this.textBoxDescriptionGroupContent.TabIndex = 9;
@@ -362,7 +362,7 @@
             this.pictureBoxGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxGroup.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iGroupBindingSource, "m_PictureUrl", true));
             this.pictureBoxGroup.Location = new System.Drawing.Point(395, 128);
-            this.pictureBoxGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxGroup.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxGroup.Name = "pictureBoxGroup";
             this.pictureBoxGroup.Size = new System.Drawing.Size(133, 123);
             this.pictureBoxGroup.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -376,7 +376,7 @@
             this.listBoxGroups.FormattingEnabled = true;
             this.listBoxGroups.ItemHeight = 16;
             this.listBoxGroups.Location = new System.Drawing.Point(13, 14);
-            this.listBoxGroups.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBoxGroups.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxGroups.Name = "listBoxGroups";
             this.listBoxGroups.Size = new System.Drawing.Size(313, 308);
             this.listBoxGroups.TabIndex = 4;
@@ -384,9 +384,9 @@
             // tabPageFriends
             // 
             this.tabPageFriends.Location = new System.Drawing.Point(4, 25);
-            this.tabPageFriends.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageFriends.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageFriends.Name = "tabPageFriends";
-            this.tabPageFriends.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageFriends.Padding = new System.Windows.Forms.Padding(4);
             this.tabPageFriends.Size = new System.Drawing.Size(925, 340);
             this.tabPageFriends.TabIndex = 2;
             this.tabPageFriends.Text = "Friends";
@@ -398,9 +398,9 @@
             this.tabPageEvents.Controls.Add(this.pictureBoxEvent);
             this.tabPageEvents.Controls.Add(this.listBoxEvents);
             this.tabPageEvents.Location = new System.Drawing.Point(4, 25);
-            this.tabPageEvents.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageEvents.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageEvents.Name = "tabPageEvents";
-            this.tabPageEvents.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageEvents.Padding = new System.Windows.Forms.Padding(4);
             this.tabPageEvents.Size = new System.Drawing.Size(925, 340);
             this.tabPageEvents.TabIndex = 3;
             this.tabPageEvents.Text = "Events";
@@ -410,7 +410,7 @@
             // 
             this.pictureBoxEvent.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iEventBindingSource, "m_PictureUrl", true));
             this.pictureBoxEvent.Location = new System.Drawing.Point(464, 89);
-            this.pictureBoxEvent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxEvent.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxEvent.Name = "pictureBoxEvent";
             this.pictureBoxEvent.Size = new System.Drawing.Size(133, 123);
             this.pictureBoxEvent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -428,7 +428,7 @@
             this.listBoxEvents.FormattingEnabled = true;
             this.listBoxEvents.ItemHeight = 16;
             this.listBoxEvents.Location = new System.Drawing.Point(13, 14);
-            this.listBoxEvents.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBoxEvents.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxEvents.Name = "listBoxEvents";
             this.listBoxEvents.Size = new System.Drawing.Size(313, 308);
             this.listBoxEvents.TabIndex = 0;
@@ -442,9 +442,9 @@
             this.tabPagePages.Controls.Add(this.pictureBoxPage);
             this.tabPagePages.Controls.Add(this.listBoxPages);
             this.tabPagePages.Location = new System.Drawing.Point(4, 25);
-            this.tabPagePages.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPagePages.Margin = new System.Windows.Forms.Padding(4);
             this.tabPagePages.Name = "tabPagePages";
-            this.tabPagePages.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPagePages.Padding = new System.Windows.Forms.Padding(4);
             this.tabPagePages.Size = new System.Drawing.Size(925, 340);
             this.tabPagePages.TabIndex = 4;
             this.tabPagePages.Text = "Pages";
@@ -454,7 +454,7 @@
             // 
             this.m_DescriptionRichTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iPageBindingSource, "m_Description", true));
             this.m_DescriptionRichTextBox.Location = new System.Drawing.Point(633, 46);
-            this.m_DescriptionRichTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.m_DescriptionRichTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.m_DescriptionRichTextBox.Name = "m_DescriptionRichTextBox";
             this.m_DescriptionRichTextBox.Size = new System.Drawing.Size(257, 205);
             this.m_DescriptionRichTextBox.TabIndex = 5;
@@ -469,7 +469,7 @@
             this.pictureBoxPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxPage.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.iPageBindingSource, "m_PictureUrl", true));
             this.pictureBoxPage.Location = new System.Drawing.Point(395, 128);
-            this.pictureBoxPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxPage.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxPage.Name = "pictureBoxPage";
             this.pictureBoxPage.Size = new System.Drawing.Size(133, 123);
             this.pictureBoxPage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -483,7 +483,7 @@
             this.listBoxPages.FormattingEnabled = true;
             this.listBoxPages.ItemHeight = 16;
             this.listBoxPages.Location = new System.Drawing.Point(13, 14);
-            this.listBoxPages.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBoxPages.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxPages.Name = "listBoxPages";
             this.listBoxPages.Size = new System.Drawing.Size(313, 308);
             this.listBoxPages.TabIndex = 0;
@@ -497,9 +497,9 @@
             this.tabPageAlbums.Controls.Add(this.buttonPreviousPicture);
             this.tabPageAlbums.Controls.Add(this.listBoxAlbums);
             this.tabPageAlbums.Location = new System.Drawing.Point(4, 25);
-            this.tabPageAlbums.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageAlbums.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageAlbums.Name = "tabPageAlbums";
-            this.tabPageAlbums.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageAlbums.Padding = new System.Windows.Forms.Padding(4);
             this.tabPageAlbums.Size = new System.Drawing.Size(925, 340);
             this.tabPageAlbums.TabIndex = 5;
             this.tabPageAlbums.Text = "Albums";
@@ -520,7 +520,7 @@
             // buttonEditPicture
             // 
             this.buttonEditPicture.Location = new System.Drawing.Point(807, 295);
-            this.buttonEditPicture.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonEditPicture.Margin = new System.Windows.Forms.Padding(4);
             this.buttonEditPicture.Name = "buttonEditPicture";
             this.buttonEditPicture.Size = new System.Drawing.Size(100, 28);
             this.buttonEditPicture.TabIndex = 7;
@@ -531,7 +531,7 @@
             // buttonNextPicture
             // 
             this.buttonNextPicture.Location = new System.Drawing.Point(740, 155);
-            this.buttonNextPicture.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonNextPicture.Margin = new System.Windows.Forms.Padding(4);
             this.buttonNextPicture.Name = "buttonNextPicture";
             this.buttonNextPicture.Size = new System.Drawing.Size(100, 28);
             this.buttonNextPicture.TabIndex = 6;
@@ -542,7 +542,7 @@
             // buttonPreviousPicture
             // 
             this.buttonPreviousPicture.Location = new System.Drawing.Point(424, 155);
-            this.buttonPreviousPicture.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonPreviousPicture.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPreviousPicture.Name = "buttonPreviousPicture";
             this.buttonPreviousPicture.Size = new System.Drawing.Size(100, 28);
             this.buttonPreviousPicture.TabIndex = 5;
@@ -557,7 +557,7 @@
             this.listBoxAlbums.FormattingEnabled = true;
             this.listBoxAlbums.ItemHeight = 16;
             this.listBoxAlbums.Location = new System.Drawing.Point(13, 14);
-            this.listBoxAlbums.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBoxAlbums.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxAlbums.Name = "listBoxAlbums";
             this.listBoxAlbums.Size = new System.Drawing.Size(313, 308);
             this.listBoxAlbums.TabIndex = 0;
@@ -575,9 +575,9 @@
             this.tabPageTimers.Controls.Add(this.labelTimespentintheapp);
             this.tabPageTimers.Controls.Add(this.buttonGenerateBetterThingToDo);
             this.tabPageTimers.Location = new System.Drawing.Point(4, 25);
-            this.tabPageTimers.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageTimers.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageTimers.Name = "tabPageTimers";
-            this.tabPageTimers.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageTimers.Padding = new System.Windows.Forms.Padding(4);
             this.tabPageTimers.Size = new System.Drawing.Size(925, 340);
             this.tabPageTimers.TabIndex = 6;
             this.tabPageTimers.Text = "Timers";
@@ -652,7 +652,7 @@
             this.labelWelcomeToApp.Name = "labelWelcomeToApp";
             this.labelWelcomeToApp.Size = new System.Drawing.Size(857, 73);
             this.labelWelcomeToApp.TabIndex = 57;
-            this.labelWelcomeToApp.Text = "Welcome to out Facebook App (Ver 2)";
+            this.labelWelcomeToApp.Text = "Welcome to out Facebook App (Ver 3)";
             this.labelWelcomeToApp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // mCommentsBindingSource
@@ -664,7 +664,7 @@
             // 
             this.checkBoxAutoLogin.AutoSize = true;
             this.checkBoxAutoLogin.Location = new System.Drawing.Point(13, 86);
-            this.checkBoxAutoLogin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBoxAutoLogin.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxAutoLogin.Name = "checkBoxAutoLogin";
             this.checkBoxAutoLogin.Size = new System.Drawing.Size(122, 21);
             this.checkBoxAutoLogin.TabIndex = 55;
@@ -716,7 +716,7 @@
             this.Controls.Add(this.pictureBoxProfile);
             this.Controls.Add(this.buttonLogout);
             this.Controls.Add(this.buttonLogin);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gai&Roy FaceBook Demo App";

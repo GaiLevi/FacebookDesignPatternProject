@@ -44,7 +44,7 @@ namespace FacebookModel
 
         public void LoginAndInit()
         {
-            FacebookService.s_CollectionLimit = 100;
+            FacebookService.s_CollectionLimit = 50;
             try
             {
                 m_LoginResult = FacebookService.Login(
