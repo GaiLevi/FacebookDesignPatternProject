@@ -90,6 +90,5 @@ namespace BasicFacebookFeatures
                 FormEditPictureClosing.Invoke(sender, e);
             }
         }
-
     }
 }
