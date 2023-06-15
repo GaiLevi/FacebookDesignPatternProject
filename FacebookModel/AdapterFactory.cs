@@ -27,6 +27,5 @@ namespace FacebookModel
                     throw new ArgumentException("Invalid type or object");
             }
         }
-
     }
 }

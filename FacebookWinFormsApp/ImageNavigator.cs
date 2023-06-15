@@ -15,7 +15,6 @@ namespace BasicFacebookFeatures
     {
         private readonly Label r_LabelImageIndexer;
         private ImageURLIterator m_ImageURLIterator;
-
         public int m_AlbumCount { get; set; }
 
         public ImageNavigator()

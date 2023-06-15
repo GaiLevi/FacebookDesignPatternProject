@@ -82,8 +82,6 @@ namespace FacebookViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(i_PropertyName));
         }
 
-
-
         public void AddNewPost(string i_PostMessage)
         {
             FacebookUser.AddNewPostToCollection(i_PostMessage);

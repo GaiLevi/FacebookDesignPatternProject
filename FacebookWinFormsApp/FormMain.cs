@@ -36,7 +36,6 @@ namespace BasicFacebookFeatures
             initForm();
         }
 
-
         private void initForm()
         {
             InitializeComponent();
@@ -579,6 +578,5 @@ namespace BasicFacebookFeatures
         {
 
         }
-
     }
 }
