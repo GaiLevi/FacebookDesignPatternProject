@@ -37,12 +37,13 @@ namespace FacebookViewModel
 
         public bool MoveNext()
         {
+            bool isMoveNext = false;
             if (m_Index < r_UrlCollection.Count - 1)
             {
                 m_Index++;
-                return true;
+                isMoveNext = true;
             }
-            return false;
+            return isMoveNext;
         }
 
         public void Reset()
@@ -52,12 +53,13 @@ namespace FacebookViewModel
 
         public bool MovePrevious()
         {
+            bool isMovePrev = false;
             if (m_Index > 0)
             {
                 m_Index--;
-                return true;
+                isMovePrev = true;
             }
-            return false;
+            return isMovePrev;
         }
     }
 }

@@ -6,11 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Common.Contracts;
 using FacebookViewModel;
 
 namespace BasicFacebookFeatures
 {
-    public class ImageNavigator : PictureBox
+    public class ImageNavigator : PictureBox, IAggregate
     {
         private readonly Label r_LabelImageIndexer;
         private ImageURLIterator m_ImageURLIterator;
@@ -29,37 +30,38 @@ namespace BasicFacebookFeatures
             this.Controls.Add(r_LabelImageIndexer);
         }
 
-        public void SetImageUrls(ObservableCollection<string> i_ImageUrls)
+        public void CreateIterator(ObservableCollection<string> i_ImageUrls)
         {
             m_ImageURLIterator = new ImageURLIterator(i_ImageUrls);
             m_AlbumCount = i_ImageUrls.Count;
             ShowNext();
             updateLabel();
-
         }
 
         public bool ShowNext()
         {
+            bool isMoveNext = false;
             if(m_ImageURLIterator.MoveNext())
             {
                 this.LoadAsync(m_ImageURLIterator.Current);
                 updateLabel();
-                return true;
+                isMoveNext = true;
             }
 
-            return false;
+            return isMoveNext;
         }
 
         public bool ShowPrevious()
         {
-            if(m_ImageURLIterator.MovePrevious())
+            bool isMovePrev = false;
+            if (m_ImageURLIterator.MovePrevious())
             {
                 this.LoadAsync(m_ImageURLIterator.Current);
                 updateLabel();
-                return true;
+                isMovePrev = true;
             }
 
-            return false;
+            return isMovePrev;
         }
 
         private void updateLabel()

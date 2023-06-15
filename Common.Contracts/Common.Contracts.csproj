@@ -57,6 +57,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAggregate.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="IObject.cs" />
     <Compile Include="IAdapterFactory.cs" />
