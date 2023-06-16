@@ -40,7 +40,7 @@ namespace BasicFacebookFeatures
         {
             InitializeComponent();
             m_IsLoggedIn = false;
-            initPictureBoxCollectionForAlbumTab();
+            initImageNavigatorForAlbumTab();
             m_BindingSource = new BindingSource { DataSource = r_ViewModel };
             r_ViewModel.PropertyChanged += OnViewModel_PropertyChanged;
             PictureBoxPost.DataBindings.Add("ImageLocation", iPostBindingSource, "m_PictureUrl", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -68,6 +68,7 @@ namespace BasicFacebookFeatures
             ApplicationSettings.Instance.m_AutoLogin = this.checkBoxAutoLogin.Checked;
             ApplicationSettings.Instance.Save();
             r_ViewModel.PropertyChanged -= OnViewModel_PropertyChanged;
+            r_ViewModel.NewPostAdded -= OnViewModel_NewPostAdded;
         }
 
         protected virtual void OnViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -106,7 +107,7 @@ namespace BasicFacebookFeatures
             initPostTab();
         }
 
-        private void initPictureBoxCollectionForAlbumTab()
+        private void initImageNavigatorForAlbumTab()
         {
             m_ImageNavigator = new ImageNavigator();
             TabPage tabPageAlbum = tabControlFeatures.TabPages[5];
